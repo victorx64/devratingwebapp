@@ -6,11 +6,12 @@ import {
   Link
 } from "react-router-dom";
 import './App.css';
+import Home from './Home.js';
 
 export default function App() {
   return (
-    <Router>
-      <div>
+    <>
+      <Router>
         <nav>
           <ul>
             <li>
@@ -48,13 +49,15 @@ export default function App() {
             <Home />
           </Route>
         </Switch>
-      </div>
-    </Router>
-  );
-}
+      </Router>
 
-function Home() {
-  return <h2>Dev Rating</h2>;
+      <footer className="footer">
+        <div className="container">
+          <span className="text-muted">Copyright © Victor Semenov 2020</span>
+        </div>
+      </footer>
+    </>
+  );
 }
 
 function Repositories() {
