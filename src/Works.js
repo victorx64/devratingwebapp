@@ -30,7 +30,7 @@ export default function Works() {
     } else {
         return (
             <>
-                <h4>Work details</h4>
+                <h1 className="mt-5">Work</h1>
                 <table className="table table-bordered">
                     <tbody>
                         <tr>
@@ -40,14 +40,14 @@ export default function Works() {
                         <tr>
                             <th scope="row">Repository</th>
                             <td>
-                                {work.Repository} <Link to={'/' + work.Repository}>[Leaderboard]</Link>
+                                {work.Repository} <Link to={'/' + encodeURIComponent(work.Repository)}>[Leaderboard]</Link>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">Pull request</th>
                             {
                                 work.Link
-                                    ? <td><Link to={work.Link}>{work.Link}</Link></td>
+                                    ? <td><a href={work.Link}>{work.Link}</a></td>
                                     : <td>none</td>
                             }
                         </tr>
@@ -71,8 +71,14 @@ export default function Works() {
                             <th scope="row">Rating before</th>
                             {
                                 work.UsedRatingId
-                                    ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating}</Link></td>
+                                    ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating.toFixed(2)}</Link></td>
                                     : <td>default</td>
+                            }
+                        </tr>
+                        <tr>
+                            <th scope="row">Rating after</th>
+                            {
+                                <td><Link to={/ratings/ + work.NewRatingId}>{work.NewRating?.toFixed(2)}</Link></td>
                             }
                         </tr>
                     </tbody>

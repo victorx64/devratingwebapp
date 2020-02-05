@@ -15,29 +15,39 @@ import Works from './Works.js';
 export default function App() {
   return (
     <Router>
-      <Switch>
-        <Route path="/authors/:id">
-          <Authors />
-        </Route>
-        <Route path="/works/:id">
-          <Works />
-        </Route>
-        <Route path="/ratings/:id">
-          <Ratings />
-        </Route>
-        <Route path="/policy">
-          <Policy />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
+      <nav className="navbar navbar-light bg-light">
+        <Link className="navbar-brand" to="/">
+          <img src="/logo-30.png" width="30" height="30" className="d-inline-block align-top" alt="" />Dev Rating
+        </Link>
+      </nav>
+      <div className="container">
+        <Switch>
+          <Route path="/authors/:id">
+            <Authors />
+          </Route>
+          <Route path="/works/:id">
+            <Works />
+          </Route>
+          <Route path="/ratings/:id">
+            <Ratings />
+          </Route>
+          <Route path="/policy">
+            <Policy />
+          </Route>
+          <Route path="/:repository">
+            <Home />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
 
       <footer className="footer">
         <div className="container">
-          <div className="row">
-            <span className="text-muted col-3">Copyright © Victor Semenov 2020</span>
-            <Link className="col-3" to="/policy">Policy</Link >
+          <div className="row justify-content-center">
+            <span className="text-muted col-auto">Copyright © Victor Semenov 2020</span>
+            <Link className="col-auto" to="/policy">Policy</Link >
           </div>
         </div>
       </footer>

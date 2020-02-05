@@ -28,42 +28,45 @@ export default function Ratings() {
         return <div>Loading...</div>;
     } else {
         return (
-            <table className="table table-bordered">
-                <tbody>
-                    <tr>
-                        <th scope="row">Id</th>
-                        <td>{rating.Id}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Value</th>
-                        <td>{rating.Value}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Author's deleted lines</th>
-                        {
-                            rating.Deletions
-                                ? <td>{rating.Deletions.Value}</td>
-                                : <td>This is the work performer new rating</td>
-                        }
-                    </tr>
-                    <tr>
-                        <th scope="row">Author's previous Rating</th>
-                        {
-                            rating.PreviousRatingId
-                                ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating}</Link></td>
-                                : <td>default</td>
-                        }
-                    </tr>
-                    <tr>
-                        <th scope="row">Created by Work</th>
-                        <td><Link to={/works/ + rating.WorkId}>[W&#8209;{rating.WorkId}]</Link></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Author</th>
-                        <td><Link to={/authors/ + rating.AuthorId}>{rating.AuthorEmail}</Link></td>
-                    </tr>
-                </tbody>
-            </table>
+            <>
+                <h1 className="mt-5">Rating</h1>
+                <table className="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Id</th>
+                            <td>{rating.Id}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Value</th>
+                            <td>{rating.Value}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Author's deleted lines</th>
+                            {
+                                rating.Deletions
+                                    ? <td>{rating.Deletions}</td>
+                                    : <td>This is the work performer new rating</td>
+                            }
+                        </tr>
+                        <tr>
+                            <th scope="row">Author's previous Rating</th>
+                            {
+                                rating.PreviousRatingId
+                                    ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating.toFixed(2)}</Link></td>
+                                    : <td>default</td>
+                            }
+                        </tr>
+                        <tr>
+                            <th scope="row">Created by Work</th>
+                            <td><Link to={/works/ + rating.WorkId}>[W&#8209;{rating.WorkId}]</Link></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Author</th>
+                            <td><Link to={/authors/ + rating.AuthorId}>{rating.AuthorEmail}</Link></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </>
         );
     }
 }

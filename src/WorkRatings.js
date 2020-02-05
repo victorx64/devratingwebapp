@@ -27,24 +27,19 @@ export default function WorkRatings(props) {
     } else if (!isLoaded) {
         return <div>Loading...</div>;
     } else {
-        const rows = ratings.map((rating) =>
+        const rows = ratings.filter(rating => rating.Deletions).map((rating) =>
             <tr key={rating.Id}>
                 <td>
                     <Link to={/authors/ + rating.AuthorId}>{rating.AuthorEmail}</Link>
                 </td>
-
-                {
-                    rating.Deletions
-                        ? <td>{rating.Deletions}</td>
-                        : <td>N/A</td>
-                }
+                <td>{rating.Deletions}</td>
                 {
                     rating.PreviousRatingId
-                        ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating}</Link></td>
+                        ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating.toFixed(2)}</Link></td>
                         : <td>default</td>
                 }
 
-                <td><Link to={/ratings/ + rating.Id}>{rating.Value}</Link></td>
+                <td><Link to={/ratings/ + rating.Id}>{rating.Value.toFixed(2)}</Link></td>
             </tr>);
 
         return (
