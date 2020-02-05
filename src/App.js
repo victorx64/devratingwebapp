@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter,
   Switch,
   Route,
   Link
@@ -14,10 +14,10 @@ import Works from './Works.js';
 
 export default function App() {
   return (
-    <Router>
+    <HashRouter>
       <nav className="navbar navbar-light bg-light">
         <Link className="navbar-brand" to="/">
-          <img src="/logo-30.png" width="30" height="30" className="d-inline-block align-top" alt="" />Dev Rating
+          <img src="/dev-rating-30.png" width="30" height="30" className="d-inline-block align-top mr-3" alt="" />Dev Rating
         </Link>
       </nav>
       <div className="container">
@@ -51,6 +51,6 @@ export default function App() {
           </div>
         </div>
       </footer>
-    </Router>
+    </HashRouter>
   );
 }
