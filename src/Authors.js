@@ -41,6 +41,10 @@ export default function Authors() {
                             <td>{author.Email}</td>
                         </tr>
                         <tr>
+                            <th scope="row">Organization Id</th>
+                            <td>{author.Organization}</td>
+                        </tr>
+                        <tr>
                             <th scope="row">Current Rating</th>
                             <td>{author.RatingId
                                 ? <Link to={/ratings/ + author.RatingId}>{author.Rating.toFixed(2)}</Link>
