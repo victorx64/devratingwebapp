@@ -9,6 +9,8 @@ import './App.css';
 import Home from './Home.js';
 import Policy from './Policy.js';
 import Authors from './Authors.js';
+import Ratings from './Ratings.js';
+import Works from './Works.js';
 
 export default function App() {
   return (
@@ -17,10 +19,10 @@ export default function App() {
         <Route path="/authors/:id">
           <Authors />
         </Route>
-        <Route path="/works">
+        <Route path="/works/:id">
           <Works />
         </Route>
-        <Route path="/ratings">
+        <Route path="/ratings/:id">
           <Ratings />
         </Route>
         <Route path="/policy">
@@ -41,12 +43,4 @@ export default function App() {
       </footer>
     </Router>
   );
-}
-
-function Works() {
-  return <h2>Works</h2>;
-}
-
-function Ratings() {
-  return <h2>Ratings</h2>;
 }

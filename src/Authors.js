@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
-import './App.css';
-
+import { Link, useParams } from "react-router-dom";
 
 export default function Authors() {
     const [error, setError] = useState(null);
@@ -43,7 +41,7 @@ export default function Authors() {
                     <tr>
                         <th scope="row">Current Rating</th>
                         <td>{author.RatingId
-                            ? author.Rating
+                            ? <Link to={/ratings/ + author.RatingId}>{author.Rating}</Link>
                             : 'default'}
                         </td>
                     </tr>
