@@ -47,7 +47,7 @@ export default function Authors() {
                         <tr>
                             <th scope="row">Current Rating</th>
                             <td>{author.RatingId
-                                ? <Link to={/ratings/ + author.RatingId}>{author.Rating.toFixed(2)}</Link>
+                                ? <Link to={/ratings/ + author.RatingId}>{author.Rating?.toFixed(2)}</Link>
                                 : 'default'}
                             </td>
                         </tr>

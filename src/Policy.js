@@ -89,6 +89,8 @@ export default function Policy() {
             <ul>
                 <li>By visiting this telegram chat: https://t.me/devratingchat</li>
             </ul>
+            <br />
+            <br />
         </div>
     );
 }

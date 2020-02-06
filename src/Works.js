@@ -71,7 +71,7 @@ export default function Works() {
                             <th scope="row">Rating before</th>
                             {
                                 work.UsedRatingId
-                                    ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating.toFixed(2)}</Link></td>
+                                    ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating?.toFixed(2)}</Link></td>
                                     : <td>default</td>
                             }
                         </tr>

@@ -34,27 +34,24 @@ export default function Repository(props) {
                     <Link to={/authors/ + author.Id}>{author.Email}</Link>
                 </td>
                 <td>
-                    <Link to={/ratings/ + author.RatingId}>{author.Rating.toFixed(2)}</Link>
+                    <Link to={/ratings/ + author.RatingId}>{author.Rating?.toFixed(2)}</Link>
                 </td>
             </tr>
         );
 
         return (
-            <>
-                <h2 className="mt-3">Repository leaderboard</h2>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Rating</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rows}
-                    </tbody>
-                </table>
-            </>
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
         );
     }
 }

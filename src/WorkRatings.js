@@ -35,11 +35,11 @@ export default function WorkRatings(props) {
                 <td>{rating.Deletions}</td>
                 {
                     rating.PreviousRatingId
-                        ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating.toFixed(2)}</Link></td>
+                        ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating?.toFixed(2)}</Link></td>
                         : <td>default</td>
                 }
 
-                <td><Link to={/ratings/ + rating.Id}>{rating.Value.toFixed(2)}</Link></td>
+                <td><Link to={/ratings/ + rating.Id}>{rating.Value?.toFixed(2)}</Link></td>
             </tr>);
 
         return (
