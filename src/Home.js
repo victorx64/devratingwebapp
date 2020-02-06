@@ -1,11 +1,17 @@
 import React from 'react';
 import { useParams } from "react-router-dom";
 import Repository from "./Repository.js";
+import LastWorks from './LastWorks.js';
 import './App.css';
 
 export default function Home() {
-    const { repository } = useParams();
-    const demo = encodeURIComponent('https://github.com/esphereal/aqua.git');
+    let { repository } = useParams();
+    let demo = '';
+
+    if (!repository) {
+        repository = encodeURIComponent('https://github.com/esphereal/aqua.git');
+        demo = ' – demo repository'
+    }
 
     return (
         <>
@@ -23,18 +29,13 @@ export default function Home() {
                 Join our <a href="https://t.me/devratingchat">Telegram chat</a>.<br />
             </p>
 
-            {repository
-                ? <>
-                    <h2 className="mt-3">Repository leaderboard</h2>
-                    <p><code>{decodeURIComponent(repository)}</code></p>
-                    <Repository repository={repository} />
-                </>
-                : <>
-                    <h2 className="mt-3">Demo repository leaderboard</h2>
-                    <p><code>{decodeURIComponent(demo)}</code></p>
-                    <Repository repository={demo} />
-                </>
-            }
+            <h2 className="mt-3">Repository leaderboard</h2>
+            <p><code>{decodeURIComponent(repository)}</code>{demo}</p>
+            <Repository repository={repository} />
+
+            <h2 className="mt-3">Repository recent works</h2>
+            <p><code>{decodeURIComponent(repository)}</code>{demo}</p>
+            <LastWorks repository={repository} />
         </>
     );
 }
