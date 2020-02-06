@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
-export default function Repository(props) {
+export default function Leaderboard(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setLoaded] = useState(false);
     const [authors, setAuthors] = useState([]);
     const repository = props.repository;
+    const description = props.description;
 
     useEffect(() => {
         fetch("https://devrating.azurewebsites.net/api/authors/?repository=" + repository)
@@ -23,9 +24,9 @@ export default function Repository(props) {
     }, [repository]);
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div>Leaderboard error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Loading...</div>;
+        return <div>Loading leaderboard...</div>;
     } else {
         const rows = authors.map((author, index, array) =>
             <tr key={author.Id}>
@@ -40,18 +41,22 @@ export default function Repository(props) {
         );
 
         return (
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Rating</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rows}
-                </tbody>
-            </table>
+            <>
+                <h2 className="mt-3">Repository leaderboard</h2>
+                <p><code>{decodeURIComponent(repository)}</code>{description}</p>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
+            </>
         );
     }
 }
