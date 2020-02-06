@@ -38,7 +38,7 @@ export default function Ratings() {
                         </tr>
                         <tr>
                             <th scope="row">Value</th>
-                            <td>{rating.Value}</td>
+                            <td>{rating.Value?.toFixed(2)}</td>
                         </tr>
                         <tr>
                             <th scope="row">Author's deleted lines</th>
@@ -52,7 +52,7 @@ export default function Ratings() {
                             <th scope="row">Author's previous Rating</th>
                             {
                                 rating.PreviousRatingId
-                                    ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating.toFixed(2)}</Link></td>
+                                    ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating?.toFixed(2)}</Link></td>
                                     : <td>default</td>
                             }
                         </tr>
