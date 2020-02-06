@@ -6,6 +6,7 @@ export default function LastWorks(props) {
     const [isLoaded, setLoaded] = useState(false);
     const [works, setWorks] = useState([]);
     const repository = props.repository;
+    const description = props.description;
 
     useEffect(() => {
         fetch("https://devrating.azurewebsites.net/api/works?repository=" + repository)
@@ -43,12 +44,14 @@ export default function LastWorks(props) {
     );
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div>Recent works error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Loading...</div>;
+        return <div>Loading recent works...</div>;
     } else {
         return (
             <>
+                <h2 className="mt-3">Repository recent works</h2>
+                <p><code>{decodeURIComponent(repository)}</code>{description}</p>
                 <table className="table">
                     <thead>
                         <tr>

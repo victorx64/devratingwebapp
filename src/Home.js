@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from "react-router-dom";
-import Repository from "./Repository.js";
+import Leaderboard from "./Leaderboard.js";
 import LastWorks from './LastWorks.js';
 import './App.css';
 
@@ -29,13 +29,10 @@ export default function Home() {
                 Join our <a href="https://t.me/devratingchat">Telegram chat</a>.<br />
             </p>
 
-            <h2 className="mt-3">Repository leaderboard</h2>
-            <p><code>{decodeURIComponent(repository)}</code>{demo}</p>
-            <Repository repository={repository} />
+            <Leaderboard repository={repository} description={demo} />
+            <LastWorks repository={repository} description={demo} />
 
-            <h2 className="mt-3">Repository recent works</h2>
-            <p><code>{decodeURIComponent(repository)}</code>{demo}</p>
-            <LastWorks repository={repository} />
+            <br />
         </>
     );
 }
