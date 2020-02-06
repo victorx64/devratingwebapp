@@ -1,4 +1,5 @@
 ![deploy](https://github.com/victorx64/devratingwebapp/workflows/deploy/badge.svg)
+[![DeepScan grade](https://deepscan.io/api/teams/7336/projects/9449/branches/123167/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=7336&pid=9449&bid=123167)
 
 This project is front-end of https://devrating.net. It was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
