@@ -55,11 +55,11 @@ export default function LastWorks(props) {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th scope="col">Id</th>
+                            <th scope="col">Work</th>
                             <th scope="col">Pull request</th>
                             <th scope="col">Author</th>
                             <th scope="col">Rating</th>
-                            <th scope="col">Additions</th>
+                            <th scope="col">Added</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -64,7 +64,7 @@ export default function Works() {
                             <td><Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link></td>
                         </tr>
                         <tr>
-                            <th scope="row">Additions</th>
+                            <th scope="row">Added</th>
                             <td>{work.Additions}</td>
                         </tr>
                         <tr>
@@ -84,6 +84,7 @@ export default function Works() {
                     </tbody>
                 </table>
                 <WorkRatings workId={id} />
+                <br />
             </>
         );
     }
