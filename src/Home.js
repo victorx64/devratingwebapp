@@ -18,7 +18,6 @@ export default function Home() {
             <h1 className="mt-5">Dev Rating</h1>
             <p>
                 A rating of software developers based on the stability of their code.
-                <a href="https://github.com/victorx64/devrating/blob/master/docs/how-it-works.md"> Learn more...</a>
             </p>
             <p>
                 Install <a href="https://github.com/marketplace/dev-rating">the app</a> to build your rating.<br />
