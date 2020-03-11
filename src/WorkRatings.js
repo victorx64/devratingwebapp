@@ -27,12 +27,17 @@ export default function WorkRatings(props) {
     } else if (!isLoaded) {
         return <div>Loading...</div>;
     } else {
-        const rows = ratings.filter(rating => rating.Deletions).map((rating) =>
+        const rows = ratings.filter(rating => rating.CountedDeletions).map((rating) =>
             <tr key={rating.Id}>
                 <td>
                     <Link to={/authors/ + rating.AuthorId}>{rating.AuthorEmail}</Link>
                 </td>
-                <td>{rating.Deletions}</td>
+                <td>{rating.CountedDeletions}</td>
+                {
+                    rating.IgnoredDeletions
+                        ? <td>rating.IgnoredDeletions</td>
+                        : <td>none</td>
+                }
                 {
                     rating.PreviousRatingId
                         ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating?.toFixed(2)}</Link></td>
@@ -50,6 +55,7 @@ export default function WorkRatings(props) {
                         <tr>
                             <th scope="col">Author</th>
                             <th scope="col">Deletions</th>
+                            <th scope="col">Ignored Deletions</th>
                             <th scope="col">Before</th>
                             <th scope="col">After</th>
                         </tr>
