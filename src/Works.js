@@ -60,6 +60,14 @@ export default function Works() {
                             <td>{work.EndCommit}</td>
                         </tr>
                         <tr>
+                            <th scope="row">Major release</th>
+                            {
+                                work.SinceCommit
+                                    ? <td>work.SinceCommit</td>
+                                    : <td>none</td>
+                            }
+                        </tr>
+                        <tr>
                             <th scope="row">Author</th>
                             <td><Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link></td>
                         </tr>

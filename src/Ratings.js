@@ -41,11 +41,21 @@ export default function Ratings() {
                             <td>{rating.Value?.toFixed(2)}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Author's deleted lines</th>
+                            <th scope="row">Author's deleted the major release lines</th>
                             {
-                                rating.Deletions
-                                    ? <td>{rating.Deletions}</td>
-                                    : <td>This is the work performer new rating</td>
+                                rating.CountedDeletions
+                                    ? <td>{rating.CountedDeletions}</td>
+                                    : <td>N/A</td>
+                            }
+                        </tr>
+                        <tr>
+                            <th scope="row">Author's deleted older lines</th>
+                            {
+                                rating.IgnoredDeletions
+                                    ? <td>{rating.IgnoredDeletions}</td>
+                                    : rating.CountedDeletions
+                                        ? <td>none</td>
+                                        : <td>N/A</td>
                             }
                         </tr>
                         <tr>
@@ -57,7 +67,7 @@ export default function Ratings() {
                             }
                         </tr>
                         <tr>
-                            <th scope="row">Created by Work</th>
+                            <th scope="row">Produced at Work</th>
                             <td><Link to={/works/ + rating.WorkId}>[W&#8209;{rating.WorkId}]</Link></td>
                         </tr>
                         <tr>
