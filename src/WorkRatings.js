@@ -35,7 +35,7 @@ export default function WorkRatings(props) {
                 <td>{rating.CountedDeletions}</td>
                 {
                     rating.IgnoredDeletions
-                        ? <td>rating.IgnoredDeletions</td>
+                        ? <td>{rating.IgnoredDeletions}</td>
                         : <td>none</td>
                 }
                 {
