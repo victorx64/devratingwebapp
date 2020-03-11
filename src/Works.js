@@ -60,10 +60,10 @@ export default function Works() {
                             <td>{work.EndCommit}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Major release</th>
+                            <th scope="row">Major update</th>
                             {
                                 work.SinceCommit
-                                    ? <td>work.SinceCommit</td>
+                                    ? <td>{work.SinceCommit}</td>
                                     : <td>none</td>
                             }
                         </tr>

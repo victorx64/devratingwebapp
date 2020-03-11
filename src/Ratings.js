@@ -41,7 +41,7 @@ export default function Ratings() {
                             <td>{rating.Value?.toFixed(2)}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Author's deleted the major release lines</th>
+                            <th scope="row">Author's deleted current lines</th>
                             {
                                 rating.CountedDeletions
                                     ? <td>{rating.CountedDeletions}</td>
