@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import './App.css';
 import Home from './Home.js';
+import Repo from './Repo.js';
 import Policy from './Policy.js';
 import Authors from './Authors.js';
 import Ratings from './Ratings.js';
@@ -34,8 +35,8 @@ export default function App() {
           <Route path="/policy">
             <Policy />
           </Route>
-          <Route path="/:repository">
-            <Home />
+          <Route path="/repo/:repository">
+            <Repo />
           </Route>
           <Route path="/">
             <Home />

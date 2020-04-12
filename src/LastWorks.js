@@ -44,22 +44,22 @@ export default function LastWorks(props) {
     );
 
     if (error) {
-        return <div>Recent works error: {error.message}</div>;
+        return <div>Ошибка: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Loading recent works...</div>;
+        return <div>Загрузка недавних работ...</div>;
     } else {
         return (
             <>
-                <h2 className="mt-3">Repository recent works</h2>
+                <h2 className="mt-3">Недавние работы</h2>
                 <p><code>{decodeURIComponent(repository)}</code>{description}</p>
                 <table className="table">
                     <thead>
                         <tr>
-                            <th scope="col">Work</th>
-                            <th scope="col">Pull request</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Rating</th>
-                            <th scope="col">Added</th>
+                            <th scope="col">#</th>
+                            <th scope="col">Пулл реквест</th>
+                            <th scope="col">Автор</th>
+                            <th scope="col">Рейтинг</th>
+                            <th scope="col">Новые строки</th>
                         </tr>
                     </thead>
                     <tbody>

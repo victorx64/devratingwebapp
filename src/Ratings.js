@@ -23,56 +23,48 @@ export default function Ratings() {
     }, [id]);
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div>Ошибка: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Loading...</div>;
+        return <div>Загрузка...</div>;
     } else {
         return (
             <>
-                <h1 className="mt-5">Rating</h1>
+                <h1 className="mt-5">Обновление рейтинга</h1>
                 <table className="table table-bordered">
                     <tbody>
                         <tr>
-                            <th scope="row">Id</th>
+                            <th scope="row">Ид.</th>
                             <td>{rating.Id}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Value</th>
-                            <td>{rating.Value?.toFixed(2)}</td>
+                            <th scope="row">Автор</th>
+                            <td><Link to={/authors/ + rating.AuthorId}>{rating.AuthorEmail}</Link></td>
                         </tr>
                         <tr>
-                            <th scope="row">Author's deleted current lines</th>
-                            {
-                                rating.CountedDeletions
-                                    ? <td>{rating.CountedDeletions}</td>
-                                    : <td>N/A</td>
-                            }
-                        </tr>
-                        <tr>
-                            <th scope="row">Author's deleted older lines</th>
-                            {
-                                rating.IgnoredDeletions
-                                    ? <td>{rating.IgnoredDeletions}</td>
-                                    : rating.CountedDeletions
-                                        ? <td>none</td>
-                                        : <td>N/A</td>
-                            }
-                        </tr>
-                        <tr>
-                            <th scope="row">Author's previous Rating</th>
+                            <th scope="row">Предыдущий рейтинг</th>
                             {
                                 rating.PreviousRatingId
                                     ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating?.toFixed(2)}</Link></td>
-                                    : <td>default</td>
+                                    : <td>1500 (по умолчанию)</td>
                             }
                         </tr>
                         <tr>
-                            <th scope="row">Produced at Work</th>
-                            <td><Link to={/works/ + rating.WorkId}>[W&#8209;{rating.WorkId}]</Link></td>
+                            <th scope="row">Новый рейтинг</th>
+                            <td>{rating.Value?.toFixed(2)}</td>
                         </tr>
+                        {
+                            rating.CountedDeletions
+                                ? <tr><th scope="row">Удаленных строк автора</th><td>{rating.CountedDeletions}</td></tr>
+                                : ''
+                        }
+                        {
+                            rating.IgnoredDeletions
+                                ? <tr><th scope="row">Удаленных строк автора (написанных в прошлых релизах)</th><td>{rating.IgnoredDeletions}</td></tr>
+                                : ''
+                        }
                         <tr>
-                            <th scope="row">Author</th>
-                            <td><Link to={/authors/ + rating.AuthorId}>{rating.AuthorEmail}</Link></td>
+                            <th scope="row">Создано в работе</th>
+                            <td><Link to={/works/ + rating.WorkId}>[W&#8209;{rating.WorkId}]</Link></td>
                         </tr>
                     </tbody>
                 </table>
