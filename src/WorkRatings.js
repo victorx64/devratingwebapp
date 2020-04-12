@@ -6,6 +6,7 @@ export default function WorkRatings(props) {
     const [isLoaded, setLoaded] = useState(false);
     const [ratings, setRatings] = useState([]);
     const id = props.workId;
+    const hideIgnoredDeletions = props.hideIgnoredDeletions;
 
     useEffect(() => {
         fetch("https://devrating.azurewebsites.net/api/ratings?work=" + id)
@@ -23,9 +24,9 @@ export default function WorkRatings(props) {
     }, [id]);
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div>Ошибка: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Loading...</div>;
+        return <div>Загрузка...</div>;
     } else {
         const rows = ratings.filter(rating => rating.CountedDeletions).map((rating) =>
             <tr key={rating.Id}>
@@ -35,13 +36,15 @@ export default function WorkRatings(props) {
                 <td>{rating.CountedDeletions}</td>
                 {
                     rating.IgnoredDeletions
-                        ? <td>rating.IgnoredDeletions</td>
-                        : <td>none</td>
+                        ? <td>{rating.IgnoredDeletions}</td>
+                        : hideIgnoredDeletions
+                            ? ''
+                            : <td>нет</td>
                 }
                 {
                     rating.PreviousRatingId
                         ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating?.toFixed(2)}</Link></td>
-                        : <td>default</td>
+                        : <td>1500 (по умолчанию)</td>
                 }
 
                 <td><Link to={/ratings/ + rating.Id}>{rating.Value?.toFixed(2)}</Link></td>
@@ -49,15 +52,15 @@ export default function WorkRatings(props) {
 
         return (
             <>
-                <h4>Deleted lines authors</h4>
+                <h4>Авторы удаленных строк</h4>
                 <table className="table table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Author</th>
-                            <th scope="col">Deletions</th>
-                            <th scope="col">Ignored Deletions</th>
-                            <th scope="col">Before</th>
-                            <th scope="col">After</th>
+                            <th scope="col">Автор</th>
+                            <th scope="col">Потерь строк</th>
+                            <th scope="col" hidden={hideIgnoredDeletions}>Удаления строк старых релизов</th>
+                            <th scope="col">Рейтинг до</th>
+                            <th scope="col">Рейтинг после</th>
                         </tr>
                     </thead>
                     <tbody>

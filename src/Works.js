@@ -24,74 +24,71 @@ export default function Works() {
     }, [id]);
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div>Ошибка: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Loading...</div>;
+        return <div>Загрузка...</div>;
     } else {
         return (
             <>
-                <h1 className="mt-5">Work</h1>
+                <h1 className="mt-5">Работа</h1>
                 <table className="table table-bordered">
                     <tbody>
                         <tr>
-                            <th scope="row">Id</th>
+                            <th scope="row">Ид.</th>
                             <td>{work.Id}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Repository</th>
+                            <th scope="row">Репозиторий</th>
                             <td>
-                                {work.Repository} <Link to={'/' + encodeURIComponent(work.Repository)}>[Leaderboard]</Link>
+                                {work.Repository} <Link to={'/repo/' + encodeURIComponent(work.Repository)}>Подробнее...</Link>
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">Pull request</th>
-                            {
-                                work.Link
-                                    ? <td><a href={work.Link}>{work.Link}</a></td>
-                                    : <td>none</td>
-                            }
-                        </tr>
-                        <tr>
-                            <th scope="row">Start Commit</th>
-                            <td>{work.StartCommit}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">End Commit</th>
-                            <td>{work.EndCommit}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Major release</th>
-                            {
-                                work.SinceCommit
-                                    ? <td>work.SinceCommit</td>
-                                    : <td>none</td>
-                            }
-                        </tr>
-                        <tr>
-                            <th scope="row">Author</th>
+                            <th scope="row">Автор</th>
                             <td><Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link></td>
                         </tr>
                         <tr>
-                            <th scope="row">Added</th>
+                            <th scope="row">Новые строки</th>
                             <td>{work.Additions}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Rating before</th>
+                            <th scope="row">Рейтинг до</th>
                             {
                                 work.UsedRatingId
                                     ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating?.toFixed(2)}</Link></td>
-                                    : <td>default</td>
+                                    : <td>1500 (по умолчанию)</td>
                             }
                         </tr>
                         <tr>
-                            <th scope="row">Rating after</th>
+                            <th scope="row">Рейтинг после</th>
                             {
                                 <td><Link to={/ratings/ + work.NewRatingId}>{work.NewRating?.toFixed(2)}</Link></td>
                             }
                         </tr>
+                        <tr>
+                            <th scope="row">Пулл Реквест</th>
+                            {
+                                work.Link
+                                    ? <td><a href={work.Link}>{work.Link}</a></td>
+                                    : <td>нет</td>
+                            }
+                        </tr>
+                        <tr>
+                            <th scope="row">Начальный коммит</th>
+                            <td>{work.StartCommit}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Конечный коммит</th>
+                            <td>{work.EndCommit}</td>
+                        </tr>
+                        {
+                            work.SinceCommit
+                                ? <tr><th scope="row">Мажорный релиз</th><td>{work.SinceCommit}</td></tr>
+                                : ''
+                        }
                     </tbody>
                 </table>
-                <WorkRatings workId={id} />
+                <WorkRatings workId={id} hideIgnoredDeletions={!work.SinceCommit} />
                 <br />
             </>
         );
