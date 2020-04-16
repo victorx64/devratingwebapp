@@ -36,6 +36,18 @@ export default function Leaderboard(props) {
                     <Link to={/authors/ + author.Id}>{author.Email}</Link>
                 </td>
                 <td>
+                    {
+                        (
+                            100 *
+                            Math.pow(10.0, author.Rating / 400.0) /
+                            (
+                                Math.pow(10.0, author.Rating / 400.0) +
+                                Math.pow(10.0, 1500.0 / 400.0)
+                            )
+                        ).toFixed(1)
+                    }%
+                </td>
+                <td>
                     <Link to={/ratings/ + author.RatingId}>{author.Rating?.toFixed(2)}</Link>
                 </td>
             </tr>
@@ -50,6 +62,7 @@ export default function Leaderboard(props) {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Автор</th>
+                            <th scope="col">Эффективность</th>
                             <th scope="col">Рейтинг</th>
                         </tr>
                     </thead>
