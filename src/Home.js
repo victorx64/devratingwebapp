@@ -57,7 +57,7 @@ export default function Home() {
             </h2>
             <p className="lead font-weight-normal">
                 Объем работы пропорционален рейтингу автора и количеству новых срок. Рейтинговая система, которая поощряет 
-                стабильный код и постоянное улучшение кода, устраняет известные <a href="https://en.wikipedia.org/wiki/Source_lines_of_code#Disadvantages">недостатки</a>,
+                стабильный код и постоянное улучшение кода, <a href="https://github.com/victorx64/devrating#how-is-this-better-than-the-lines-of-code-metric">устраняет известные недостатки</a>,
                 которые имеются у простого подсчета строк кода.
             </p>
             <br />
