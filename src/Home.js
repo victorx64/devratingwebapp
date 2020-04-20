@@ -1,5 +1,6 @@
 import React from 'react';
 import Leaderboard from "./Leaderboard.js";
+import LastWorks from './LastWorks.js';
 import './App.css';
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
             </p>
             <br />
             <Leaderboard repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – демо-репозиторий' title='Пример рейтинга' />
+            <LastWorks repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – демо-репозиторий' />
             <br />
             <h2>
                 Как это работает?

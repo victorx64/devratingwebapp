@@ -28,9 +28,9 @@ export default function LastWorks(props) {
             <td>
                 <Link to={/works/ + work.Id}>[W&#8209;{work.Id}]</Link>
             </td>
-            <td>
+            {/* <td>
                 <a href={work.Link}>{work.Link}</a>
-            </td>
+            </td> */}
             <td>
                 <Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link>
             </td>
@@ -39,7 +39,21 @@ export default function LastWorks(props) {
                     ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating?.toFixed(2)}</Link></td>
                     : <td>default</td>
             }
-            <td>{work.Additions}</td>
+            {/* <td>{work.Additions}</td> */}
+            <td>
+                {
+                    (
+                        work.Additions / (
+                            1 -
+                            Math.pow(10, (work.UsedRatingId ? work.UsedRating : 1500) / 400) /
+                            (
+                                Math.pow(10, (work.UsedRatingId ? work.UsedRating : 1500) / 400) +
+                                Math.pow(10, 1500 / 400)
+                            )
+                        )
+                    ).toFixed(2)
+                }
+            </td>
         </tr>
     );
 
@@ -56,10 +70,11 @@ export default function LastWorks(props) {
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Пулл реквест</th>
+                            {/* <th scope="col">Пулл реквест</th> */}
                             <th scope="col">Автор</th>
                             <th scope="col">Рейтинг</th>
-                            <th scope="col">Новые строки</th>
+                            {/* <th scope="col">Новые строки</th> */}
+                            <th scope="col">Объем</th>
                         </tr>
                     </thead>
                     <tbody>

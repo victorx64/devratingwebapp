@@ -62,7 +62,7 @@ export default function Leaderboard(props) {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Автор</th>
-                            <th scope="col">Эффективность</th>
+                            <th scope="col">Персентиль</th>
                             <th scope="col">Рейтинг</th>
                         </tr>
                     </thead>
