@@ -28,10 +28,9 @@ export default function Home() {
             </p>
             <br />
             <Leaderboard repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – демо-репозиторий' title='Пример рейтинга' />
-            <LastWorks repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – демо-репозиторий' />
             <br />
             <h2>
-                Как это работает?
+                Как строится рейтинг?
             </h2>
             <p className="lead font-weight-normal">
                 Рейтинг строится на основе истории удалений строк кода.
@@ -51,6 +50,18 @@ export default function Home() {
                 Поощряйте сильных программистов, чтобы создать у команды нацеленность на конечный результат.
             </p>
             <br />
+            <LastWorks repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – демо-репозиторий'  title='Пример работ в репозитории' />
+            <br />
+            <h2>
+                Как вычисляется объем работ?
+            </h2>
+            <p className="lead font-weight-normal">
+                Объем работы пропорционален рейтингу автора и количеству новых срок. Рейтинговая система, которая поощряет 
+                стабильный код и постоянное улучшение кода, устраняет известные <a href="https://en.wikipedia.org/wiki/Source_lines_of_code#Disadvantages">недостатки</a>,
+                которые имеются у простого подсчета строк кода.
+            </p>
+            <br />
+            
             <h2>
                 Как это помогает распределенным командам?
             </h2>

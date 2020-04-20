@@ -7,6 +7,7 @@ export default function LastWorks(props) {
     const [works, setWorks] = useState([]);
     const repository = props.repository;
     const description = props.description;
+    const title = props.title ?? 'Недавние работы';
 
     useEffect(() => {
         fetch("https://devrating.azurewebsites.net/api/works?repository=" + repository)
@@ -64,7 +65,7 @@ export default function LastWorks(props) {
     } else {
         return (
             <>
-                <h2 className="mt-3">Недавние работы</h2>
+                <h2 className="mt-3">{title}</h2>
                 <p><code>{decodeURIComponent(repository)}</code>{description}</p>
                 <table className="table">
                     <thead>
