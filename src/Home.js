@@ -50,7 +50,7 @@ export default function Home() {
                 Поощряйте сильных программистов, чтобы создать у команды нацеленность на конечный результат.
             </p>
             <br />
-            <LastWorks repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – демо-репозиторий'  title='Пример работ в репозитории' />
+            <LastWorks repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – демо-репозиторий'  title='Пример истории работ в репозитории' />
             <br />
             <h2>
                 Как вычисляется объем работ?
