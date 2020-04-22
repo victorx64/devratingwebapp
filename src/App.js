@@ -47,7 +47,7 @@ export default function App() {
       <footer className="footer">
         <div className="container">
           <div className="row justify-content-center">
-            <span className="text-muted col-auto">Copyright © Victor Semenov 2020</span>
+            <span className="text-muted col-auto">email: <a href="mailto:viktor_semenov@outlook.com">viktor_semenov@outlook.com</a></span>
             <Link className="col-auto" to="/policy">Policy</Link >
           </div>
         </div>
