@@ -4,6 +4,6 @@ import App from './App';
 
 test('renders copyright', () => {
   const { getByText } = render(<App />);
-  const copyrightElement = getByText(/Copyright © Victor Semenov/i);
+  const copyrightElement = getByText(/viktor_semenov@outlook.com/i);
   expect(copyrightElement).toBeInTheDocument();
 });
