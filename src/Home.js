@@ -37,7 +37,7 @@ export default function Home() {
                 The rating is based on the history of lines of code deletions.
                 Every modification of the other developer's code increases your rating points and reduces the rating points of the author of the deleted line of code.
                 To increase rating points a developer has to produce code with a low amount of defects and continuously improve the overall codebase.
-                The rating shows how accurately developers follow the Main Rule of Software High Quality (см. Стив Макконнелл, Совершенный код, второе издание, глава 20.5)
+                The rating shows how accurately developers follow The General Principle of Software Quality (Steve McConnell, Code Complete, 2nd Edition, Chapter 20.5)
                 and <a href="https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle">the open–closed principle</a> in
                 particular. <a href="https://github.com/victorx64/devrating#how-it-works">Learn more about the rating...</a>
             </p>
