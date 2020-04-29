@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import './App.css';
 import Home from './Home.js';
+import HomeRu from './Home-ru.js';
 import Repo from './Repo.js';
 import Policy from './Policy.js';
 import Authors from './Authors.js';
@@ -16,10 +17,23 @@ import Works from './Works.js';
 export default function App() {
   return (
     <HashRouter>
-      <nav className="navbar navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <Link className="navbar-brand" to="/">
           <img src="/dev-rating-30.png" width="30" height="30" className="d-inline-block align-top mr-3" alt="" />Dev Rating
         </Link>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <Link className="nav-link" to="#">Pricing</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/ru">На русском</Link>
+            </li>
+          </ul>
+        </div>
       </nav>
       <div className="container">
         <Switch>
@@ -40,6 +54,9 @@ export default function App() {
           </Route>
           <Route path="/">
             <Home />
+          </Route>
+          <Route path="/ru">
+            <HomeRu />
           </Route>
         </Switch>
       </div>
