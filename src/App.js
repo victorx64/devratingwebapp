@@ -27,9 +27,6 @@ export default function App() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" to="#">Pricing</Link>
-            </li>
-            <li className="nav-item">
               <Link className="nav-link" to="/ru">На русском</Link>
             </li>
           </ul>
@@ -52,11 +49,11 @@ export default function App() {
           <Route path="/repo/:repository">
             <Repo />
           </Route>
-          <Route path="/">
-            <Home />
-          </Route>
           <Route path="/ru">
             <HomeRu />
+          </Route>
+          <Route path="/">
+            <Home />
           </Route>
         </Switch>
       </div>

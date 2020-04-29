@@ -24,66 +24,66 @@ export default function Works() {
     }, [id]);
 
     if (error) {
-        return <div>Ошибка: {error.message}</div>;
+        return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Загрузка...</div>;
+        return <div>Loading...</div>;
     } else {
         return (
             <>
-                <h1 className="mt-5">Работа</h1>
+                <h1 className="mt-5">Work</h1>
                 <table className="table table-bordered">
                     <tbody>
                         <tr>
-                            <th scope="row">Ид.</th>
+                            <th scope="row">Id</th>
                             <td>{work.Id}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Репозиторий</th>
+                            <th scope="row">Repository</th>
                             <td>
-                                {work.Repository} <Link to={'/repo/' + encodeURIComponent(work.Repository)}>Подробнее...</Link>
+                                {work.Repository} <Link to={'/repo/' + encodeURIComponent(work.Repository)}>Details...</Link>
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">Автор</th>
+                            <th scope="row">Author</th>
                             <td><Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link></td>
                         </tr>
                         <tr>
-                            <th scope="row">Новые строки</th>
+                            <th scope="row">New lines</th>
                             <td>{work.Additions}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Рейтинг до</th>
+                            <th scope="row">Rating before</th>
                             {
                                 work.UsedRatingId
                                     ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating?.toFixed(2)}</Link></td>
-                                    : <td>1500 (по умолчанию)</td>
+                                    : <td>{(1500).toFixed(2)} (initial)</td>
                             }
                         </tr>
                         <tr>
-                            <th scope="row">Рейтинг после</th>
+                            <th scope="row">Rating after</th>
                             {
                                 <td><Link to={/ratings/ + work.NewRatingId}>{work.NewRating?.toFixed(2)}</Link></td>
                             }
                         </tr>
                         <tr>
-                            <th scope="row">Пулл Реквест</th>
+                            <th scope="row">Pull request</th>
                             {
                                 work.Link
                                     ? <td><a href={work.Link}>{work.Link}</a></td>
-                                    : <td>нет</td>
+                                    : <td>none</td>
                             }
                         </tr>
                         <tr>
-                            <th scope="row">Начальный коммит</th>
+                            <th scope="row">Start commit</th>
                             <td>{work.StartCommit}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Конечный коммит</th>
+                            <th scope="row">End commit</th>
                             <td>{work.EndCommit}</td>
                         </tr>
                         {
                             work.SinceCommit
-                                ? <tr><th scope="row">Мажорный релиз</th><td>{work.SinceCommit}</td></tr>
+                                ? <tr><th scope="row">Major update</th><td>{work.SinceCommit}</td></tr>
                                 : ''
                         }
                     </tbody>

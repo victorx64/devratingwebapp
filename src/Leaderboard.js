@@ -7,7 +7,7 @@ export default function Leaderboard(props) {
     const [authors, setAuthors] = useState([]);
     const repository = props.repository;
     const description = props.description;
-    const title = props.title ?? 'Авторы репозитория';
+    const title = props.title ?? 'Authors';
 
     useEffect(() => {
         fetch("https://devrating.azurewebsites.net/api/authors/?repository=" + repository)
@@ -25,9 +25,9 @@ export default function Leaderboard(props) {
     }, [repository]);
 
     if (error) {
-        return <div>Ошибка списка авторов: {error.message}</div>;
+        return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Загрузка списка авторов...</div>;
+        return <div>Loading repository authors...</div>;
     } else {
         const rows = authors.map((author, index, array) =>
             <tr key={author.Id}>
@@ -61,9 +61,9 @@ export default function Leaderboard(props) {
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Автор</th>
-                            <th scope="col">Процентиль</th>
-                            <th scope="col">Рейтинг</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Percentile</th>
+                            <th scope="col">Rating</th>
                         </tr>
                     </thead>
                     <tbody>

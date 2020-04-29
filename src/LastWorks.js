@@ -7,7 +7,7 @@ export default function LastWorks(props) {
     const [works, setWorks] = useState([]);
     const repository = props.repository;
     const description = props.description;
-    const title = props.title ?? 'Недавние работы';
+    const title = props.title ?? 'Recent Works';
 
     useEffect(() => {
         fetch("https://devrating.azurewebsites.net/api/works?repository=" + repository)
@@ -59,9 +59,9 @@ export default function LastWorks(props) {
     );
 
     if (error) {
-        return <div>Ошибка: {error.message}</div>;
+        return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Загрузка недавних работ...</div>;
+        return <div>Loading recent works...</div>;
     } else {
         return (
             <>
@@ -71,10 +71,10 @@ export default function LastWorks(props) {
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Пулл реквест</th>
-                            <th scope="col">Автор</th>
-                            <th scope="col">Рейтинг</th>
-                            <th scope="col">Новые строки</th>
+                            <th scope="col">Pull request</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">New lines</th>
                             {/* <th scope="col">Объем</th> */}
                         </tr>
                     </thead>
