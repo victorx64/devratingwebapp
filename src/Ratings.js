@@ -23,47 +23,47 @@ export default function Ratings() {
     }, [id]);
 
     if (error) {
-        return <div>Ошибка: {error.message}</div>;
+        return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Загрузка...</div>;
+        return <div>Loading...</div>;
     } else {
         return (
             <>
-                <h1 className="mt-5">Обновление рейтинга</h1>
+                <h1 className="mt-5">Rating update</h1>
                 <table className="table table-bordered">
                     <tbody>
                         <tr>
-                            <th scope="row">Ид.</th>
+                            <th scope="row">Id</th>
                             <td>{rating.Id}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Автор</th>
+                            <th scope="row">Author</th>
                             <td><Link to={/authors/ + rating.AuthorId}>{rating.AuthorEmail}</Link></td>
                         </tr>
                         <tr>
-                            <th scope="row">Предыдущий рейтинг</th>
+                            <th scope="row">Previous rating</th>
                             {
                                 rating.PreviousRatingId
                                     ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating?.toFixed(2)}</Link></td>
-                                    : <td>1500 (по умолчанию)</td>
+                                    : <td>{(1500).toFixed(2)} (initial)</td>
                             }
                         </tr>
                         <tr>
-                            <th scope="row">Новый рейтинг</th>
+                            <th scope="row">New rating</th>
                             <td>{rating.Value?.toFixed(2)}</td>
                         </tr>
                         {
                             rating.CountedDeletions
-                                ? <tr><th scope="row">Удаленных строк автора</th><td>{rating.CountedDeletions}</td></tr>
+                                ? <tr><th scope="row">Lines lost</th><td>{rating.CountedDeletions}</td></tr>
                                 : ''
                         }
                         {
                             rating.IgnoredDeletions
-                                ? <tr><th scope="row">Удаленных строк автора (написанных в прошлых релизах)</th><td>{rating.IgnoredDeletions}</td></tr>
+                                ? <tr><th scope="row">Lines lost (written before the major update)</th><td>{rating.IgnoredDeletions}</td></tr>
                                 : ''
                         }
                         <tr>
-                            <th scope="row">Создано в работе</th>
+                            <th scope="row">Updated by Work</th>
                             <td><Link to={/works/ + rating.WorkId}>[W&#8209;{rating.WorkId}]</Link></td>
                         </tr>
                     </tbody>

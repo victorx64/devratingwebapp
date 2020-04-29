@@ -8,82 +8,73 @@ export default function Home() {
         <>
             <br />
             <h1>
-                Рейтинг программистов
+                Developers Rating
             </h1>
             <p className="lead font-weight-normal">
-                Каждое исправление кода – это время, потраченное на нахождение дефекта, устранение дефекта и повторное тестирование.
-                Подключи сервис к своему репозиторию и получи рейтинг программистов по редкости исправления их кода после написания.
+                Every fix of code is a time, wasted on finding a bug, fixing a bug, and fix verification.
+                Connect our service to your repository and get the rating of your developers by the stability of their code.
             </p>
             <p className="row justify-content-center">
-                <a className="btn btn-primary" href="#form">Получить рейтинг своей команды</a>
+                <a className="btn btn-primary" href="#form">Get the rating of your team</a>
             </p>
             <br />
             <h2>
-                Что дает рейтинг?
+                How the rating system can help you?
             </h2>
             <p className="lead font-weight-normal">
-                Рейтинг показывает, кто из программистов больше экономит время, путем написания кода с наименьшим числом дефектов.
-                Примените данный сервис для мотивации программистов сокращать время разработки ПО.
-                Чем раньше исправляется дефект – <a href="https://tproger.ru/translations/ten-reasons-why-you-fix-bugs-as-soon-as-you-find-them/">тем дешевле</a> это обходится.
+                The rating shows which developer reduces the development time more by producing code with fewer defects.
+                Use the service to motivate developers to cut the software production time.
+                The sooner you fix a bug – <a href="https://www.ministryoftesting.com/dojo/lessons/ten-reasons-why-you-fix-bugs-as-soon-as-you-find-them">the cheaper</a> it costs.
                 {/* <a href="https://deepsource.io/blog/exponential-cost-of-fixing-bugs/"></a> */}
-                {/* https://www.ministryoftesting.com/dojo/lessons/ten-reasons-why-you-fix-bugs-as-soon-as-you-find-them */}
             </p>
             <br />
-            <Leaderboard repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – демо-репозиторий' title='Пример рейтинга' />
+            <Leaderboard repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – demo repository' title='Sample rating' />
             <br />
             <h2>
-                Как строится рейтинг?
+                How do we build the rating?
             </h2>
             <p className="lead font-weight-normal">
-                Рейтинг строится на основе истории удалений строк кода.
-                Каждое исправление чужого кода повышает рейтинг программиста и снижает рейтинг автора исправленного кода.
-                Чтобы повысить свой рейтинг, программисту нужно писать код без дефектов и постоянно улучшать весь остальной код.
-                Рейтинг показывает, насколько программист соблюдает Главный Закон Контроля Качества ПО
-                (см. Стив Макконнелл, Совершенный код, второе издание, глава 20.5)
-                и <a href="https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF_%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D1%81%D1%82%D0%B8/%D0%B7%D0%B0%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D1%81%D1%82%D0%B8">принцип открытости/закрытости</a>,
-                в частности. <a href="https://github.com/victorx64/devrating#how-it-works">Узнать больше о том, как строится рейтинг...</a>
+                The rating is based on the history of lines of code deletions.
+                Every modification of the other developer's code increases your rating points and reduces the rating points of the author of the deleted line of code.
+                To increase rating points a developer has to produce code with a low amount of defects and continuously improve the overall codebase.
+                The rating shows how accurately developers follow the Main Rule of Software High Quality (см. Стив Макконнелл, Совершенный код, второе издание, глава 20.5)
+                and <a href="https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle">the open–closed principle</a> in
+                particular. <a href="https://github.com/victorx64/devrating#how-it-works">Learn more about the rating...</a>
             </p>
             <br />
             <h2>
-                Чем это лучше Code Churn?
+                How it improves the Code Churn metric?
             </h2>
             <p className="lead font-weight-normal">
-                Так же, как и рейтинг, Code Churn строится на основе изменений строк кода. Это популярная и наиболее современная метрика в области измерения продуктивности программистов.
-                Проблема Code Churn заключается в том, что его сложно интерпретировать. Он не дает однозначного ответа, что делать в том, или ином случае.
-                Значение этой метрики зависит от большого числа факторов. В <a href="https://www.pluralsight.com/blog/teams/6-causes-of-code-churn-and-what-you-should-do-about-them">статье от Pluralsight</a> приводится
-                шесть различных причин высокого Code Churn: неоднозначные требования, безучастный заказчик, сложная проблема, прототипирование, полировка и низкая вовлеченность программиста.
-                Также, Code Churn меняется со временем в зависимости от зрелости проекта. Часто начинается с высокого значения и постепенно падает по мере стабилизации проекта.
+                As well as the rating, Code Churn is based on the lines of code changes. It's a popular and one of the modern metrics of engineering team productivity.
+                The problem of Code Churn that it is difficult to interpret it univocally. The value of the metric depends on a lot of factors.
+                <a href="https://www.pluralsight.com/blog/teams/6-causes-of-code-churn-and-what-you-should-do-about-them">Pluralsight</a> wrote
+                a blog post about the most common reasons for high Code Churn: unclear requirements, indecisive stakeholder, difficult problem,
+                prototyping, polishing, and under-engagement. Also, Code Churn depends on the age of a project. Usually, the value stays
+                high at the beginning of a project and slowly goes down.
             </p>
             <p className="lead font-weight-normal">
-                Dev Rating понятен и имеет однозначное толкование. Рейтинг не зависит от продолжительности проекта и всегда показывает относительную эффективность программистов в момент времени.
+                Dev Rating is clear and has an unambiguous interpretation. The rating doesn't depend on the duration of a project and
+                always shows the relative effectiveness of the developers.
             </p>
             <br />
             <h2>
-                Как рейтинг повышает мотивацию?
+                How does the ranking increase team motivation?
             </h2>
             <p className="lead font-weight-normal">
-                С рейтинговой системой программисты будут знать, что каждое улучшение кода будет замечено.
-                Объективная оценка навыков позволит им быстрее проявить себя через результат работы.
-                Поощряйте сильных программистов, чтобы создать у команды нацеленность на конечный результат.
+                Using a grading system, developers will know that every code improvement will be noted.
+                An objective assessment of skills allows them to quickly prove themselves through a result of work.
+                Encourage powerful programmers to create a team focused on the result.
             </p>
             <br />
-            <LastWorks repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – демо-репозиторий' title='Рейтинг обновляется после каждого Пулл-Реквеста' />
+            <LastWorks repository={encodeURIComponent('https://github.com/esphereal/aqua.git')} description=' – demo repository' title='Every merged Pull request updates the rating' />
             <br />
-            {/* <h2>
-                Как вычисляется объем работ?
-            </h2>
-            <p className="lead font-weight-normal">
-                Объем работы пропорционален рейтингу автора и количеству новых срок. Рейтинговая система, которая поощряет 
-                стабильный код и постоянное улучшение кода, <a href="https://github.com/victorx64/devrating#how-is-this-better-than-the-lines-of-code-metric">устраняет известные недостатки</a> простого
-                подсчета строк кода.
-            </p>
-            <br /> */}
             <h2>
-                Как это помогает распределенным командам?
+                How does this help distributed engineering teams?
             </h2>
             <p className="lead font-weight-normal">
-                Сервис делает более прозрачным отслеживание прогресса удаленных программистов.
-                Чем быстрее и качественнее работает программист по сравнению с другими членами команды, тем выше будет его рейтинг.
+                The service makes the progress of remote developers more visible.
+                The faster and better the developer works, the higher will be his rating.
             </p>
             <br />
             <p className="row justify-content-center" id="form">

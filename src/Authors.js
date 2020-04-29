@@ -23,17 +23,17 @@ export default function Authors() {
     }, [id]);
 
     if (error) {
-        return <div>Ошибка: {error.message}</div>;
+        return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Загрузка...</div>;
+        return <div>Loading...</div>;
     } else {
         return (
             <>
-                <h1 className="mt-5">Автор</h1>
+                <h1 className="mt-5">Author</h1>
                 <table className="table table-bordered">
                     <tbody>
                         <tr>
-                            <th scope="row">Ид.</th>
+                            <th scope="row">Id</th>
                             <td>{author.Id}</td>
                         </tr>
                         <tr>
@@ -41,14 +41,14 @@ export default function Authors() {
                             <td>{author.Email}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Ид. владельца репозиториев</th>
+                            <th scope="row">Repos owner Id</th>
                             <td>{author.Organization}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Текущий рейтинг</th>
+                            <th scope="row">Current rating</th>
                             <td>{author.RatingId
                                 ? <Link to={/ratings/ + author.RatingId}>{author.Rating?.toFixed(2)}</Link>
-                                : '1500 (по умолчанию)'}
+                                : '1500 (initial)'}
                             </td>
                         </tr>
                     </tbody>

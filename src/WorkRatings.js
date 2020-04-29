@@ -24,9 +24,9 @@ export default function WorkRatings(props) {
     }, [id]);
 
     if (error) {
-        return <div>Ошибка: {error.message}</div>;
+        return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Загрузка...</div>;
+        return <div>Loading...</div>;
     } else {
         const rows = ratings.filter(rating => rating.CountedDeletions).map((rating) =>
             <tr key={rating.Id}>
@@ -39,12 +39,12 @@ export default function WorkRatings(props) {
                         ? <td>{rating.IgnoredDeletions}</td>
                         : hideIgnoredDeletions
                             ? ''
-                            : <td>нет</td>
+                            : <td>none</td>
                 }
                 {
                     rating.PreviousRatingId
                         ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating?.toFixed(2)}</Link></td>
-                        : <td>1500 (по умолчанию)</td>
+                        : <td>{(1500).toFixed(2)} (initial)</td>
                 }
 
                 <td><Link to={/ratings/ + rating.Id}>{rating.Value?.toFixed(2)}</Link></td>
@@ -52,15 +52,15 @@ export default function WorkRatings(props) {
 
         return (
             <>
-                <h4>Авторы удаленных строк</h4>
+                <h4>Deleted lines authors</h4>
                 <table className="table table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Автор</th>
-                            <th scope="col">Потерь строк</th>
-                            <th scope="col" hidden={hideIgnoredDeletions}>Удаления строк старых релизов</th>
-                            <th scope="col">Рейтинг до</th>
-                            <th scope="col">Рейтинг после</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Lines lost</th>
+                            <th scope="col" hidden={hideIgnoredDeletions}>Lines lost (written before update)</th>
+                            <th scope="col">Rating before</th>
+                            <th scope="col">Rating after</th>
                         </tr>
                     </thead>
                     <tbody>
