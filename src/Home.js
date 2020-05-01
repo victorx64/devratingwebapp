@@ -81,7 +81,9 @@ export default function Home() {
                 Pricing
             </h2>
             <p className="lead font-weight-normal">
-                We take $20/developer/month.
+                We take <b>$20</b>/developer/month.
+                <br />
+                <b>Free</b> for open sourced repositories in GitHub. <a href="https://github.com/marketplace/dev-rating">Install app</a>
             </p>
             <br />
             <p className="row justify-content-center" id="form">

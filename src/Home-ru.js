@@ -90,7 +90,9 @@ export default function HomeRu() {
                 Подписка
             </h2>
             <p className="lead font-weight-normal">
-                Наш сервис стоит $20 в месяц за каждого программиста.
+                Наш сервис стоит <b>$20</b> в месяц за каждого программиста.
+                <br />
+                <b>Бесплатно</b> для открытых репозиториев на GitHub. <a href="https://github.com/marketplace/dev-rating">Установить</a>
             </p>
             <br />
             <p className="row justify-content-center" id="ru-form">
