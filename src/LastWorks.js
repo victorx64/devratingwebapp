@@ -67,21 +67,23 @@ export default function LastWorks(props) {
             <>
                 <h2 className="mt-3">{title}</h2>
                 <p><code>{decodeURIComponent(repository)}</code>{description}</p>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Pull request</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Rating</th>
-                            <th scope="col">New lines</th>
-                            {/* <th scope="col">Объем</th> */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rows}
-                    </tbody>
-                </table>
+                <div className="table-responsive">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Pull request</th>
+                                <th scope="col">Author</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">New lines</th>
+                                {/* <th scope="col">Объем</th> */}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rows}
+                        </tbody>
+                    </table>
+                </div>
             </>
         );
     }
