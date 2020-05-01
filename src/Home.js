@@ -77,6 +77,13 @@ export default function Home() {
                 The faster and better the developer works, the higher will be his rating.
             </p>
             <br />
+            <h2>
+                Pricing
+            </h2>
+            <p className="lead font-weight-normal">
+                We take $20/developer/month.
+            </p>
+            <br />
             <p className="row justify-content-center" id="form">
                 <iframe scrolling="no" title="contact-form" src="https://docs.google.com/forms/d/e/1FAIpQLSdxhJ2olChHV-o0UAdAKo9l0h6jsoF6oE0btSpvhwLbpWfpZw/viewform?embedded=true" width="640" height="1405" frameBorder="0" marginHeight="0" marginWidth="0">Loading…</iframe>
             </p>

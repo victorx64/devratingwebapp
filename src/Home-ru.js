@@ -15,7 +15,7 @@ export default function HomeRu() {
                 Подключи сервис к своему репозиторию и получи рейтинг программистов по редкости исправления их кода после написания.
             </p>
             <p className="row justify-content-center">
-                <a className="btn btn-primary" href="#form">Получить рейтинг своей команды</a>
+                <a className="btn btn-primary" href="#ru-form">Получить рейтинг своей команды</a>
             </p>
             <br />
             <h2>
@@ -86,7 +86,14 @@ export default function HomeRu() {
                 Чем быстрее и качественнее работает программист по сравнению с другими членами команды, тем выше будет его рейтинг.
             </p>
             <br />
-            <p className="row justify-content-center" id="form">
+            <h2>
+                Подписка
+            </h2>
+            <p className="lead font-weight-normal">
+                Наш сервис стоит $20 в месяц за каждого программиста.
+            </p>
+            <br />
+            <p className="row justify-content-center" id="ru-form">
                 <iframe scrolling="no" title="contact-form" src="https://docs.google.com/forms/d/e/1FAIpQLSdxhJ2olChHV-o0UAdAKo9l0h6jsoF6oE0btSpvhwLbpWfpZw/viewform?embedded=true" width="640" height="1405" frameBorder="0" marginHeight="0" marginWidth="0">
                     Загрузка…
                 </iframe>

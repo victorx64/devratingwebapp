@@ -52,6 +52,9 @@ export default function App() {
           <Route path="/ru">
             <HomeRu />
           </Route>
+          <Route path="/ru-form">
+            <HomeRu />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
