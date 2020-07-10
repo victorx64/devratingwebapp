@@ -56,11 +56,11 @@ export default function LastWorks(props) {
     const [isLoaded, setLoaded] = useState(false);
     const [works, setWorks] = useState([]);
     const repository = props.repository;
-    const after = new Date();
-
-    after.setDate(after.getDate() - 90);
 
     useEffect(() => {
+        const after = new Date();
+        after.setDate(after.getDate() - 90);
+
         fetch("https://devrating.azurewebsites.net/api/works?repository=" + repository +
             "&after=" + after.toISOString())
             .then(res => res.json())
@@ -74,7 +74,7 @@ export default function LastWorks(props) {
                     setError(error);
                 }
             )
-    }, [repository, after]);
+    }, [repository]);
 
     const rows = works.map((work) =>
         <tr key={work.Id}>
