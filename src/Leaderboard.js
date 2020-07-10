@@ -1,5 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircle } from '@fortawesome/free-regular-svg-icons'
+
+import {
+    AreaChart,
+    Area,
+    YAxis,
+} from 'recharts';
+
+function BadgeFunction(author) {
+    let color = "success";
+    let text = "Good developer"
+
+    if (author.Rating > 1500 + 190) {
+        color = "primary";
+        text = "Top developer";
+    }
+
+    if (author.Rating < 1500 - 190) {
+        color = "warning";
+        text = "Needs assistance";
+    }
+
+    return (
+        <React.Fragment>
+            <td className="align-middle">
+                <Link to={/ratings/ + author.RatingId}>{author.Rating?.toFixed(2)}</Link>
+            </td>
+            <td className="align-middle">
+                <FontAwesomeIcon icon={faCircle} className={"text-" + color + " mr-2"} />
+                {text}
+            </td>
+        </React.Fragment>
+    );
+}
 
 export default function Leaderboard(props) {
     const [error, setError] = useState(null);
@@ -7,7 +42,6 @@ export default function Leaderboard(props) {
     const [authors, setAuthors] = useState([]);
     const repository = props.repository;
     const description = props.description;
-    const title = props.title ?? 'Authors';
 
     useEffect(() => {
         fetch("https://devrating.azurewebsites.net/api/authors/?repository=" + repository)
@@ -35,36 +69,37 @@ export default function Leaderboard(props) {
                 <td>
                     <Link to={/authors/ + author.Id}>{author.Email}</Link>
                 </td>
-                <td>
-                    {
-                        (
-                            100 *
-                            Math.pow(10.0, author.Rating / 400.0) /
-                            (
-                                Math.pow(10.0, author.Rating / 400.0) +
-                                Math.pow(10.0, 1500.0 / 400.0)
-                            )
-                        ).toFixed(1)
-                    }%
+                <td className="align-middle">
+                    <AreaChart
+                        width={240}
+                        height={30}
+                        data={
+                            author.ratings?.map(r => ({
+                                createdAt: new Date(r.CreatedAt).getTime(),
+                                value: r.Value?.toFixed(2)
+                            }))}
+                        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                        <YAxis hide={true} domain={[1000, 2000]} />
+                        <Area dataKey='value' stroke={'rgba(30, 183, 255)'} fill={'rgba(30, 183, 255, 0.6)'} />
+                    </AreaChart>
                 </td>
-                <td>
-                    <Link to={/ratings/ + author.RatingId}>{author.Rating?.toFixed(2)}</Link>
-                </td>
+                {BadgeFunction(author)}
             </tr>
         );
 
         return (
             <>
-                <h2 className="mt-3">{title}</h2>
+                <h2 className="mt-5">Authors</h2>
                 <p><code>{decodeURIComponent(repository)}</code>{description}</p>
                 <div className="table-responsive">
                     <table className="table">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Rank</th>
                                 <th scope="col">Author</th>
-                                <th scope="col">Percentile</th>
+                                <th scope="col">Graph (90d)</th>
                                 <th scope="col">Rating</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>

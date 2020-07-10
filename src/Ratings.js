@@ -30,7 +30,7 @@ export default function Ratings() {
         return (
             <>
                 <h1 className="mt-5">Rating update</h1>
-                <table className="table table-bordered">
+                <table className="table">
                     <tbody>
                         <tr>
                             <th scope="row">Id</th>
@@ -52,19 +52,17 @@ export default function Ratings() {
                             <th scope="row">New rating</th>
                             <td>{rating.Value?.toFixed(2)}</td>
                         </tr>
-                        {
-                            rating.CountedDeletions
-                                ? <tr><th scope="row">Lines lost</th><td>{rating.CountedDeletions}</td></tr>
-                                : ''
-                        }
-                        {
-                            rating.IgnoredDeletions
-                                ? <tr><th scope="row">Lines lost (written before the major update)</th><td>{rating.IgnoredDeletions}</td></tr>
-                                : ''
-                        }
+                        <tr hidden={!rating.CountedDeletions}>
+                            <th scope="row">Lines lost</th>
+                            <td>{rating.CountedDeletions}</td>
+                        </tr>
+                        <tr hidden={!rating.IgnoredDeletions}>
+                            <th scope="row">Lines lost (written before the major update)</th>
+                            <td>{rating.IgnoredDeletions}</td>
+                        </tr>
                         <tr>
                             <th scope="row">Updated by Work</th>
-                            <td><Link to={/works/ + rating.WorkId}>[W&#8209;{rating.WorkId}]</Link></td>
+                            <td><Link to={/works/ + rating.WorkId}>[W{rating.WorkId}]</Link></td>
                         </tr>
                     </tbody>
                 </table>

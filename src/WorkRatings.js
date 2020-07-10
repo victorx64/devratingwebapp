@@ -53,7 +53,7 @@ export default function WorkRatings(props) {
         return (
             <>
                 <h4>Deleted lines authors</h4>
-                <table className="table table-bordered">
+                <table className="table">
                     <thead>
                         <tr>
                             <th scope="col">Author</th>
