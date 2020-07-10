@@ -31,7 +31,7 @@ export default function Works() {
         return (
             <>
                 <h1 className="mt-5">Work</h1>
-                <table className="table table-bordered">
+                <table className="table">
                     <tbody>
                         <tr>
                             <th scope="row">Id</th>
@@ -81,11 +81,10 @@ export default function Works() {
                             <th scope="row">End commit</th>
                             <td>{work.EndCommit}</td>
                         </tr>
-                        {
-                            work.SinceCommit
-                                ? <tr><th scope="row">Major update</th><td>{work.SinceCommit}</td></tr>
-                                : ''
-                        }
+                        <tr hidden={!work.SinceCommit}>
+                            <th scope="row">Major update</th>
+                            <td>{work.SinceCommit}</td>
+                        </tr>
                     </tbody>
                 </table>
                 <WorkRatings workId={id} hideIgnoredDeletions={!work.SinceCommit} />
