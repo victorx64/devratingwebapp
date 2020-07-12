@@ -9,8 +9,8 @@ export default function Repo() {
 
     return (
         <>
-            <h1 className="mt-5">Repository contributors</h1>
-            <p className="mt-3">Current repository — <code>{decodeURIComponent(repository)}</code></p>
+            <h1 className="mt-4">Repository contributors</h1>
+            <p>Current repository — <code>{decodeURIComponent(repository)}</code></p>
             <Leaderboard repository={repository} />
             <LastWorks repository={repository} />
 
