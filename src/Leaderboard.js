@@ -41,7 +41,6 @@ export default function Leaderboard(props) {
     const [isLoaded, setLoaded] = useState(false);
     const [authors, setAuthors] = useState([]);
     const repository = props.repository;
-    const description = props.description;
 
     useEffect(() => {
         fetch("https://devrating.azurewebsites.net/api/authors/?repository=" + repository)
@@ -89,8 +88,19 @@ export default function Leaderboard(props) {
 
         return (
             <>
-                <h2 className="mt-5">Authors</h2>
-                <p><code>{decodeURIComponent(repository)}</code>{description}</p>
+                <h2>Authors</h2>
+                <p>
+                    Each code change is an extra development time. The list 
+                    below shows the rarity of changing the code of each 
+                    programmer. It is based on the history of deleting 
+                    lines of code. Each deleted line increases the rating 
+                    of the programmer and decreases the rating of the 
+                    author of the deleted line.
+                </p>
+                <p className="lead">
+                    The higher the rating of the programmer, 
+                    the higher the value of the code.
+                </p>
                 <div className="table-responsive">
                     <table className="table">
                         <thead>

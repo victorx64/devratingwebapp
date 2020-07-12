@@ -32,9 +32,8 @@ function Scatters(works) {
 
     const colors = [
         '#1eb7ff',
-        '#6610f2',
         '#ca8eff',
-        '#33ae9a',
+        '#6610f2',
         '#1bb934',
         '#f27212',
         '#ed1c24',
@@ -105,8 +104,20 @@ export default function LastWorks(props) {
     } else {
         return (
             <React.Fragment>
-                <h2 className="mt-3">Recent Works</h2>
-                <p>For last 90 days</p>
+                <h2>Recent Works</h2>
+                <p>
+                    This graph shows the size of pull requests (horizontal
+                    axis) and the rating of their authors (vertical axis).
+                    The smaller the pull request, the higher the likelihood
+                    of a thorough code check. The larger the size of the
+                    pull request, the higher the chance of missing an
+                    unwanted code.
+                </p>
+                <p className="lead">
+                    The more dots of the programmer is in the upper left 
+                    corner - the more easy-to-test and valuable work the 
+                    programmer has performed.
+                </p>
                 <ResponsiveContainer width='100%' aspect={2.5 / 1.0}>
                     <ScatterChart>
                         <XAxis
@@ -134,9 +145,10 @@ export default function LastWorks(props) {
                             stroke="#1bb934"
                             strokeDasharray="5" />
                         <ReferenceLine
-                            x={500}
+                            x={250}
+                            label={{ value: '250 lines threshold', position: 'insideBottomLeft' }}
                             stroke="#e83e8c"
-                            strokeDasharray="5"/>
+                            strokeDasharray="5" />
                         <Tooltip />
                         <Legend />
                         {Scatters(works)}
