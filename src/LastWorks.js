@@ -152,7 +152,7 @@ export default function LastWorks(props) {
                     This graph shows the size of pull requests (horizontal
                     axis) and the rating of their authors (vertical axis).
                     The smaller the pull request, the higher the likelihood
-                    of a thorough code check. The larger the size of the
+                    of a thorough code review. The larger the size of the
                     pull request, the higher the chance of missing an
                     unwanted code.
                 </p>
