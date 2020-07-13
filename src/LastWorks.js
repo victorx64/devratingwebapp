@@ -105,6 +105,49 @@ export default function LastWorks(props) {
         return (
             <React.Fragment>
                 <h2>Recent Works</h2>
+                <p className="lead">
+                    The more dots of the programmer is in the upper left
+                    corner — the more easy-to-test and valuable work the
+                    programmer has performed.
+                </p>
+                <div className='overflow-auto'>
+                    <ResponsiveContainer width='100%' minWidth={720} aspect={2.5 / 1.0}>
+                        <ScatterChart>
+                            <XAxis
+                                type="number"
+                                dataKey={'Additions'}
+                                name='New lines'
+                                domain={[0, 'dataMax']}
+                                label={{ value: 'New lines in work', offset: 0, position: 'insideBottom' }} />
+                            <YAxis
+                                type="number"
+                                dataKey={'UsedRating'}
+                                name='Rating'
+                                domain={[500, 2500]}
+                                label={{ value: 'Rating', angle: -90, position: 'insideLeft' }} />
+                            <CartesianGrid strokeDasharray="3 3" />
+
+                            <ReferenceLine
+                                y={1690}
+                                label={{ value: '"Top developer"', position: 'top' }}
+                                stroke="#1eb7ff"
+                                strokeDasharray="5" />
+                            <ReferenceLine
+                                y={1310}
+                                label={{ value: '"Good developer"', position: 'top' }}
+                                stroke="#1bb934"
+                                strokeDasharray="5" />
+                            <ReferenceLine
+                                x={250}
+                                label={{ value: '250 lines threshold', position: 'insideBottomLeft' }}
+                                stroke="#e83e8c"
+                                strokeDasharray="5" />
+                            <Tooltip />
+                            <Legend />
+                            {Scatters(works)}
+                        </ScatterChart>
+                    </ResponsiveContainer>
+                </div>
                 <p>
                     This graph shows the size of pull requests (horizontal
                     axis) and the rating of their authors (vertical axis).
@@ -113,47 +156,6 @@ export default function LastWorks(props) {
                     pull request, the higher the chance of missing an
                     unwanted code.
                 </p>
-                <p className="lead">
-                    The more dots of the programmer is in the upper left 
-                    corner - the more easy-to-test and valuable work the 
-                    programmer has performed.
-                </p>
-                <ResponsiveContainer width='100%' aspect={2.5 / 1.0}>
-                    <ScatterChart>
-                        <XAxis
-                            type="number"
-                            dataKey={'Additions'}
-                            name='New lines'
-                            domain={[0, 'dataMax']}
-                            label={{ value: 'New lines in work', offset: 0, position: 'insideBottom' }} />
-                        <YAxis
-                            type="number"
-                            dataKey={'UsedRating'}
-                            name='Rating'
-                            domain={[500, 2500]}
-                            label={{ value: 'Rating of author', angle: -90, position: 'insideLeft' }} />
-                        <CartesianGrid strokeDasharray="3 3" />
-
-                        <ReferenceLine
-                            y={1690}
-                            label={{ value: '"Top developer"', position: 'top' }}
-                            stroke="#1eb7ff"
-                            strokeDasharray="5" />
-                        <ReferenceLine
-                            y={1310}
-                            label={{ value: '"Good developer"', position: 'top' }}
-                            stroke="#1bb934"
-                            strokeDasharray="5" />
-                        <ReferenceLine
-                            x={250}
-                            label={{ value: '250 lines threshold', position: 'insideBottomLeft' }}
-                            stroke="#e83e8c"
-                            strokeDasharray="5" />
-                        <Tooltip />
-                        <Legend />
-                        {Scatters(works)}
-                    </ScatterChart>
-                </ResponsiveContainer>
                 <div className="table-responsive mt-3">
                     <table className="table">
                         <thead>
