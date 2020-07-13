@@ -89,14 +89,6 @@ export default function Leaderboard(props) {
         return (
             <>
                 <h2>Authors</h2>
-                <p>
-                    Each code change is an extra development time. The list 
-                    below shows the rarity of changing the code of each 
-                    programmer. It is based on the history of deleting 
-                    lines of code. Each deleted line increases the rating 
-                    of the programmer and decreases the rating of the 
-                    author of the deleted line.
-                </p>
                 <p className="lead">
                     The higher the rating of the programmer, 
                     the higher the value of the code.
@@ -117,6 +109,14 @@ export default function Leaderboard(props) {
                         </tbody>
                     </table>
                 </div>
+                <p>
+                    Each code change is an extra development time. The list 
+                    below shows the rarity of changing the code of each 
+                    programmer. It is based on the history of deleting 
+                    lines of code. Each deleted line increases the rating 
+                    of the programmer and decreases the rating of the 
+                    author of the deleted line.
+                </p>
             </>
         );
     }

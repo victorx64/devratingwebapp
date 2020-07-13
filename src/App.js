@@ -16,10 +16,10 @@ export default function App() {
   return (
     <HashRouter>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <img src="/dashboard/dev-rating-30.png" width="30" height="30" className="d-inline-block align-top mr-3" alt="" />Dev Rating
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <img src="/dashboard/dev-rating-30.png" width="30" height="30" className="d-inline-block align-top mr-3" alt="Dev Rating" />Dev Rating
+        {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
-        </button>
+        </button> */}
         <div className="collapse navbar-collapse" id="navbarNav">
           {/* <ul className="navbar-nav">
             <li className="nav-item">
