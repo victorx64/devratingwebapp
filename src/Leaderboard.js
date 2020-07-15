@@ -64,8 +64,8 @@ export default function Leaderboard(props) {
     } else {
         const rows = authors.map((author, index, array) =>
             <tr key={author.Id}>
-                <th scope="row">{index + 1}</th>
-                <td>
+                <th className="align-middle" scope="row">{index + 1}</th>
+                <td className="align-middle">
                     <Link to={/authors/ + author.Id}>{author.Email}</Link>
                 </td>
                 <td className="align-middle">
