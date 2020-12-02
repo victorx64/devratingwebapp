@@ -106,7 +106,7 @@ export default function LastWorks(props) {
             <React.Fragment>
                 <h2>Recent Works</h2>
                 <p className="lead">
-                    The more dots of the programmer is in the upper left
+                    The more dots of a programmer is in the upper left
                     corner — the more easy-to-test and valuable work the
                     programmer has performed.
                 </p>
