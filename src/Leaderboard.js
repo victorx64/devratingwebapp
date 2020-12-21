@@ -40,11 +40,11 @@ export default function Leaderboard(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setLoaded] = useState(false);
     const [authors, setAuthors] = useState([]);
-    const repository = props.repository;
+    const organization = props.organization;
 
     useEffect(() => {
-        fetch("http://localhost:5000/authors/repositories/" + repository)
-            .then(res => res.json())
+        fetch("https://localhost:5001/authors/organizations/" + organization)
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);
@@ -55,12 +55,12 @@ export default function Leaderboard(props) {
                     setError(error);
                 }
             )
-    }, [repository]);
+    }, [organization]);
 
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Loading repository authors...</div>;
+        return <div>Loading organization authors...</div>;
     } else {
         const rows = authors.map((author, index, array) =>
             <tr key={author.Id}>

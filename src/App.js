@@ -6,14 +6,17 @@ import {
   Link
 } from "react-router-dom";
 import './App.css';
-import Repo from './Repo.js';
 import Policy from './Policy.js';
 import Authors from './Authors.js';
 import Ratings from './Ratings.js';
 import Works from './Works.js';
 import SignIn from './SignIn.js';
 import SignInLink from './SignInLink.js';
+import Organizations from './Organizations.js';
+import Organization from './Organization.js';
+import Keys from './Keys.js';
 import { AuthProvider } from "./Auth";
+import PrivateRoute from "./PrivateRoute.js";
 
 export default function App() {
 
@@ -37,24 +40,14 @@ export default function App() {
         </nav>
         <div className="container">
           <Switch>
-            <Route path="/signin">
-              <SignIn />
-            </Route>
-            <Route path="/authors/:id">
-              <Authors />
-            </Route>
-            <Route path="/works/:id">
-              <Works />
-            </Route>
-            <Route path="/ratings/:id">
-              <Ratings />
-            </Route>
-            <Route path="/policy">
-              <Policy />
-            </Route>
-            <Route path="/repo/:repository">
-              <Repo />
-            </Route>
+            <Route path="/signin" component={SignIn} />
+            <Route path="/organizations/:organization" component={Organization} />
+            <PrivateRoute path="/keys/:organization" component={Keys} />
+            <Route path="/authors/:id" component={Authors} />
+            <Route path="/works/:id" component={Works} />
+            <Route path="/ratings/:id" component={Ratings} />
+            <Route path="/policy" component={Policy} />
+            <PrivateRoute exact path="/" component={Organizations} />
           </Switch>
         </div>
 

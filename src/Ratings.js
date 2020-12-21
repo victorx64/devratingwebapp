@@ -8,8 +8,8 @@ export default function Ratings() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("http://localhost:5000/ratings/" + id)
-            .then(res => res.json())
+        fetch("https://localhost:5001/ratings/" + id)
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);
