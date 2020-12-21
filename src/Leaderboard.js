@@ -43,7 +43,7 @@ export default function Leaderboard(props) {
     const repository = props.repository;
 
     useEffect(() => {
-        fetch("https://devrating.azurewebsites.net/api/authors/?repository=" + repository)
+        fetch("http://localhost:5000/authors/repositories/" + repository)
             .then(res => res.json())
             .then(
                 (result) => {
