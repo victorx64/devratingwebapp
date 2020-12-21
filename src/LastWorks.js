@@ -60,7 +60,7 @@ export default function LastWorks(props) {
         const after = new Date();
         after.setDate(after.getDate() - 90);
 
-        fetch("https://devrating.azurewebsites.net/api/works?repository=" + repository +
+        fetch("http://localhost:5000/works/repositories/" + repository +
             "&after=" + after.toISOString())
             .then(res => res.json())
             .then(

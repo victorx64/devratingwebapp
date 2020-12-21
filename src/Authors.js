@@ -43,7 +43,7 @@ export default function Authors() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("https://devrating.azurewebsites.net/api/authors/" + id)
+        fetch("http://localhost:5000/api/authors/" + id)
             .then(res => res.json())
             .then(
                 (result) => {

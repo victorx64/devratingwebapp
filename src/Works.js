@@ -9,7 +9,7 @@ export default function Works() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("https://devrating.azurewebsites.net/api/works/" + id)
+        fetch("http://localhost:5000/works/" + id)
             .then(res => res.json())
             .then(
                 (result) => {

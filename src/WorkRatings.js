@@ -9,7 +9,7 @@ export default function WorkRatings(props) {
     const hideIgnoredDeletions = props.hideIgnoredDeletions;
 
     useEffect(() => {
-        fetch("https://devrating.azurewebsites.net/api/ratings?work=" + id)
+        fetch("http://localhost:5000/ratings/works/" + id)
             .then(res => res.json())
             .then(
                 (result) => {
