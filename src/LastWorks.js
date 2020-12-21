@@ -54,15 +54,15 @@ export default function LastWorks(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setLoaded] = useState(false);
     const [works, setWorks] = useState([]);
-    const repository = props.repository;
+    const organization = props.organization;
 
     useEffect(() => {
         const after = new Date();
         after.setDate(after.getDate() - 90);
 
-        fetch("http://localhost:5000/works/repositories/" + repository +
-            "&after=" + after.toISOString())
-            .then(res => res.json())
+        fetch("https://localhost:5001/works/organizations/" + organization +
+            "/" + after.toISOString())
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);
@@ -73,7 +73,7 @@ export default function LastWorks(props) {
                     setError(error);
                 }
             )
-    }, [repository]);
+    }, [organization]);
 
     const rows = works.map((work) =>
         <tr key={work.Id}>

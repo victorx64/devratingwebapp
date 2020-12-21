@@ -9,8 +9,8 @@ export default function Works() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("http://localhost:5000/works/" + id)
-            .then(res => res.json())
+        fetch("https://localhost:5001/works/" + id)
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);
@@ -40,7 +40,7 @@ export default function Works() {
                         <tr>
                             <th scope="row">Repository</th>
                             <td>
-                                {work.Repository} <Link to={'/repo/' + encodeURIComponent(work.Repository)}>Details...</Link>
+                                {work.Repository}
                             </td>
                         </tr>
                         <tr>

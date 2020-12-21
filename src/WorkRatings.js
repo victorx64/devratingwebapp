@@ -9,8 +9,8 @@ export default function WorkRatings(props) {
     const hideIgnoredDeletions = props.hideIgnoredDeletions;
 
     useEffect(() => {
-        fetch("http://localhost:5000/ratings/works/" + id)
-            .then(res => res.json())
+        fetch("https://localhost:5001/ratings/works/" + id)
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);

@@ -43,8 +43,8 @@ export default function Authors() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/authors/" + id)
-            .then(res => res.json())
+        fetch("https://localhost:5001/authors/" + id)
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);
@@ -76,8 +76,10 @@ export default function Authors() {
                             <td>{author.Email}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Repos owner Id</th>
-                            <td>{author.Organization}</td>
+                            <th scope="row">Organization</th>
+                            <td>
+                                <Link to={/organizations/ + encodeURIComponent(author.Organization)}>{author.Organization}</Link>
+                            </td>
                         </tr>
                         <tr>
                             <th scope="row">Current rating</th>
