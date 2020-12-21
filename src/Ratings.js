@@ -8,7 +8,7 @@ export default function Ratings() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("https://devrating.azurewebsites.net/api/ratings/" + id)
+        fetch("http://localhost:5000/ratings/" + id)
             .then(res => res.json())
             .then(
                 (result) => {
