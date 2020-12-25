@@ -98,7 +98,7 @@ export default function LastWorks(props) {
     );
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div><br />Error: {error.message ?? error.status}</div>;
     } else if (!isLoaded) {
         return <div>Loading recent works...</div>;
     } else {

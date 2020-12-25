@@ -58,7 +58,7 @@ export default function Leaderboard(props) {
     }, [organization]);
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div><br />Error: {error.message ?? error.status}</div>;
     } else if (!isLoaded) {
         return <div>Loading organization authors...</div>;
     } else {

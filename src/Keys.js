@@ -6,13 +6,15 @@ export default function Keys(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setLoaded] = useState(false);
     const [keys, setKeys] = useState([]);
-
+    const [name, setName] = useState(undefined);
+    const [value, setValue] = useState(undefined);
+    const [jwt, setJwt] = useState(null);
     const { currentUser } = useContext(AuthContext);
     const { organization } = useParams();
 
-    useEffect(() => {
-        currentUser.getIdToken().then(t => {
-            fetch("https://localhost:5001/keys/" + organization, {
+    function FetchKeys(t, o) {
+        if (t) {
+            fetch("https://localhost:5001/keys/" + encodeURIComponent(o), {
                 method: 'GET',
                 headers: {
                     'authorization': 'Bearer ' + t
@@ -29,11 +31,39 @@ export default function Keys(props) {
                         setError(error);
                     }
                 );
+        }
+    }
+
+    useEffect(() => { currentUser.getIdToken().then(setJwt) }, [currentUser]);
+    useEffect(() => { FetchKeys(jwt, organization) }, [jwt, organization]);
+
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+
+        fetch("https://localhost:5001/keys/" + encodeURIComponent(organization), {
+            method: 'POST',
+            headers: {
+                'authorization': 'Bearer ' + jwt,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                value: value
+            })
         })
-    }, [currentUser, organization]);
+            .then(res => res.ok ? res.json() : Promise.reject(res))
+            .then(
+                (result) => {
+                    FetchKeys(jwt, organization);
+                },
+                (error) => {
+                    setError(error);
+                }
+            )
+    }
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div><br />Error: {error.message ?? error.status}</div>;
     } else if (!isLoaded) {
         return <div>Loading...</div>;
     } else {
@@ -71,6 +101,19 @@ export default function Keys(props) {
                         </tbody>
                     </table>
                 </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-row">
+                        <div className="form-group col-md-6">
+                            <label htmlFor="inputName">Name</label>
+                            <input type="text" className="form-control" id="inputName" value={name} onChange={e => setName(e.target.value)} />
+                        </div>
+                        <div className="form-group col-md-6">
+                            <label htmlFor="inputValue">Value</label>
+                            <input type="text" className="form-control" id="inputValue" value={value} onChange={e => setValue(e.target.value)} />
+                        </div>
+                    </div>
+                    <button type="submit" className="btn btn-primary">Add</button>
+                </form>
             </>
         );
     }

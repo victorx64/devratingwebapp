@@ -10,7 +10,7 @@ export default function Organization() {
     return (
         <>
             <h1 className="mt-4">Organization contributors</h1>
-            <p>Current organization — <code>{decodeURIComponent(organization)}</code> <Link to={'./' + organization + '/keys'}>API keys</Link></p>
+            <p><code>{decodeURIComponent(organization)}</code> <Link to={'./' + organization + '/keys'}>API keys</Link></p>
             <Leaderboard organization={organization} />
             <LastWorks organization={organization} />
 

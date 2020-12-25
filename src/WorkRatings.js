@@ -24,7 +24,7 @@ export default function WorkRatings(props) {
     }, [id]);
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div><br />Error: {error.message ?? error.status}</div>;
     } else if (!isLoaded) {
         return <div>Loading...</div>;
     } else {
