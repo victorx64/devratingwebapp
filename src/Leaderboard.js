@@ -43,7 +43,11 @@ export default function Leaderboard(props) {
     const organization = props.organization;
 
     useEffect(() => {
-        fetch("https://localhost:5001/authors/organizations/" + organization)
+        const after = new Date();
+        after.setDate(after.getDate() - 90);
+
+        fetch("https://localhost:5001/authors/organizations/" + organization +
+            "/" + after.toISOString())
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
