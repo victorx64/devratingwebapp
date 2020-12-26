@@ -16,16 +16,16 @@ import {
 
 const defaultRating = 1500;
 
-// function WorkEffort(work) {
-//     return (work.Additions / (
-//         1 -
-//         Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) /
-//         (
-//             Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) +
-//             Math.pow(10, defaultRating / 400)
-//         )
-//     )).toFixed();
-// }
+function WorkEffort(work) {
+    return (Math.min(work.Additions, 250) / (
+        1 -
+        Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) /
+        (
+            Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) +
+            Math.pow(10, defaultRating / 400)
+        )
+    )).toFixed();
+}
 
 function Scatters(works) {
     const authors = _.groupBy(works, (value) => (value.AuthorEmail));
@@ -92,7 +92,7 @@ export default function LastWorks(props) {
                     : <td className="text-right">{defaultRating.toFixed(2)}</td>
             }
             <td className="text-right">{work.Additions}</td>
-            {/* <td className="text-right">{WorkEffort(work)}</td> */}
+            <td className="text-right">{WorkEffort(work)}</td>
             <td>{new Date(work.CreatedAt).toLocaleDateString()}</td>
         </tr>
     );
@@ -165,7 +165,7 @@ export default function LastWorks(props) {
                                 <th scope="col">Author</th>
                                 <th scope="col" className="text-right">Rating</th>
                                 <th scope="col" className="text-right">New lines</th>
-                                {/* <th scope="col" className="text-right">Effort</th> */}
+                                <th scope="col" className="text-right">Effort</th>
                                 <th scope="col">Finished at</th>
                             </tr>
                         </thead>

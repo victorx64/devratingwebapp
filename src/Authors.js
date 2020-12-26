@@ -18,14 +18,16 @@ function StatusFunction(author) {
     let color = "success";
     let text = "Good developer"
 
-    if (author.Rating > 1500 + 190) {
-        color = "primary";
-        text = "Top developer";
-    }
-
-    if (author.Rating < 1500 - 190) {
-        color = "warning";
-        text = "Needs assistance";
+    if (author.Rating) {
+        if (author.Rating > 1500 + 190) {
+            color = "primary";
+            text = "Top developer";
+        }
+        
+        if (author.Rating < 1500 - 190) {
+            color = "warning";
+            text = "Needs assistance";
+        }
     }
 
     return (
