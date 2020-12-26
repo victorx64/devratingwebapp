@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import { host } from './config.js';
 
 import {
     CartesianGrid,
@@ -60,7 +61,7 @@ export default function LastWorks(props) {
         const after = new Date();
         after.setDate(after.getDate() - 90);
 
-        fetch("https://localhost:5001/works/organizations/" + organization +
+        fetch(host + "/works/organizations/" + organization +
             "/" + after.toISOString())
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(

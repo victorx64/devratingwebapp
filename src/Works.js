@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import WorkRatings from "./WorkRatings.js";
+import { host } from './config.js';
 
 export default function Works() {
     const [error, setError] = useState(null);
@@ -9,7 +10,7 @@ export default function Works() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("https://localhost:5001/works/" + id)
+        fetch(host + "/works/" + id)
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {

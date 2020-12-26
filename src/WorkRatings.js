@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import { host } from './config.js';
 
 export default function WorkRatings(props) {
     const [error, setError] = useState(null);
@@ -9,7 +10,7 @@ export default function WorkRatings(props) {
     const hideIgnoredDeletions = props.hideIgnoredDeletions;
 
     useEffect(() => {
-        fetch("https://localhost:5001/ratings/works/" + id)
+        fetch(host + "/ratings/works/" + id)
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
+import { host } from './config.js';
 
 import {
     AreaChart,
@@ -46,7 +47,7 @@ export default function Leaderboard(props) {
         const after = new Date();
         after.setDate(after.getDate() - 90);
 
-        fetch("https://localhost:5001/authors/organizations/" + organization +
+        fetch(host + "/authors/organizations/" + organization +
             "/" + after.toISOString())
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(

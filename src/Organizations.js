@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { AuthContext } from "./Auth.js";
+import { host } from './config.js';
 
 export default function Organizations(props) {
     const [error, setError] = useState(null);
@@ -13,7 +14,7 @@ export default function Organizations(props) {
 
     function FetchOrgs(t) {
         if (t) {
-            fetch("https://localhost:5001/organizations/", {
+            fetch(host + "/organizations/", {
                 method: 'GET',
                 headers: {
                     'authorization': 'Bearer ' + t
@@ -36,7 +37,7 @@ export default function Organizations(props) {
     const handleSubmitOrg = (evt) => {
         evt.preventDefault();
 
-        fetch("https://localhost:5001/organizations/" + encodeURIComponent(name), {
+        fetch(host + "/organizations/" + encodeURIComponent(name), {
             method: 'POST',
             headers: {
                 'authorization': 'Bearer ' + jwt
@@ -54,7 +55,7 @@ export default function Organizations(props) {
     const handleSubmitDiff = (evt) => {
         evt.preventDefault();
 
-        fetch("https://localhost:5001/diffs/", {
+        fetch(host + "/diffs/", {
             method: 'POST',
             headers: {
                 'authorization': 'Bearer ' + jwt,

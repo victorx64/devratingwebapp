@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
+import { host } from './config.js';
 
 import {
     CartesianGrid,
@@ -23,7 +24,7 @@ function StatusFunction(author) {
             color = "primary";
             text = "Top developer";
         }
-        
+
         if (author.Rating < 1500 - 190) {
             color = "warning";
             text = "Needs assistance";
@@ -45,7 +46,7 @@ export default function Authors() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("https://localhost:5001/authors/" + id)
+        fetch(host + "/authors/" + id)
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {

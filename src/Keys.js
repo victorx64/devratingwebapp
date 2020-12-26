@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from "react-router-dom";
 import { AuthContext } from "./Auth.js";
+import { host } from './config.js';
 
 export default function Keys(props) {
     const [error, setError] = useState(null);
@@ -14,7 +15,7 @@ export default function Keys(props) {
 
     function FetchKeys(t, o) {
         if (t) {
-            fetch("https://localhost:5001/keys/" + encodeURIComponent(o), {
+            fetch(host + "/keys/" + encodeURIComponent(o), {
                 method: 'GET',
                 headers: {
                     'authorization': 'Bearer ' + t
@@ -40,7 +41,7 @@ export default function Keys(props) {
     const handleSubmit = (evt) => {
         evt.preventDefault();
 
-        fetch("https://localhost:5001/keys/" + encodeURIComponent(organization), {
+        fetch(host + "/keys/" + encodeURIComponent(organization), {
             method: 'POST',
             headers: {
                 'authorization': 'Bearer ' + jwt,
