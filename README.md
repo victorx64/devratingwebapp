@@ -7,6 +7,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `docker build -t webapp .`
+
+### `docker run --name webapp -p 8078:8078 -d webapp:latest`
+
 ### `npm install`
 
 ### `npm start`
