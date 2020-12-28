@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
+import { host } from './config.js';
 
 import {
     CartesianGrid,
@@ -18,14 +19,16 @@ function StatusFunction(author) {
     let color = "success";
     let text = "Good developer"
 
-    if (author.Rating > 1500 + 190) {
-        color = "primary";
-        text = "Top developer";
-    }
+    if (author.Rating) {
+        if (author.Rating > 1500 + 190) {
+            color = "primary";
+            text = "Top developer";
+        }
 
-    if (author.Rating < 1500 - 190) {
-        color = "warning";
-        text = "Needs assistance";
+        if (author.Rating < 1500 - 190) {
+            color = "warning";
+            text = "Needs assistance";
+        }
     }
 
     return (
@@ -43,8 +46,8 @@ export default function Authors() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/authors/" + id)
-            .then(res => res.json())
+        fetch(host + "/authors/" + id)
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);
@@ -58,7 +61,7 @@ export default function Authors() {
     }, [id]);
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div><br />Error: {error.message ?? error.status}</div>;
     } else if (!isLoaded) {
         return <div>Loading...</div>;
     } else {
@@ -76,8 +79,10 @@ export default function Authors() {
                             <td>{author.Email}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Repos owner Id</th>
-                            <td>{author.Organization}</td>
+                            <th scope="row">Organization</th>
+                            <td>
+                                <Link to={/organizations/ + encodeURIComponent(author.Organization)}>{author.Organization}</Link>
+                            </td>
                         </tr>
                         <tr>
                             <th scope="row">Current rating</th>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
+import { host } from './config.js';
 
 export default function Ratings() {
     const [error, setError] = useState(null);
@@ -8,8 +9,8 @@ export default function Ratings() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch("http://localhost:5000/ratings/" + id)
-            .then(res => res.json())
+        fetch(host + "/ratings/" + id)
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);
@@ -23,7 +24,7 @@ export default function Ratings() {
     }, [id]);
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div><br />Error: {error.message ?? error.status}</div>;
     } else if (!isLoaded) {
         return <div>Loading...</div>;
     } else {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
+import { host } from './config.js';
 
 import {
     AreaChart,
@@ -40,11 +41,15 @@ export default function Leaderboard(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setLoaded] = useState(false);
     const [authors, setAuthors] = useState([]);
-    const repository = props.repository;
+    const organization = props.organization;
 
     useEffect(() => {
-        fetch("http://localhost:5000/authors/repositories/" + repository)
-            .then(res => res.json())
+        const after = new Date();
+        after.setDate(after.getDate() - 90);
+
+        fetch(host + "/authors/organizations/" + organization +
+            "/" + after.toISOString())
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);
@@ -55,12 +60,12 @@ export default function Leaderboard(props) {
                     setError(error);
                 }
             )
-    }, [repository]);
+    }, [organization]);
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div><br />Error: {error.message ?? error.status}</div>;
     } else if (!isLoaded) {
-        return <div>Loading repository authors...</div>;
+        return <div>Loading organization authors...</div>;
     } else {
         const rows = authors.map((author, index, array) =>
             <tr key={author.Id}>
@@ -90,8 +95,8 @@ export default function Leaderboard(props) {
             <>
                 <h2>Authors</h2>
                 <p className="lead">
-                    The higher the rating of the programmer, 
-                    the higher the value of the code.
+                    The higher the rating of a programmer, 
+                    the higher the code stability.
                 </p>
                 <div className="table-responsive">
                     <table className="table">

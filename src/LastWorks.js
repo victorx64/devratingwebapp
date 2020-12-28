@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import { host } from './config.js';
 
 import {
     CartesianGrid,
@@ -16,16 +17,16 @@ import {
 
 const defaultRating = 1500;
 
-// function WorkEffort(work) {
-//     return (work.Additions / (
-//         1 -
-//         Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) /
-//         (
-//             Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) +
-//             Math.pow(10, defaultRating / 400)
-//         )
-//     )).toFixed();
-// }
+function WorkEffort(work) {
+    return (Math.min(work.Additions, 250) / (
+        1 -
+        Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) /
+        (
+            Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) +
+            Math.pow(10, defaultRating / 400)
+        )
+    )).toFixed();
+}
 
 function Scatters(works) {
     const authors = _.groupBy(works, (value) => (value.AuthorEmail));
@@ -54,15 +55,15 @@ export default function LastWorks(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setLoaded] = useState(false);
     const [works, setWorks] = useState([]);
-    const repository = props.repository;
+    const organization = props.organization;
 
     useEffect(() => {
         const after = new Date();
         after.setDate(after.getDate() - 90);
 
-        fetch("http://localhost:5000/works/repositories/" + repository +
-            "&after=" + after.toISOString())
-            .then(res => res.json())
+        fetch(host + "/works/organizations/" + organization +
+            "/" + after.toISOString())
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
                     setLoaded(true);
@@ -73,7 +74,7 @@ export default function LastWorks(props) {
                     setError(error);
                 }
             )
-    }, [repository]);
+    }, [organization]);
 
     const rows = works.map((work) =>
         <tr key={work.Id}>
@@ -92,13 +93,13 @@ export default function LastWorks(props) {
                     : <td className="text-right">{defaultRating.toFixed(2)}</td>
             }
             <td className="text-right">{work.Additions}</td>
-            {/* <td className="text-right">{WorkEffort(work)}</td> */}
+            <td className="text-right">{WorkEffort(work)}</td>
             <td>{new Date(work.CreatedAt).toLocaleDateString()}</td>
         </tr>
     );
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div><br />Error: {error.message ?? error.status}</div>;
     } else if (!isLoaded) {
         return <div>Loading recent works...</div>;
     } else {
@@ -165,7 +166,7 @@ export default function LastWorks(props) {
                                 <th scope="col">Author</th>
                                 <th scope="col" className="text-right">Rating</th>
                                 <th scope="col" className="text-right">New lines</th>
-                                {/* <th scope="col" className="text-right">Effort</th> */}
+                                <th scope="col" className="text-right">Effort</th>
                                 <th scope="col">Finished at</th>
                             </tr>
                         </thead>
