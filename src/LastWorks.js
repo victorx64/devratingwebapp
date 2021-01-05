@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import { host } from './config.js';
+import { DefaultRating, WorkLinesMultiplier } from "./Formula.js";
 
 import {
     CartesianGrid,
@@ -15,17 +16,12 @@ import {
     ReferenceLine,
 } from 'recharts';
 
-const defaultRating = 1500;
+function LimitedAdditions(additions, limit) {
+    if (additions > limit) {
+        return limit + '+';
+    }
 
-function WorkEffort(work) {
-    return (Math.min(work.Additions, 250) / (
-        1 -
-        Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) /
-        (
-            Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) +
-            Math.pow(10, defaultRating / 400)
-        )
-    )).toFixed();
+    return additions;
 }
 
 function Scatters(works) {
@@ -43,8 +39,10 @@ function Scatters(works) {
     return Object.entries(authors).map(([a, w], i) => {
         w.forEach(element => {
             if (!element.UsedRating) {
-                element.UsedRating = defaultRating;
+                element.UsedRating = DefaultRating;
             }
+
+            element.Additions = Math.min(element.Additions, 1000)
         });
 
         return (<Scatter key={a} name={a} data={w} fill={colors[i % colors.length]} />);
@@ -60,18 +58,22 @@ export default function LastWorks(props) {
     useEffect(() => {
         const after = new Date();
         after.setDate(after.getDate() - 90);
+        after.setUTCHours(0)
+        after.setUTCMinutes(0)
+        after.setUTCSeconds(0)
+        after.setUTCMilliseconds(0)
 
         fetch(host + "/works/organizations/" + organization +
             "/" + after.toISOString())
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
-                    setLoaded(true);
                     setWorks(result);
+                    setLoaded(true);
                 },
                 (error) => {
-                    setLoaded(true);
                     setError(error);
+                    setLoaded(true);
                 }
             )
     }, [organization]);
@@ -87,13 +89,15 @@ export default function LastWorks(props) {
             <td>
                 <Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link>
             </td>
+            <td className="text-right">{LimitedAdditions(work.Additions, 250)}</td>
+            <td className="text-right">
             {
                 work.UsedRatingId
-                    ? <td className="text-right"><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating?.toFixed(2)}</Link></td>
-                    : <td className="text-right">{defaultRating.toFixed(2)}</td>
+                    ? <Link to={/ratings/ + work.UsedRatingId}>{WorkLinesMultiplier(work).toFixed(2)}</Link>
+                    : WorkLinesMultiplier(work).toFixed(2)
             }
-            <td className="text-right">{work.Additions}</td>
-            <td className="text-right">{WorkEffort(work)}</td>
+            </td>
+            <td className="text-right">{(Math.min(work.Additions, 250) * WorkLinesMultiplier(work).toFixed(2)).toFixed(2)}</td>
             <td>{new Date(work.CreatedAt).toLocaleDateString()}</td>
         </tr>
     );
@@ -118,7 +122,7 @@ export default function LastWorks(props) {
                                 type="number"
                                 dataKey={'Additions'}
                                 name='New lines'
-                                domain={[0, 'dataMax']}
+                                domain={[0, 1000]}
                                 label={{ value: 'New lines in work', offset: 0, position: 'insideBottom' }} />
                             <YAxis
                                 type="number"
@@ -140,7 +144,6 @@ export default function LastWorks(props) {
                                 strokeDasharray="5" />
                             <ReferenceLine
                                 x={250}
-                                label={{ value: '250 lines threshold', position: 'insideBottomLeft' }}
                                 stroke="#e83e8c"
                                 strokeDasharray="5" />
                             <Tooltip />
@@ -154,7 +157,7 @@ export default function LastWorks(props) {
                     axis) and the rating of their authors (vertical axis).
                     The smaller the pull request, the higher the likelihood
                     of a thorough code review. The larger the size of the
-                    pull request, the higher the chance of missing an
+                    pull request, the higher the chance of missing
                     unwanted code.
                 </p>
                 <div className="table-responsive mt-3">
@@ -164,9 +167,9 @@ export default function LastWorks(props) {
                                 <th scope="col">Work</th>
                                 <th scope="col">Pull request</th>
                                 <th scope="col">Author</th>
-                                <th scope="col" className="text-right">Rating</th>
                                 <th scope="col" className="text-right">New lines</th>
-                                <th scope="col" className="text-right">Effort</th>
+                                <th scope="col" className="text-right">Multiplier</th>
+                                <th scope="col" className="text-right">Impact</th>
                                 <th scope="col">Finished at</th>
                             </tr>
                         </thead>

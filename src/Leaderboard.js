@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
 import { host } from './config.js';
+import { LinesMultiplier } from "./Formula.js";
 
 import {
     AreaChart,
@@ -27,7 +28,10 @@ function BadgeFunction(author) {
     return (
         <React.Fragment>
             <td className="align-middle">
-                <Link to={/ratings/ + author.RatingId}>{author.Rating?.toFixed(2)}</Link>
+                <Link to={/ratings/ + author.RatingId}>{author.Rating.toFixed(2)}</Link>
+            </td>
+            <td className="align-middle">
+                {LinesMultiplier(author.Rating).toFixed(2)}
             </td>
             <td className="align-middle">
                 <FontAwesomeIcon icon={faCircle} className={"text-" + color + " mr-2"} />
@@ -46,18 +50,22 @@ export default function Leaderboard(props) {
     useEffect(() => {
         const after = new Date();
         after.setDate(after.getDate() - 90);
+        after.setUTCHours(0)
+        after.setUTCMinutes(0)
+        after.setUTCSeconds(0)
+        after.setUTCMilliseconds(0)
 
         fetch(host + "/authors/organizations/" + organization +
             "/" + after.toISOString())
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
-                    setLoaded(true);
                     setAuthors(result);
+                    setLoaded(true);
                 },
                 (error) => {
-                    setLoaded(true);
                     setError(error);
+                    setLoaded(true);
                 }
             )
     }, [organization]);
@@ -78,9 +86,9 @@ export default function Leaderboard(props) {
                         width={240}
                         height={30}
                         data={
-                            author.ratings?.map(r => ({
+                            author.ratings.map(r => ({
                                 createdAt: new Date(r.CreatedAt).getTime(),
-                                value: r.Value?.toFixed(2)
+                                value: r.Value.toFixed(2)
                             }))}
                         margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                         <YAxis hide={true} domain={[1000, 2000]} />
@@ -106,6 +114,7 @@ export default function Leaderboard(props) {
                                 <th scope="col">Author</th>
                                 <th scope="col">Graph (90d)</th>
                                 <th scope="col">Rating</th>
+                                <th scope="col">Multiplier</th>
                                 <th scope="col">Status</th>
                             </tr>
                         </thead>

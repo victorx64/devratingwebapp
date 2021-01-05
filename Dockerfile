@@ -6,7 +6,7 @@ WORKDIR /devrating/src
 ADD package.json /devrating/src
 RUN npm install
 COPY . /devrating/src
-ENV REACT_APP_API="http://localhost:8079"
+ENV REACT_APP_API="https://devrating.net/api/v1"
 RUN export WUI_GIT_HASH="stg@"$(git --git-dir=.git rev-parse HEAD | cut -b 1-6) && npm run build
 
 # production stage

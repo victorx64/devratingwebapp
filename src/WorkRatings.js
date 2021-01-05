@@ -14,12 +14,12 @@ export default function WorkRatings(props) {
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
-                    setLoaded(true);
                     setRatings(result);
+                    setLoaded(true);
                 },
                 (error) => {
-                    setLoaded(true);
                     setError(error);
+                    setLoaded(true);
                 }
             )
     }, [id]);
@@ -44,11 +44,10 @@ export default function WorkRatings(props) {
                 }
                 {
                     rating.PreviousRatingId
-                        ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating?.toFixed(2)}</Link></td>
+                        ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating.toFixed(2)}</Link></td>
                         : <td>{(1500).toFixed(2)} (initial)</td>
                 }
-
-                <td><Link to={/ratings/ + rating.Id}>{rating.Value?.toFixed(2)}</Link></td>
+                <td><Link to={/ratings/ + rating.Id}>{rating.Value.toFixed(2)}</Link></td>
             </tr>);
 
         return (
@@ -59,7 +58,7 @@ export default function WorkRatings(props) {
                         <tr>
                             <th scope="col">Author</th>
                             <th scope="col">Lines lost</th>
-                            <th scope="col" hidden={hideIgnoredDeletions}>Lines lost (written before update)</th>
+                            <th scope="col" hidden={hideIgnoredDeletions}>Lines lost (from a previous release)</th>
                             <th scope="col">Rating before</th>
                             <th scope="col">Rating after</th>
                         </tr>

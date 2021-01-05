@@ -55,6 +55,7 @@ export default function App() {
           <div className="container">
             <div className="row justify-content-center">
               <Link className="col-auto" to="/policy">Policy</Link >
+              <a href='https://github.com/victorx64/devrating'>GitHub</a>
             </div>
           </div>
         </footer>
