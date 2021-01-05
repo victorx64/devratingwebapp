@@ -2,6 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { host } from './config.js';
 
+const defaultRating = 1500;
+
+function LinesMultiplier(rating) {
+    return 1 / (
+        1 -
+        Math.pow(10, (rating) / 400) /
+        (
+            Math.pow(10, (rating) / 400) +
+            Math.pow(10, defaultRating / 400)
+        )
+    );
+}
+
 export default function Ratings() {
     const [error, setError] = useState(null);
     const [isLoaded, setLoaded] = useState(false);
@@ -13,12 +26,12 @@ export default function Ratings() {
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
-                    setLoaded(true);
                     setRating(result);
+                    setLoaded(true);
                 },
                 (error) => {
-                    setLoaded(true);
                     setError(error);
+                    setLoaded(true);
                 }
             )
     }, [id]);
@@ -45,13 +58,25 @@ export default function Ratings() {
                             <th scope="row">Previous rating</th>
                             {
                                 rating.PreviousRatingId
-                                    ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating?.toFixed(2)}</Link></td>
-                                    : <td>{(1500).toFixed(2)} (initial)</td>
+                                    ? <td><Link to={/ratings/ + rating.PreviousRatingId}>{rating.PreviousRating.toFixed(2)}</Link></td>
+                                    : <td>{defaultRating.toFixed(2)} (initial)</td>
+                            }
+                        </tr>
+                        <tr>
+                            <th scope="row">Previous multiplier</th>
+                            {
+                                rating.PreviousRatingId
+                                    ? <td>{LinesMultiplier(rating.PreviousRating).toFixed(2)}</td>
+                                    : <td>{LinesMultiplier(defaultRating).toFixed(2)}</td>
                             }
                         </tr>
                         <tr>
                             <th scope="row">New rating</th>
-                            <td>{rating.Value?.toFixed(2)}</td>
+                            <td>{rating.Value.toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">New multiplier</th>
+                            <td>{LinesMultiplier(rating.Value).toFixed(2)}</td>
                         </tr>
                         <tr hidden={!rating.CountedDeletions}>
                             <th scope="row">Lines lost</th>

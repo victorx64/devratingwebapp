@@ -17,15 +17,25 @@ import {
 
 const defaultRating = 1500;
 
-function WorkEffort(work) {
-    return (Math.min(work.Additions, 250) / (
+function LinesMultiplier(work) {
+    const rating = work.UsedRatingId ? work.UsedRating : defaultRating;
+
+    return 1 / (
         1 -
-        Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) /
+        Math.pow(10, (rating) / 400) /
         (
-            Math.pow(10, (work.UsedRatingId ? work.UsedRating : defaultRating) / 400) +
+            Math.pow(10, (rating) / 400) +
             Math.pow(10, defaultRating / 400)
         )
-    )).toFixed();
+    );
+}
+
+function LimitedAdditions(additions, limit) {
+    if (additions > limit) {
+        return limit + '+';
+    }
+
+    return additions;
 }
 
 function Scatters(works) {
@@ -45,6 +55,8 @@ function Scatters(works) {
             if (!element.UsedRating) {
                 element.UsedRating = defaultRating;
             }
+
+            element.Additions = Math.min(element.Additions, 1000)
         });
 
         return (<Scatter key={a} name={a} data={w} fill={colors[i % colors.length]} />);
@@ -60,18 +72,22 @@ export default function LastWorks(props) {
     useEffect(() => {
         const after = new Date();
         after.setDate(after.getDate() - 90);
+        after.setUTCHours(0)
+        after.setUTCMinutes(0)
+        after.setUTCSeconds(0)
+        after.setUTCMilliseconds(0)
 
         fetch(host + "/works/organizations/" + organization +
             "/" + after.toISOString())
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
-                    setLoaded(true);
                     setWorks(result);
+                    setLoaded(true);
                 },
                 (error) => {
-                    setLoaded(true);
                     setError(error);
+                    setLoaded(true);
                 }
             )
     }, [organization]);
@@ -87,13 +103,13 @@ export default function LastWorks(props) {
             <td>
                 <Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link>
             </td>
+            <td className="text-right">{LimitedAdditions(work.Additions, 250)}</td>
             {
                 work.UsedRatingId
-                    ? <td className="text-right"><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating?.toFixed(2)}</Link></td>
-                    : <td className="text-right">{defaultRating.toFixed(2)}</td>
+                    ? <td className="text-right"><Link to={/ratings/ + work.UsedRatingId}>{LinesMultiplier(work).toFixed(2)}</Link></td>
+                    : <td className="text-right">{LinesMultiplier(work).toFixed(2)}</td>
             }
-            <td className="text-right">{work.Additions}</td>
-            <td className="text-right">{WorkEffort(work)}</td>
+            <td className="text-right">{(Math.min(work.Additions, 250) * LinesMultiplier(work).toFixed(2)).toFixed(2)}</td>
             <td>{new Date(work.CreatedAt).toLocaleDateString()}</td>
         </tr>
     );
@@ -118,7 +134,7 @@ export default function LastWorks(props) {
                                 type="number"
                                 dataKey={'Additions'}
                                 name='New lines'
-                                domain={[0, 'dataMax']}
+                                domain={[0, 1000]}
                                 label={{ value: 'New lines in work', offset: 0, position: 'insideBottom' }} />
                             <YAxis
                                 type="number"
@@ -140,7 +156,6 @@ export default function LastWorks(props) {
                                 strokeDasharray="5" />
                             <ReferenceLine
                                 x={250}
-                                label={{ value: '250 lines threshold', position: 'insideBottomLeft' }}
                                 stroke="#e83e8c"
                                 strokeDasharray="5" />
                             <Tooltip />
@@ -164,8 +179,8 @@ export default function LastWorks(props) {
                                 <th scope="col">Work</th>
                                 <th scope="col">Pull request</th>
                                 <th scope="col">Author</th>
-                                <th scope="col" className="text-right">Rating</th>
                                 <th scope="col" className="text-right">New lines</th>
+                                <th scope="col" className="text-right">Multiplier</th>
                                 <th scope="col" className="text-right">Effort</th>
                                 <th scope="col">Finished at</th>
                             </tr>

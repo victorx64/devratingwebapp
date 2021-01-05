@@ -14,12 +14,12 @@ export default function Works() {
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
-                    setLoaded(true);
                     setWork(result);
+                    setLoaded(true);
                 },
                 (error) => {
-                    setLoaded(true);
                     setError(error);
+                    setLoaded(true);
                 }
             )
     }, [id]);
@@ -56,14 +56,14 @@ export default function Works() {
                             <th scope="row">Rating before</th>
                             {
                                 work.UsedRatingId
-                                    ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating?.toFixed(2)}</Link></td>
+                                    ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating.toFixed(2)}</Link></td>
                                     : <td>{(1500).toFixed(2)} (initial)</td>
                             }
                         </tr>
                         <tr>
                             <th scope="row">Rating after</th>
                             {
-                                <td><Link to={/ratings/ + work.NewRatingId}>{work.NewRating?.toFixed(2)}</Link></td>
+                                <td><Link to={/ratings/ + work.NewRatingId}>{work.NewRating.toFixed(2)}</Link></td>
                             }
                         </tr>
                         <tr>

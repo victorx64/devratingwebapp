@@ -50,12 +50,12 @@ export default function Authors() {
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
-                    setLoaded(true);
                     setAuthor(result);
+                    setLoaded(true);
                 },
                 (error) => {
-                    setLoaded(true);
                     setError(error);
+                    setLoaded(true);
                 }
             )
     }, [id]);
@@ -87,7 +87,7 @@ export default function Authors() {
                         <tr>
                             <th scope="row">Current rating</th>
                             <td>{author.RatingId
-                                ? <Link to={/ratings/ + author.RatingId}>{author.Rating?.toFixed(2)}</Link>
+                                ? <Link to={/ratings/ + author.RatingId}>{author.Rating.toFixed(2)}</Link>
                                 : (1500).toFixed(2) + ' (initial)'}
                             </td>
                         </tr>
@@ -102,9 +102,9 @@ export default function Authors() {
                 <ResponsiveContainer width='100%' aspect={3 / 1} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                     <AreaChart
                         data={
-                            author.ratings?.map(r => ({
+                            author.ratings.map(r => ({
                                 createdAt: new Date(r.CreatedAt).getTime(),
-                                value: r.Value?.toFixed(2)
+                                value: r.Value.toFixed(2)
                             }))}
                         margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                         <XAxis
