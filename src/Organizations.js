@@ -5,8 +5,7 @@ import { host } from './config.js';
 
 export default function Organizations(props) {
     const [error, setError] = useState(null);
-    const [isLoaded, setLoaded] = useState(false);
-    const [organizations, setOrganizations] = useState([]);
+    const [organizations, setOrganizations] = useState(null);
     const [name, setName] = useState(undefined);
     const [diff, setDiff] = useState(undefined);
     const [jwt, setJwt] = useState(null);
@@ -23,7 +22,6 @@ export default function Organizations(props) {
                 .then(res => res.ok ? res.json() : Promise.reject(res))
                 .then(
                     (result) => {
-                        setLoaded(true);
                         setOrganizations(result);
                     },
                     setError
@@ -74,9 +72,7 @@ export default function Organizations(props) {
 
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>;
-    } else if (!isLoaded) {
-        return <div>Loading...</div>;
-    } else {
+    } else if (organizations) {
         const rows = organizations.map((organization, index, array) =>
             <tr key={organization.Id}>
                 <td className="align-middle">
@@ -112,5 +108,7 @@ export default function Organizations(props) {
                 <br />
             </>
         );
+    } else {
+        return <div>Loading...</div>;
     }
 }

@@ -13,7 +13,6 @@ export default function Organization() {
             <p><code>{decodeURIComponent(organization)}</code> <Link to={'./' + organization + '/keys'}>API keys</Link></p>
             <Leaderboard organization={organization} />
             <LastWorks organization={organization} />
-
             <br />
         </>
     );

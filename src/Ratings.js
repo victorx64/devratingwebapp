@@ -7,8 +7,7 @@ import { defaultVariables, defaultFunctions } from 'equation-resolver'
 
 export default function Ratings() {
     const [error, setError] = useState(null);
-    const [isLoaded, setLoaded] = useState(false);
-    const [rating, setRating] = useState({});
+    const [rating, setRating] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
@@ -17,20 +16,16 @@ export default function Ratings() {
             .then(
                 (result) => {
                     setRating(result);
-                    setLoaded(true);
                 },
                 (error) => {
                     setError(error);
-                    setLoaded(true);
                 }
             )
     }, [id]);
 
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>;
-    } else if (!isLoaded) {
-        return <div>Loading...</div>;
-    } else {
+    } else if (rating) {
         return (
             <>
                 <h1 className="mt-5">Rating update</h1>
@@ -87,19 +82,21 @@ export default function Ratings() {
                     functions={defaultFunctions}
                     errorHandler={defaultErrorHandler}>
                     <p>
-                        The multiplier based on the rating of a developer:
-                        <div><Equation value='m = 1 / (1 - p)' /></div>
+                        The multiplier based on the rating of a developer:<br />
+                        <Equation value='m = 1 / (1 - p)' /><br />
                         where <var>m</var> – multiplier, <var>p</var> – the probability of winning of the developer against a developer with an average rating.
                     </p>
                     <p>
-                        Evaluation of <var>p</var>:
-                        <div><Equation value='Qa = 10 ^ (a / 400)' /></div>
-                        <div><Equation value='Qb = 10 ^ (1500 / 400)' /></div>
-                        <div><Equation value='p = Qa / (Qa - Qb)' /></div>
+                        Evaluation of <var>p</var>:<br />
+                        <Equation value='Qa = 10 ^ (a / 400)' /><br />
+                        <Equation value='Qb = 10 ^ (1500 / 400)' /><br />
+                        <Equation value='p = Qa / (Qa - Qb)' /><br />
                         where <var>a</var> – rating of the developer.
                     </p>
                 </EquationOptions>
             </>
         );
+    } else {
+        return <div>Loading...</div>;
     }
 }

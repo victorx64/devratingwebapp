@@ -4,8 +4,7 @@ import { host } from './config.js';
 
 export default function WorkRatings(props) {
     const [error, setError] = useState(null);
-    const [isLoaded, setLoaded] = useState(false);
-    const [ratings, setRatings] = useState([]);
+    const [ratings, setRatings] = useState(null);
     const id = props.workId;
     const hideIgnoredDeletions = props.hideIgnoredDeletions;
 
@@ -15,20 +14,16 @@ export default function WorkRatings(props) {
             .then(
                 (result) => {
                     setRatings(result);
-                    setLoaded(true);
                 },
                 (error) => {
                     setError(error);
-                    setLoaded(true);
                 }
             )
     }, [id]);
 
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>;
-    } else if (!isLoaded) {
-        return <div>Loading...</div>;
-    } else {
+    } else if (ratings) {
         const rows = ratings.filter(rating => rating.CountedDeletions).map((rating) =>
             <tr key={rating.Id}>
                 <td>
@@ -39,7 +34,7 @@ export default function WorkRatings(props) {
                     rating.IgnoredDeletions
                         ? <td>{rating.IgnoredDeletions}</td>
                         : hideIgnoredDeletions
-                            ? ''
+                            ? <></>
                             : <td>none</td>
                 }
                 {
@@ -69,5 +64,7 @@ export default function WorkRatings(props) {
                 </table>
             </>
         );
+    } else {
+        return <div>Loading...</div>;
     }
 }

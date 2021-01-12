@@ -5,8 +5,7 @@ import { host } from './config.js';
 
 export default function Works() {
     const [error, setError] = useState(null);
-    const [isLoaded, setLoaded] = useState(false);
-    const [work, setWork] = useState({});
+    const [work, setWork] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
@@ -15,20 +14,16 @@ export default function Works() {
             .then(
                 (result) => {
                     setWork(result);
-                    setLoaded(true);
                 },
                 (error) => {
                     setError(error);
-                    setLoaded(true);
                 }
             )
     }, [id]);
 
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>;
-    } else if (!isLoaded) {
-        return <div>Loading...</div>;
-    } else {
+    } else if (work) {
         return (
             <>
                 <h1 className="mt-5">Work</h1>
@@ -63,7 +58,7 @@ export default function Works() {
                         <tr>
                             <th scope="row">Rating after</th>
                             {
-                                <td><Link to={/ratings/ + work.NewRatingId}>{work.NewRating.toFixed(2)}</Link></td>
+                                <td><Link to={/ratings/ + work.NewRatingId}>{work.NewRating?.toFixed(2)}</Link></td>
                             }
                         </tr>
                         <tr>
@@ -90,7 +85,22 @@ export default function Works() {
                 </table>
                 <WorkRatings workId={id} hideIgnoredDeletions={!work.SinceCommit} />
                 <br />
+                <p>
+                    When a developer deletes a line, he increases his rating and lowers the rating of the deleted line author.
+                </p>
+                <p>
+                    The <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo rating system</a> is used with the following constants:
+                    <br />
+                    <var>k = 1;</var><br />
+                    <var>n = 400;</var>
+                </p>
+                <p>
+                    When the system meets a new author it sets <var>1500</var> rating points to him. This is an average rating of the system.
+                </p>
             </>
         );
+    }
+    else {
+        return <div>Loading...</div>;
     }
 }

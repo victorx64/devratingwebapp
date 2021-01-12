@@ -51,8 +51,7 @@ function Scatters(works) {
 
 export default function LastWorks(props) {
     const [error, setError] = useState(null);
-    const [isLoaded, setLoaded] = useState(false);
-    const [works, setWorks] = useState([]);
+    const [works, setWorks] = useState(null);
     const organization = props.organization;
 
     useEffect(() => {
@@ -69,44 +68,40 @@ export default function LastWorks(props) {
             .then(
                 (result) => {
                     setWorks(result);
-                    setLoaded(true);
                 },
                 (error) => {
                     setError(error);
-                    setLoaded(true);
                 }
             )
     }, [organization]);
 
-    const rows = works.map((work) =>
-        <tr key={work.Id}>
-            <td>
-                <Link to={/works/ + work.Id}>[W{work.Id}]</Link>
-            </td>
-            <td>
-                <a href={work.Link}>{work.Link}</a>
-            </td>
-            <td>
-                <Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link>
-            </td>
-            <td className="text-right">{LimitedAdditions(work.Additions, 250)}</td>
-            <td className="text-right">
-            {
-                work.UsedRatingId
-                    ? <Link to={/ratings/ + work.UsedRatingId}>{WorkLinesMultiplier(work).toFixed(2)}</Link>
-                    : WorkLinesMultiplier(work).toFixed(2)
-            }
-            </td>
-            <td className="text-right">{(Math.min(work.Additions, 250) * WorkLinesMultiplier(work).toFixed(2)).toFixed(2)}</td>
-            <td>{new Date(work.CreatedAt).toLocaleDateString()}</td>
-        </tr>
-    );
-
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>;
-    } else if (!isLoaded) {
-        return <div>Loading recent works...</div>;
-    } else {
+    } else if (works) {
+        const rows = works.map((work) =>
+            <tr key={work.Id}>
+                <td>
+                    <Link to={/works/ + work.Id}>[W{work.Id}]</Link>
+                </td>
+                <td>
+                    <a href={work.Link}>{work.Link}</a>
+                </td>
+                <td>
+                    <Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link>
+                </td>
+                <td className="text-right">{LimitedAdditions(work.Additions, 250)}</td>
+                <td className="text-right">
+                {
+                    work.UsedRatingId
+                        ? <Link to={/ratings/ + work.UsedRatingId}>{WorkLinesMultiplier(work).toFixed(2)}</Link>
+                        : WorkLinesMultiplier(work).toFixed(2)
+                }
+                </td>
+                <td className="text-right">{(Math.min(work.Additions, 250) * WorkLinesMultiplier(work).toFixed(2)).toFixed(2)}</td>
+                <td>{new Date(work.CreatedAt).toLocaleDateString()}</td>
+            </tr>
+        );
+
         return (
             <React.Fragment>
                 <h2>Recent Works</h2>
@@ -180,5 +175,7 @@ export default function LastWorks(props) {
                 </div>
             </React.Fragment>
         );
-    }
+    } else {
+        return <div>Loading recent works...</div>;
+    } 
 }

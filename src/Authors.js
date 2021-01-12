@@ -41,8 +41,7 @@ function StatusFunction(author) {
 
 export default function Authors() {
     const [error, setError] = useState(null);
-    const [isLoaded, setLoaded] = useState(false);
-    const [author, setAuthor] = useState({});
+    const [author, setAuthor] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
@@ -51,20 +50,16 @@ export default function Authors() {
             .then(
                 (result) => {
                     setAuthor(result);
-                    setLoaded(true);
                 },
                 (error) => {
                     setError(error);
-                    setLoaded(true);
                 }
             )
     }, [id]);
 
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>;
-    } else if (!isLoaded) {
-        return <div>Loading...</div>;
-    } else {
+    } else if (author) {
         return (
             <>
                 <h1 className="mt-5">Author</h1>
@@ -139,5 +134,7 @@ export default function Authors() {
                 </ResponsiveContainer>
             </>
         );
+    } else {
+        return <div>Loading...</div>;
     }
 }

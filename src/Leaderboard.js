@@ -43,8 +43,7 @@ function BadgeFunction(author) {
 
 export default function Leaderboard(props) {
     const [error, setError] = useState(null);
-    const [isLoaded, setLoaded] = useState(false);
-    const [authors, setAuthors] = useState([]);
+    const [authors, setAuthors] = useState(null);
     const organization = props.organization;
 
     useEffect(() => {
@@ -61,20 +60,16 @@ export default function Leaderboard(props) {
             .then(
                 (result) => {
                     setAuthors(result);
-                    setLoaded(true);
                 },
                 (error) => {
                     setError(error);
-                    setLoaded(true);
                 }
             )
     }, [organization]);
 
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>;
-    } else if (!isLoaded) {
-        return <div>Loading organization authors...</div>;
-    } else {
+    } else if (authors) {
         const rows = authors.map((author, index, array) =>
             <tr key={author.Id}>
                 <th className="align-middle" scope="row">{index + 1}</th>
@@ -133,5 +128,7 @@ export default function Leaderboard(props) {
                 </p>
             </>
         );
+    } else {
+        return <div>Loading organization authors...</div>;
     }
 }

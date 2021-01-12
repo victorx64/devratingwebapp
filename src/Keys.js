@@ -5,8 +5,7 @@ import { host } from './config.js';
 
 export default function Keys(props) {
     const [error, setError] = useState(null);
-    const [isLoaded, setLoaded] = useState(false);
-    const [keys, setKeys] = useState([]);
+    const [keys, setKeys] = useState(null);
     const [name, setName] = useState(undefined);
     const [value, setValue] = useState(undefined);
     const [jwt, setJwt] = useState(null);
@@ -24,11 +23,9 @@ export default function Keys(props) {
                 .then(res => res.ok ? res.json() : Promise.reject(res))
                 .then(
                     (result) => {
-                        setLoaded(true);
                         setKeys(result);
                     },
                     (error) => {
-                        setLoaded(true);
                         setError(error);
                     }
                 );
@@ -65,9 +62,7 @@ export default function Keys(props) {
 
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>;
-    } else if (!isLoaded) {
-        return <div>Loading...</div>;
-    } else {
+    } else if (keys) {
         const rows = keys.map((key, index, array) =>
             <tr key={key.Id}>
                 <th className="align-middle">
@@ -117,5 +112,7 @@ export default function Keys(props) {
                 </form>
             </>
         );
+    } else {
+        return <div>Loading...</div>;
     }
 }
