@@ -81,6 +81,10 @@ export default function Works() {
                             <th scope="row">Major update</th>
                             <td>{work.SinceCommit}</td>
                         </tr>
+                        <tr>
+                            <th scope="row">Finished at</th>
+                            <td>{new Date(work.CreatedAt).toLocaleString()}</td>
+                        </tr>
                     </tbody>
                 </table>
                 <WorkRatings workId={id} hideIgnoredDeletions={!work.SinceCommit} />

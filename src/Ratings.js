@@ -75,6 +75,10 @@ export default function Ratings() {
                             <th scope="row">Updated by Work</th>
                             <td><Link to={/works/ + rating.WorkId}>[W{rating.WorkId}]</Link></td>
                         </tr>
+                        <tr>
+                            <th scope="row">Updated at</th>
+                            <td>{new Date(rating.CreatedAt).toLocaleString()}</td>
+                        </tr>
                     </tbody>
                 </table>
                 <EquationOptions
