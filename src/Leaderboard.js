@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle } from '@fortawesome/free-regular-svg-icons'
 import { host } from './config.js';
-import { LinesMultiplier } from "./Formula.js";
+import { LinesMultiplier, RatingPercentile } from "./Formula.js";
 
 import {
     AreaChart,
@@ -11,19 +9,28 @@ import {
     YAxis,
 } from 'recharts';
 
+const texts = [
+    'Bronze',
+    'Silver',
+    'Gold',
+    'Platinum',
+    'Diamond',
+    'Master',
+    'Grandmaster',
+];
+
+const icons = [
+    '/Competitive_Bronze_Icon.png',
+    '/Competitive_Silver_Icon.png',
+    '/Competitive_Gold_Icon.png',
+    '/Competitive_Platinum_Icon.png',
+    '/Competitive_Diamond_Icon.png',
+    '/Competitive_Master_Icon.png',
+    '/Competitive_Grandmaster_Icon.png',
+];
+
 function BadgeFunction(author) {
-    let color = "success";
-    let text = "Good developer"
-
-    if (author.Rating > 1500 + 190) {
-        color = "primary";
-        text = "Top developer";
-    }
-
-    if (author.Rating < 1500 - 190) {
-        color = "warning";
-        text = "Needs assistance";
-    }
+    const rank = Math.floor(RatingPercentile(author.Rating) * 7);
 
     return (
         <React.Fragment>
@@ -34,8 +41,8 @@ function BadgeFunction(author) {
                 {LinesMultiplier(author.Rating).toFixed(2)}
             </td>
             <td className="align-middle">
-                <FontAwesomeIcon icon={faCircle} className={"text-" + color + " mr-2"} />
-                {text}
+                <img src={icons[rank]} alt={texts[rank]} width="32px" />&nbsp;
+                {texts[rank]}
             </td>
         </React.Fragment>
     );
@@ -98,7 +105,7 @@ export default function Leaderboard(props) {
             <>
                 <h2>Authors</h2>
                 <p className="lead">
-                    The higher the rating of a programmer, 
+                    The higher the rating of a programmer,
                     the higher the code stability.
                 </p>
                 <div className="table-responsive">
@@ -119,11 +126,11 @@ export default function Leaderboard(props) {
                     </table>
                 </div>
                 <p>
-                    Each code change is an extra development time. The list 
-                    above shows the rarity of changing the code of each 
-                    programmer. It is based on the history of deleting 
-                    lines of code. Each deleted line increases the rating 
-                    of the programmer and decreases the rating of the 
+                    Each code change is an extra development time. The list
+                    above shows the rarity of changing the code of each
+                    programmer. It is based on the history of deleting
+                    lines of code. Each deleted line increases the rating
+                    of the programmer and decreases the rating of the
                     author of the deleted line.
                 </p>
             </>

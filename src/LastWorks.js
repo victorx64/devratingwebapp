@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import { host } from './config.js';
-import { DefaultRating, WorkLinesMultiplier } from "./Formula.js";
+import { DefaultRating, WorkLinesMultiplier, RatingWithExpectedWinProbAgainstDefault } from "./Formula.js";
 
 import {
-    CartesianGrid,
     XAxis,
     YAxis,
     Tooltip,
@@ -15,6 +14,15 @@ import {
     Scatter,
     ReferenceLine,
 } from 'recharts';
+
+const ranks = [
+    RatingWithExpectedWinProbAgainstDefault(1 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(2 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(3 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(4 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(5 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(6 / 7).toFixed(),
+];
 
 function LimitedAdditions(additions, limit) {
     if (additions > limit) {
@@ -123,24 +131,26 @@ export default function LastWorks(props) {
                                 type="number"
                                 dataKey={'UsedRating'}
                                 name='Rating'
-                                domain={[500, 2500]}
+                                domain={[1000, 2000]}
                                 label={{ value: 'Rating', angle: -90, position: 'insideLeft' }} />
-                            <CartesianGrid strokeDasharray="3 3" />
-
                             <ReferenceLine
-                                y={1690}
-                                label={{ value: '"Top developer"', position: 'top' }}
-                                stroke="#1eb7ff"
-                                strokeDasharray="5" />
+                                y={ranks[0]}
+                                label={{ value: 'Silver ' + ranks[0] + '...', position: 'top' }} />
                             <ReferenceLine
-                                y={1310}
-                                label={{ value: '"Good developer"', position: 'top' }}
-                                stroke="#1bb934"
-                                strokeDasharray="5" />
+                                y={ranks[1]}
+                                label={{ value: 'Gold ' + ranks[1] + '...', position: 'top' }} />
                             <ReferenceLine
-                                x={250}
-                                stroke="#e83e8c"
-                                strokeDasharray="5" />
+                                y={ranks[2]}
+                                label={{ value: 'Platinum ' + ranks[2] + '...', position: 'top' }} />
+                            <ReferenceLine
+                                y={ranks[3]}
+                                label={{ value: 'Diamond ' + ranks[3] + '...', position: 'top' }} />
+                            <ReferenceLine
+                                y={ranks[4]}
+                                label={{ value: 'Master ' + ranks[4] + '...', position: 'top' }} />
+                            <ReferenceLine
+                                y={ranks[5]}
+                                label={{ value: 'Grandmaster ' + ranks[5] + '...', position: 'top' }} />
                             <Tooltip />
                             <Legend />
                             {Scatters(works)}
