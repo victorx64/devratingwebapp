@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { host } from './config.js';
-import { LinesMultiplier, RatingPercentile } from "./Formula.js";
+import { RatingPercentile } from "./Formula.js";
 
 import {
     AreaChart,
@@ -36,9 +36,6 @@ function BadgeFunction(author) {
         <React.Fragment>
             <td className="align-middle">
                 <Link to={/ratings/ + author.RatingId}>{author.Rating.toFixed(2)}</Link>
-            </td>
-            <td className="align-middle">
-                {LinesMultiplier(author.Rating).toFixed(2)}
             </td>
             <td className="align-middle">
                 <img src={icons[rank]} alt={texts[rank]} width="32px" />&nbsp;
@@ -114,7 +111,6 @@ export default function Leaderboard(props) {
                                 <th scope="col">Author</th>
                                 <th scope="col">Graph (90d)</th>
                                 <th scope="col">Rating</th>
-                                <th scope="col">Multiplier</th>
                                 <th scope="col">Rank</th>
                             </tr>
                         </thead>
