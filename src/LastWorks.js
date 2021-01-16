@@ -50,7 +50,8 @@ function Scatters(works) {
                 element.UsedRating = DefaultRating;
             }
 
-            element.Additions = Math.min(element.Additions, 1000)
+            element.UsedRating = element.UsedRating.toFixed(2);
+            element.Additions = Math.min(element.Additions, 1000);
         });
 
         return (<Scatter key={a} name={a} data={w} fill={colors[i % colors.length]} />);
@@ -133,6 +134,9 @@ export default function LastWorks(props) {
                                 name='Rating'
                                 domain={[1000, 2000]}
                                 label={{ value: 'Rating', angle: -90, position: 'insideLeft' }} />
+                            <ReferenceLine
+                                y={1000}
+                                label={{ value: 'Bronze', position: 'top' }} />
                             <ReferenceLine
                                 y={ranks[0]}
                                 label={{ value: 'Silver ' + ranks[0] + '...', position: 'top' }} />

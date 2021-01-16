@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle } from '@fortawesome/free-regular-svg-icons'
 import { host } from './config.js';
+import { RatingPercentile, RatingWithExpectedWinProbAgainstDefault } from "./Formula.js";
 
 import {
-    CartesianGrid,
     XAxis,
     YAxis,
     Tooltip,
@@ -15,29 +13,61 @@ import {
     ReferenceLine
 } from 'recharts';
 
-function StatusFunction(author) {
-    let color = "success";
-    let text = "Good developer"
+const ranks = [
+    RatingWithExpectedWinProbAgainstDefault(1 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(2 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(3 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(4 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(5 / 7).toFixed(),
+    RatingWithExpectedWinProbAgainstDefault(6 / 7).toFixed(),
+];
 
-    if (author.Rating) {
-        if (author.Rating > 1500 + 190) {
-            color = "primary";
-            text = "Top developer";
-        }
+const texts = [
+    'Bronze',
+    'Silver',
+    'Gold',
+    'Platinum',
+    'Diamond',
+    'Master',
+    'Grandmaster',
+];
 
-        if (author.Rating < 1500 - 190) {
-            color = "warning";
-            text = "Needs assistance";
-        }
-    }
+const icons = [
+    '/Competitive_Bronze_Icon.png',
+    '/Competitive_Silver_Icon.png',
+    '/Competitive_Gold_Icon.png',
+    '/Competitive_Platinum_Icon.png',
+    '/Competitive_Diamond_Icon.png',
+    '/Competitive_Master_Icon.png',
+    '/Competitive_Grandmaster_Icon.png',
+];
+
+function BadgeFunction(author) {
+    const rank = Math.floor(RatingPercentile(author.Rating) * 7);
 
     return (
-        <React.Fragment>
-            <FontAwesomeIcon icon={faCircle} className={"text-" + color + " mr-2"} />
-            {text}
-        </React.Fragment>
+        <>
+            <img src={icons[rank]} alt={texts[rank]} width="32px" />&nbsp;
+            {texts[rank]}
+        </>
     );
 }
+
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active) {
+        return (
+            <div>
+                {new Date(label).toLocaleString()}
+                <br />
+                Rating: {payload[0].value.toFixed(2)}
+                <br />
+                Work: {payload[0].payload.WorkId}
+            </div>
+        );
+    }
+
+    return null;
+};
 
 export default function Authors() {
     const [error, setError] = useState(null);
@@ -87,8 +117,8 @@ export default function Authors() {
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">Status</th>
-                            <td>{StatusFunction(author)}</td>
+                            <th scope="row">Rank</th>
+                            <td>{BadgeFunction(author)}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -98,35 +128,47 @@ export default function Authors() {
                     <AreaChart
                         data={
                             author.ratings.map(r => ({
-                                createdAt: new Date(r.CreatedAt).getTime(),
-                                value: r.Value.toFixed(2)
-                            }))}
+                                CreatedAt: new Date(r.CreatedAt).getTime(),
+                                Value: r.Value,
+                                WorkId: r.WorkId
+                            }))
+                        }
                         margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                        <Tooltip wrapperStyle={{ backgroundColor: '#fff', border: '1px solid #dcdcdc' }} content={<CustomTooltip />} />
                         <XAxis
-                            dataKey="createdAt"
+                            dataKey="CreatedAt"
                             type="number"
                             name='Time'
                             domain={['dataMin', 'dataMax']}
                             tickFormatter={unixTime => new Date(unixTime).toLocaleDateString()}
                             label={{ value: 'Time', offset: 0, position: 'insideBottom' }} />
                         <YAxis
-                            domain={[500, 2500]}
+                            domain={[1000, 2000]}
                             name="Rating"
                             label={{ value: 'Rating', angle: -90, position: 'insideLeft' }} />
-                        <CartesianGrid strokeDasharray="3 3" />
                         <ReferenceLine
-                            y={1690}
-                            label={{ value: '"Top developer"', position: 'top' }}
-                            stroke="#1eb7ff"
-                            strokeDasharray="5" />
+                            y={1000}
+                            label={{ value: 'Bronze', position: 'top' }} />
                         <ReferenceLine
-                            y={1310}
-                            label={{ value: '"Good developer"', position: 'top' }}
-                            stroke="#1bb934"
-                            strokeDasharray="5" />
-                        <Tooltip labelFormatter={unixTime => new Date(unixTime).toLocaleString()} />
+                            y={ranks[0]}
+                            label={{ value: 'Silver ' + ranks[0] + '...', position: 'top' }} />
+                        <ReferenceLine
+                            y={ranks[1]}
+                            label={{ value: 'Gold ' + ranks[1] + '...', position: 'top' }} />
+                        <ReferenceLine
+                            y={ranks[2]}
+                            label={{ value: 'Platinum ' + ranks[2] + '...', position: 'top' }} />
+                        <ReferenceLine
+                            y={ranks[3]}
+                            label={{ value: 'Diamond ' + ranks[3] + '...', position: 'top' }} />
+                        <ReferenceLine
+                            y={ranks[4]}
+                            label={{ value: 'Master ' + ranks[4] + '...', position: 'top' }} />
+                        <ReferenceLine
+                            y={ranks[5]}
+                            label={{ value: 'Grandmaster ' + ranks[5] + '...', position: 'top' }} />
                         <Area
-                            dataKey="value"
+                            dataKey="Value"
                             name='Rating'
                             stroke={'rgba(30, 183, 255)'}
                             fill={'rgba(30, 183, 255, 0.6)'} />

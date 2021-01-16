@@ -77,9 +77,8 @@ export default function Leaderboard(props) {
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>;
     } else if (authors) {
-        const rows = authors.map((author, index, array) =>
+        const rows = authors.map(author =>
             <tr key={author.Id}>
-                <th className="align-middle" scope="row">{index + 1}</th>
                 <td className="align-middle">
                     <Link to={/authors/ + author.Id}>{author.Email}</Link>
                 </td>
@@ -112,12 +111,11 @@ export default function Leaderboard(props) {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th scope="col">Rank</th>
                                 <th scope="col">Author</th>
                                 <th scope="col">Graph (90d)</th>
                                 <th scope="col">Rating</th>
                                 <th scope="col">Multiplier</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Rank</th>
                             </tr>
                         </thead>
                         <tbody>
