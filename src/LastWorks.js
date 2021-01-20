@@ -2,27 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import { host } from './config.js';
-import { DefaultRating, WorkLinesMultiplier, RatingWithExpectedWinProbAgainstDefault } from "./Formula.js";
+import { WorkLinesMultiplier } from "./Formula.js";
 
 import {
-    XAxis,
+    CartesianGrid,
     YAxis,
     Tooltip,
     ResponsiveContainer,
     Legend,
-    ScatterChart,
-    Scatter,
-    ReferenceLine,
+    Bar,
+    BarChart
 } from 'recharts';
 
-const ranks = [
-    RatingWithExpectedWinProbAgainstDefault(1 / 7).toFixed(),
-    RatingWithExpectedWinProbAgainstDefault(2 / 7).toFixed(),
-    RatingWithExpectedWinProbAgainstDefault(3 / 7).toFixed(),
-    RatingWithExpectedWinProbAgainstDefault(4 / 7).toFixed(),
-    RatingWithExpectedWinProbAgainstDefault(5 / 7).toFixed(),
-    RatingWithExpectedWinProbAgainstDefault(6 / 7).toFixed(),
-];
 
 function LimitedAdditions(additions, limit) {
     if (additions > limit) {
@@ -32,8 +23,27 @@ function LimitedAdditions(additions, limit) {
     return additions;
 }
 
-function Scatters(works) {
+function Impact(work) {
+    return Math.min(work.Additions, 250) * WorkLinesMultiplier(work);
+}
+
+function BarsData(works) {
     const authors = _.groupBy(works, (value) => (value.AuthorEmail));
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+    return Object.entries(authors).map(
+        ([a, w]) => {
+            const obj = {};
+
+            obj[a] = w.map(Impact).reduce(reducer);
+
+            return obj;
+        }
+    );
+}
+
+function Bars(works) {
+    const authors = _.uniq(works.map((value) => (value.AuthorEmail)));
 
     const colors = [
         '#1eb7ff',
@@ -42,20 +52,14 @@ function Scatters(works) {
         '#1bb934',
         '#f27212',
         '#ed1c24',
-        '#e83e8c'];
+        '#e83e8c'
+    ];
 
-    return Object.entries(authors).map(([a, w], i) => {
-        w.forEach(element => {
-            if (!element.UsedRating) {
-                element.UsedRating = DefaultRating;
-            }
-
-            element.UsedRating = element.UsedRating.toFixed(2);
-            element.Additions = Math.min(element.Additions, 1000);
-        });
-
-        return (<Scatter key={a} name={a} data={w} fill={colors[i % colors.length]} />);
-    });
+    return authors.map(
+        (a, i) => {
+            return (<Bar dataKey={a} key={a} name={a} fill={colors[i % colors.length]} />);
+        }
+    );
 }
 
 export default function LastWorks(props) {
@@ -100,13 +104,13 @@ export default function LastWorks(props) {
                 </td>
                 <td className="text-right">{LimitedAdditions(work.Additions, 250)}</td>
                 <td className="text-right">
-                {
-                    work.UsedRatingId
-                        ? <Link to={/ratings/ + work.UsedRatingId}>{WorkLinesMultiplier(work).toFixed(2)}</Link>
-                        : WorkLinesMultiplier(work).toFixed(2)
-                }
+                    {
+                        work.UsedRatingId
+                            ? <Link to={/ratings/ + work.UsedRatingId}>{WorkLinesMultiplier(work).toFixed(2)}</Link>
+                            : WorkLinesMultiplier(work).toFixed(2)
+                    }
                 </td>
-                <td className="text-right">{(Math.min(work.Additions, 250) * WorkLinesMultiplier(work).toFixed(2)).toFixed(2)}</td>
+                <td className="text-right">{Impact(work).toFixed(2)}</td>
                 <td>{new Date(work.CreatedAt).toLocaleDateString()}</td>
             </tr>
         );
@@ -115,59 +119,21 @@ export default function LastWorks(props) {
             <React.Fragment>
                 <h2>Recent Works</h2>
                 <p className="lead">
-                    The more dots of a programmer is in the upper left
-                    corner — the more easy-to-test and valuable work the
-                    programmer has performed.
+                    The higher the bar — the more overall impact the
+                    programmer has performed (90d).
                 </p>
                 <div className='overflow-auto'>
                     <ResponsiveContainer width='100%' minWidth={720} aspect={2.5 / 1.0}>
-                        <ScatterChart>
-                            <XAxis
-                                type="number"
-                                dataKey={'Additions'}
-                                name='New lines'
-                                domain={[0, 1000]}
-                                label={{ value: 'New lines in work', offset: 0, position: 'insideBottom' }} />
-                            <YAxis
-                                type="number"
-                                dataKey={'UsedRating'}
-                                name='Rating'
-                                domain={[1000, 2000]}
-                                label={{ value: 'Rating', angle: -90, position: 'insideLeft' }} />
-                            <ReferenceLine
-                                y={1000}
-                                label={{ value: 'Bronze', position: 'top' }} />
-                            <ReferenceLine
-                                y={ranks[0]}
-                                label={{ value: 'Silver ' + ranks[0] + '...', position: 'top' }} />
-                            <ReferenceLine
-                                y={ranks[1]}
-                                label={{ value: 'Gold ' + ranks[1] + '...', position: 'top' }} />
-                            <ReferenceLine
-                                y={ranks[2]}
-                                label={{ value: 'Platinum ' + ranks[2] + '...', position: 'top' }} />
-                            <ReferenceLine
-                                y={ranks[3]}
-                                label={{ value: 'Diamond ' + ranks[3] + '...', position: 'top' }} />
-                            <ReferenceLine
-                                y={ranks[4]}
-                                label={{ value: 'Master ' + ranks[4] + '...', position: 'top' }} />
-                            <ReferenceLine
-                                y={ranks[5]}
-                                label={{ value: 'Grandmaster ' + ranks[5] + '...', position: 'top' }} />
-                            <Tooltip />
+                        <BarChart data={BarsData(works)}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <YAxis label={{ value: 'Overall Impact (90d)', angle: -90, position: 'insideLeft' }} />
+                            <Tooltip labelFormatter={() => ''} formatter={value => value.toFixed(2)} />
                             <Legend />
-                            {Scatters(works)}
-                        </ScatterChart>
+                            {Bars(works)}
+                        </BarChart>
                     </ResponsiveContainer>
                 </div>
                 <p>
-                    This graph shows the size of pull requests (horizontal
-                    axis) and the rating of their authors (vertical axis).
-                    The smaller the pull request, the higher the likelihood
-                    of a thorough code review. The larger the size of the
-                    pull request, the higher the chance of missing
-                    unwanted code.
                 </p>
                 <div className="table-responsive mt-3">
                     <table className="table">
@@ -191,5 +157,5 @@ export default function LastWorks(props) {
         );
     } else {
         return <div>Loading recent works...</div>;
-    } 
+    }
 }
