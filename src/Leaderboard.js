@@ -35,9 +35,6 @@ function BadgeFunction(author) {
     return (
         <React.Fragment>
             <td className="align-middle">
-                <Link to={/ratings/ + author.RatingId}>{author.Rating.toFixed(2)}</Link>
-            </td>
-            <td className="align-middle">
                 <img src={icons[rank]} alt={texts[rank]} width="32px" />&nbsp;
                 {texts[rank]}
             </td>
@@ -81,7 +78,7 @@ export default function Leaderboard(props) {
                 </td>
                 <td className="align-middle">
                     <AreaChart
-                        width={240}
+                        width={480}
                         height={30}
                         data={
                             author.ratings.map(r => ({
@@ -89,9 +86,12 @@ export default function Leaderboard(props) {
                                 value: r.Value.toFixed(2)
                             }))}
                         margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                        <YAxis hide={true} domain={[1000, 2000]} />
+                        <YAxis hide={true} domain={[1250, 1750]} />
                         <Area dataKey='value' stroke={'rgba(30, 183, 255)'} fill={'rgba(30, 183, 255, 0.6)'} />
                     </AreaChart>
+                </td>
+                <td className="align-middle">
+                    <Link to={/ratings/ + author.RatingId}>{author.Rating.toFixed(2)}</Link>
                 </td>
                 {BadgeFunction(author)}
             </tr>
@@ -99,9 +99,9 @@ export default function Leaderboard(props) {
 
         return (
             <>
-                <h2>Authors</h2>
+                <h2>Stability Rating</h2>
                 <p className="lead">
-                    The higher the rating of a programmer,
+                    The higher the rating of a programmer —
                     the higher the code stability.
                 </p>
                 <div className="table-responsive">
