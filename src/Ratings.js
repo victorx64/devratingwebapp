@@ -94,7 +94,7 @@ export default function Ratings() {
                         Evaluation of <var>p</var>:<br />
                         <Equation value='Qa = 10 ^ (a / 400)' /><br />
                         <Equation value='Qb = 10 ^ (1500 / 400)' /><br />
-                        <Equation value='p = Qa / (Qa - Qb)' /><br />
+                        <Equation value='p = Qa / (Qa + Qb)' /><br />
                         where <var>a</var> – rating of the developer.
                     </p>
                 </EquationOptions>
