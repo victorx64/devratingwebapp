@@ -78,7 +78,7 @@ export default function Leaderboard(props) {
                 </td>
                 <td className="align-middle">
                     <AreaChart
-                        width={480}
+                        width={300}
                         height={30}
                         data={
                             author.ratings.map(r => ({
@@ -120,11 +120,11 @@ export default function Leaderboard(props) {
                     </table>
                 </div>
                 <p>
-                    Each code change is an extra development time. The list
+                    Each code change is extra development time. The list
                     above shows the rarity of changing the code of each
                     programmer. It is based on the history of deleting
                     lines of code. Each deleted line increases the rating
-                    of the programmer and decreases the rating of the
+                    of the deletor and decreases the rating of the
                     author of the deleted line.
                 </p>
             </>
