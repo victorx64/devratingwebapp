@@ -81,7 +81,7 @@ export default function Leaderboard(props) {
                         width={300}
                         height={30}
                         data={
-                            author.ratings.map(r => ({
+                            author.Ratings.map(r => ({
                                 createdAt: new Date(r.CreatedAt).getTime(),
                                 value: r.Value.toFixed(2)
                             }))}

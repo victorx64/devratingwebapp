@@ -127,7 +127,7 @@ export default function Authors() {
                 <ResponsiveContainer width='100%' aspect={3 / 1} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                     <AreaChart
                         data={
-                            author.ratings.map(r => ({
+                            author.Ratings.map(r => ({
                                 CreatedAt: new Date(r.CreatedAt).getTime(),
                                 Value: r.Value,
                                 WorkId: r.WorkId
