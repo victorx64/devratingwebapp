@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { host } from './config.js';
-import { LinesMultiplier, ProductiveImpact, LimitedAdditions } from "./Formula.js";
+import { LinesMultiplier, GainedExperience, LimitedAdditions } from "./Formula.js";
 
 export default function Works() {
     const [error, setError] = useState(null);
@@ -74,7 +74,7 @@ export default function Works() {
                         </tr>
                         <tr>
                             <th scope="row">Experience points</th>
-                            <td>{ProductiveImpact(work).toFixed(2)}</td>
+                            <td>{GainedExperience(work).toFixed(2)}</td>
                         </tr>
                         <tr>
                             <th scope="row">Rating</th>

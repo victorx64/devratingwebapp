@@ -29,15 +29,8 @@ export function Impact(lines, rating) {
     return Math.min(lines, additionsLimit) * LinesMultiplier(rating);
 }
 
-export function ProductiveImpact(work) {
+export function GainedExperience(work) {
     return Impact(work.Additions, work.UsedRating);
-}
-
-export function RefactoredImpact(work) {
-    return work.Ratings
-        .filter(rating => rating.CountedDeletions)
-        .map(r => Impact(r.CountedDeletions, r.PreviousRating))
-        .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 }
 
 export function RatingDelta(work) {
