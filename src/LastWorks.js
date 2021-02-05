@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import _ from "lodash"
 import { host } from "./config.js"
 import { GainedExperience, DefaultRating } from "./Formula.js"
+import ChordDiagram from 'react-chord-diagram'
 
 import {
     CartesianGrid,
@@ -42,8 +43,6 @@ function RatingsData(works) {
                 Experience: GainedExperience(w)
             }
 
-            obj[w.AuthorEmail] = w.NewRating
-
             w.Ratings.forEach(r => {
                 obj[r.AuthorEmail] = r.Value
             })
@@ -58,7 +57,7 @@ function RatingLines(works) {
     return authors.map(
         (a, i) =>
         (
-            <Line connectNulls yAxisId="left" type="monotone" strokeWidth={2} dataKey={a} stroke={colors[i % colors.length]} />
+            <Line key={a} connectNulls yAxisId="left" type="monotone" strokeWidth={2} dataKey={a} stroke={colors[i % colors.length]} />
         )
     )
 }
@@ -85,7 +84,7 @@ function ExperienceBars(works) {
     return authors.map(
         (a, i) =>
         (
-            <Bar dataKey={a} fill={colors[i % colors.length]} name={a} />
+            <Bar key={a} dataKey={a} fill={colors[i % colors.length]} name={a} />
         )
     )
 }
@@ -104,6 +103,32 @@ function WorkScatters(works) {
 
         return (<Scatter key={a} name={a} data={w} fill={colors[i % colors.length]} />)
     })
+}
+
+function RatingStealMatrix(works) {
+    const worksPerAuthor = _.groupBy(works, (value) => (value.AuthorEmail))
+    const authors = Object.keys(worksPerAuthor)
+
+    var matrix = Array.from(Array(authors.length), () => Array(authors.length).fill(0));
+
+    Object.entries(worksPerAuthor).forEach(([a, w]) => {
+        w.forEach(work => {
+            const deletor = authors.indexOf(a)
+
+            work.Ratings
+                .filter(r => r.AuthorEmail !== work.AuthorEmail)
+                .forEach(r => {
+                    const drop = (r.PreviousRating ?? DefaultRating) - r.Value
+                    const victim = authors.indexOf(r.AuthorEmail)
+
+                    console.log(deletor + ' ' + victim + ' ' + drop)
+                    matrix[deletor][victim] += drop
+                })
+        })
+    })
+
+    console.log(matrix)
+    return matrix
 }
 
 export default function LastWorks(props) {
@@ -135,6 +160,8 @@ export default function LastWorks(props) {
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>
     } else if (works) {
+        const authors = _.uniq(works.map((value) => (value.AuthorEmail)))
+
         return (
             <React.Fragment>
                 <ResponsiveContainer width="100%" minWidth={720} aspect={2.0 / 1.0}>
@@ -186,6 +213,11 @@ export default function LastWorks(props) {
                         {WorkScatters(works)}
                     </ScatterChart>
                 </ResponsiveContainer>
+                <ChordDiagram
+                    matrix={RatingStealMatrix(works)}
+                    groupLabels={authors}
+                    groupColors={colors}
+                />
                 <div className="table-responsive mt-3">
                     <table className="table">
                         <thead>
