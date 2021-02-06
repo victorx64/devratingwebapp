@@ -32,23 +32,35 @@ const colors = [
 ]
 
 function RatingsData(works) {
-    return works
-        .filter(w => w.NewRating)
-        .reverse()
-        .map(w => {
-            const obj = {
-                Id: w.Id,
-                Delta: w.NewRating - (w.UsedRating ?? DefaultRating),
-                CreatedAt: new Date(w.CreatedAt).getTime(),
-                Experience: GainedExperience(w)
+    const worksPerDay = _.groupBy(works, w => (Math.floor((new Date() - new Date(w.CreatedAt)) / 86400000)))
+
+    const result = Array(days).fill({}).map(
+        (item, index) => (
+            {
+                Day: index
             }
+        )
+    );
 
-            w.Ratings.forEach(r => {
-                obj[r.AuthorEmail] = r.Value
-            })
+    Object.entries(worksPerDay).forEach(
+        ([day, worksOfDay]) => {
+            result[day]['Delta'] = worksOfDay
+                .filter(work => work.NewRating)
+                .reduce((accum, current) => accum + current.NewRating - (current.UsedRating ?? DefaultRating), 0)
 
-            return obj
-        })
+            worksOfDay
+                .reverse()
+                .forEach(
+                    work => work.Ratings.forEach(
+                        r => {
+                            result[day][r.AuthorEmail] = r.Value
+                        }
+                    )
+                )
+        }
+    )
+
+    return result.reverse()
 }
 
 function RatingLines(works) {
@@ -63,19 +75,28 @@ function RatingLines(works) {
 }
 
 function ExperiencesData(works) {
-    return works
-        .filter(w => w.NewRating)
-        .reverse()
-        .map(w => {
-            const obj = {
-                Id: w.Id,
-                CreatedAt: new Date(w.CreatedAt).getTime()
+    const worksPerDay = _.groupBy(works, w => (Math.floor((new Date() - new Date(w.CreatedAt)) / 86400000)))
+
+    const result = Array(days).fill({}).map(
+        (item, index) => (
+            {
+                Day: index
             }
+        )
+    );
 
-            obj[w.AuthorEmail] = GainedExperience(w)
+    Object.entries(worksPerDay).forEach(
+        ([day, worksOfDay]) => {
+            worksOfDay
+                .forEach(
+                    work => {
+                        result[day][work.AuthorEmail] = (result[day][work.AuthorEmail] ?? 0) + GainedExperience(work)
+                    }
+                )
+        }
+    )
 
-            return obj
-        })
+    return result.reverse()
 }
 
 function ExperienceBars(works) {
@@ -84,7 +105,7 @@ function ExperienceBars(works) {
     return authors.map(
         (a, i) =>
         (
-            <Bar key={a} dataKey={a} fill={colors[i % colors.length]} name={a} />
+            <Bar stackId="b" key={a} dataKey={a} fill={colors[i % colors.length]} name={a} />
         )
     )
 }
@@ -118,16 +139,14 @@ function RatingStealMatrix(works) {
             work.Ratings
                 .filter(r => r.AuthorEmail !== work.AuthorEmail)
                 .forEach(r => {
-                    const drop = (r.PreviousRating ?? DefaultRating) - r.Value
+                    const drop = r.CountedDeletions
                     const victim = authors.indexOf(r.AuthorEmail)
 
-                    console.log(deletor + ' ' + victim + ' ' + drop)
                     matrix[deletor][victim] += drop
                 })
         })
     })
 
-    console.log(matrix)
     return matrix
 }
 
@@ -165,35 +184,37 @@ export default function LastWorks(props) {
         return (
             <React.Fragment>
                 <ResponsiveContainer width="100%" minWidth={720} aspect={2.0 / 1.0}>
-                    <ComposedChart data={RatingsData(works)}>
+                    <ComposedChart data={RatingsData(works)}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5, }}>
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis dataKey="Id"
-                            label={{ value: "Work Id", offset: -5, position: "insideBottom" }} />
+                        <XAxis dataKey="Day"
+                            label={{ value: "Days ago", offset: -5, position: "insideBottom" }} />
                         <YAxis
                             yAxisId="left"
                             domain={[1000, 2000]}
                             label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
                         <YAxis yAxisId="right" domain={[0, 1000]} hide={true} orientation="right" />
-                        <Tooltip labelFormatter={w => "Work: [W" + w + "]"} formatter={value => value.toFixed(2)} />
-                        <Bar yAxisId="right" dataKey="Delta" name="Rating drop" fill="#999" />
+                        <Tooltip labelFormatter={d => d + " days ago"} formatter={value => value.toFixed(2)} />
+                        <Bar stackId="a" yAxisId="right" dataKey="Delta" name="Rating drop" fill="#999" />
                         {RatingLines(works)}
                         <Legend />
                     </ComposedChart>
                 </ResponsiveContainer>
                 <ResponsiveContainer width="100%" minWidth={720} aspect={2.0 / 1.0}>
-                    <BarChart data={ExperiencesData(works)} stack>
+                    <BarChart data={ExperiencesData(works)}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5, }}>
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis dataKey="Id"
-                            label={{ value: "Work Id", offset: -5, position: "insideBottom" }} />
+                        <XAxis dataKey="Day"
+                            label={{ value: "Days ago", offset: -5, position: "insideBottom" }} />
                         <YAxis
-                            type="number"
                             label={{ value: "Experience", angle: -90, position: "insideLeft" }} />
-                        <Tooltip labelFormatter={w => "Work: [W" + w + "]"} formatter={value => value.toFixed(2)} />
+                        <Tooltip labelFormatter={d => d + " days ago"} formatter={value => value.toFixed(2)} />
                         {ExperienceBars(works)}
                         <Legend />
                     </BarChart>
                 </ResponsiveContainer>
-                <ResponsiveContainer width="100%" minWidth={720} aspect={2.0 / 1.0}>
+                <ResponsiveContainer width="100%" minWidth={720} aspect={2.0 / 1.0}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5, }}>
                     <ScatterChart>
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
                         <XAxis
@@ -213,6 +234,8 @@ export default function LastWorks(props) {
                         {WorkScatters(works)}
                     </ScatterChart>
                 </ResponsiveContainer>
+                <br />
+                <div>The bigger the arc – the more lines of other devs the author has deleted:</div>
                 <ChordDiagram
                     matrix={RatingStealMatrix(works)}
                     groupLabels={authors}
