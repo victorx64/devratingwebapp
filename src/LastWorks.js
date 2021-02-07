@@ -34,7 +34,7 @@ const colors = [
 function RatingsData(works) {
     const worksPerDay = _.groupBy(works, w => (Math.floor((new Date() - new Date(w.CreatedAt)) / 86400000)))
 
-    const result = Array(days).fill({}).map(
+    const result = Array(days+1).fill({}).map(
         (item, index) => (
             {
                 Day: index
@@ -77,7 +77,7 @@ function RatingLines(works) {
 function ExperiencesData(works) {
     const worksPerDay = _.groupBy(works, w => (Math.floor((new Date() - new Date(w.CreatedAt)) / 86400000)))
 
-    const result = Array(days).fill({}).map(
+    const result = Array(days + 1).fill({}).map(
         (item, index) => (
             {
                 Day: index
