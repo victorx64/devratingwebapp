@@ -15,6 +15,8 @@ import {
     Legend,
     ComposedChart,
     BarChart,
+    ScatterChart,
+    Scatter,
 } from "recharts"
 
 const days = 90
@@ -108,6 +110,19 @@ function ExperienceBars(works) {
     )
 }
 
+function WorkScatters(works) {
+    const authors = _.groupBy(works, (value) => (value.AuthorEmail))
+    return Object.entries(authors).map(([a, w], i) => {
+        w.forEach(element => {
+            if (!element.UsedRating) {
+                element.UsedRating = DefaultRating
+            }
+            element.Additions = Math.min(element.Additions, 1000)
+        })
+        return (<Scatter key={a} name={a} data={w} fill={colors[i % colors.length]} />)
+    })
+}
+
 function ToDate(daysAgo) {
     const today = new Date()
     today.setUTCDate(today.getUTCDate() - daysAgo)
@@ -171,11 +186,31 @@ export default function LastWorks(props) {
                             tickFormatter={d => ToDate(d).toLocaleDateString()}
                             label={{ value: "Date", offset: -5, position: "insideBottom" }} />
                         <YAxis
-                            label={{ value: "Experience", angle: -90, position: "insideLeft" }} />
+                            label={{ value: "XP", angle: -90, position: "insideLeft" }} />
                         <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
                         {ExperienceBars(works)}
                         <Legend />
                     </BarChart>
+                </ResponsiveContainer>
+                <ResponsiveContainer aspect={2.0 / 1.0}>
+                    <ScatterChart margin={{ top: 20, bottom: 20, }}>
+                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                        <XAxis
+                            type="number"
+                            dataKey="Additions"
+                            name="New lines"
+                            domain={[0, 1000]}
+                            label={{ value: "New lines", offset: -5, position: "insideBottom" }} />
+                        <YAxis
+                            type="number"
+                            dataKey="UsedRating"
+                            name="Rating"
+                            domain={[1000, 2000]}
+                            label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
+                        <Tooltip formatter={value => value.toFixed(2)} />
+                        <Legend />
+                        {WorkScatters(works)}
+                    </ScatterChart>
                 </ResponsiveContainer>
                 <div className="table-responsive my-3">
                     <table className="table">
@@ -185,7 +220,7 @@ export default function LastWorks(props) {
                                 <th scope="col">Author</th>
                                 <th scope="col">Pull request</th>
                                 <th scope="col">Finished at</th>
-                                <th scope="col" className="text-right">+Experience</th>
+                                <th scope="col" className="text-right">+XP</th>
                             </tr>
                         </thead>
                         <tbody>
