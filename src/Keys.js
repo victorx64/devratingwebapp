@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from "react-router-dom";
 import { AuthContext } from "./Auth.js";
 import { host } from './config.js';
 
@@ -10,11 +9,10 @@ export default function Keys(props) {
     const [value, setValue] = useState(undefined);
     const [jwt, setJwt] = useState(null);
     const { currentUser } = useContext(AuthContext);
-    const { organization } = useParams();
 
-    function FetchKeys(t, o) {
+    function FetchKeys(t) {
         if (t) {
-            fetch(host + "/keys/" + encodeURIComponent(o), {
+            fetch(host + "/keys/", {
                 method: 'GET',
                 headers: {
                     'authorization': 'Bearer ' + t
@@ -33,12 +31,12 @@ export default function Keys(props) {
     }
 
     useEffect(() => { currentUser.getIdToken().then(setJwt) }, [currentUser]);
-    useEffect(() => { FetchKeys(jwt, organization) }, [jwt, organization]);
+    useEffect(() => { FetchKeys(jwt) }, [jwt]);
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
 
-        fetch(host + "/keys/" + encodeURIComponent(organization), {
+        fetch(host + "/keys/", {
             method: 'POST',
             headers: {
                 'authorization': 'Bearer ' + jwt,
@@ -52,7 +50,7 @@ export default function Keys(props) {
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
-                    FetchKeys(jwt, organization);
+                    FetchKeys(jwt);
                 },
                 (error) => {
                     setError(error);

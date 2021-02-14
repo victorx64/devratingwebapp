@@ -12,8 +12,8 @@ import Ratings from './Ratings.js';
 import Works from './Works.js';
 import SignIn from './SignIn.js';
 import SignInLink from './SignInLink.js';
-import Organizations from './Organizations.js';
-import Organization from './Organization.js';
+import Repositories from './Repositories.js';
+import Repository from './Repository.js';
 import Keys from './Keys.js';
 import { AuthProvider } from "./Auth";
 import PrivateRoute from "./PrivateRoute.js";
@@ -41,13 +41,13 @@ export default function App() {
         <div className="container">
           <Switch>
             <Route path="/signin" component={SignIn} />
-            <PrivateRoute path="/organizations/:organization/keys/" component={Keys} />
-            <Route path="/organizations/:organization" component={Organization} />
+            <PrivateRoute path="/keys" component={Keys} />
+            <Route path="/repositories/:organization/:repo" component={Repository} />
             <Route path="/authors/:id" component={Authors} />
             <Route path="/works/:id" component={Works} />
             <Route path="/ratings/:id" component={Ratings} />
             <Route path="/policy" component={Policy} />
-            <PrivateRoute exact path="/" component={Organizations} />
+            <PrivateRoute exact path="/" component={Repositories} />
           </Switch>
         </div>
 

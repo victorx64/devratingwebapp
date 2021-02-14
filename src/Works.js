@@ -55,12 +55,6 @@ export default function Works() {
                             <td>{work.Id}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Repository</th>
-                            <td>
-                                {work.Repository}
-                            </td>
-                        </tr>
-                        <tr>
                             <th scope="row">Author</th>
                             <td><Link to={/authors/ + work.AuthorId}>{work.AuthorEmail}</Link></td>
                         </tr>

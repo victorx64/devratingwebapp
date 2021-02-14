@@ -106,7 +106,13 @@ export default function Authors() {
                         <tr>
                             <th scope="row">Organization</th>
                             <td>
-                                <Link to={/organizations/ + encodeURIComponent(author.Organization)}>{author.Organization}</Link>
+                                {author.Organization}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Repository</th>
+                            <td>
+                                <Link to={"/repositories/" + encodeURIComponent(author.Organization) + "/" + encodeURIComponent(author.Repository)}>{author.Repository}</Link>
                             </td>
                         </tr>
                         <tr>
@@ -124,7 +130,7 @@ export default function Authors() {
                 </table>
                 <h1 className="mt-5">Rating history</h1>
                 <p>Of the last 90 days.</p>
-                <ResponsiveContainer width='100%' aspect={3 / 1} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                <ResponsiveContainer aspect={3 / 1}>
                     <AreaChart
                         data={
                             author.Ratings.map(
@@ -137,7 +143,7 @@ export default function Authors() {
                                 )
                             )
                         }
-                        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                        margin={{ top: 0, right: 0, left: 0, bottom: 20 }}>
                         <Tooltip wrapperStyle={{ backgroundColor: '#fff', border: '1px solid #dcdcdc' }} content={<CustomTooltip />} />
                         <XAxis
                             dataKey="CreatedAt"
