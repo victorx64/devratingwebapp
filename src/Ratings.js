@@ -49,11 +49,7 @@ export default function Ratings() {
                         </tr>
                         <tr>
                             <th scope="row">Previous multiplier</th>
-                            {
-                                rating.PreviousRatingId
-                                    ? <td>{LinesMultiplier(rating.PreviousRating).toFixed(2)}</td>
-                                    : <td>{LinesMultiplier(DefaultRating).toFixed(2)}</td>
-                            }
+                             <td>{LinesMultiplier(rating.PreviousRating).toFixed(2)}</td>
                         </tr>
                         <tr>
                             <th scope="row">New rating</th>
