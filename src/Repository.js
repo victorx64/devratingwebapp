@@ -129,10 +129,10 @@ function ToDate(daysAgo) {
     return today
 }
 
-export default function LastWorks(props) {
+export default function Repository(props) {
     const [error, setError] = useState(null)
     const [works, setWorks] = useState(null)
-    const { organization } = useParams();
+    const { organization, repo } = useParams();
 
     useEffect(() => {
         const after = new Date()
@@ -142,8 +142,8 @@ export default function LastWorks(props) {
         after.setUTCSeconds(0)
         after.setUTCMilliseconds(0)
 
-        fetch(host + "/works/organizations/" + organization +
-            "/" + after.toISOString())
+        fetch(host + "/works/repositories/" + organization + "/" +
+            repo + "/" + after.toISOString())
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
@@ -153,15 +153,14 @@ export default function LastWorks(props) {
                     setError(error)
                 }
             )
-    }, [organization])
+    }, [organization, repo])
 
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>
     } else if (works) {
         return (
             <React.Fragment>
-                <h1 className="mt-4">{decodeURIComponent(organization)} contributors</h1>
-                <Link to={'./' + organization + '/keys'}>API keys</Link>
+                <h1 className="mt-4">{decodeURIComponent(repo)} contributors</h1>
                 <ResponsiveContainer aspect={2.0 / 1.0}>
                     <ComposedChart data={RatingsData(works)} margin={{ top: 20, bottom: 20 }}>
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
