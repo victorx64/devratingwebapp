@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from "./Auth.js";
-import { host } from './config.js';
+import React, { useState, useEffect, useContext } from 'react'
+import { AuthContext } from "./Auth.js"
+import { host } from './config.js'
 
 export default function Keys(props) {
-    const [error, setError] = useState(null);
-    const [keys, setKeys] = useState(null);
-    const [name, setName] = useState(undefined);
-    const [value, setValue] = useState(undefined);
-    const [jwt, setJwt] = useState(null);
-    const { currentUser } = useContext(AuthContext);
+    const [error, setError] = useState(null)
+    const [keys, setKeys] = useState(null)
+    const [name, setName] = useState(undefined)
+    const [value, setValue] = useState(undefined)
+    const [jwt, setJwt] = useState(null)
+    const { currentUser } = useContext(AuthContext)
 
     function FetchKeys(t) {
         if (t) {
@@ -21,20 +21,20 @@ export default function Keys(props) {
                 .then(res => res.ok ? res.json() : Promise.reject(res))
                 .then(
                     (result) => {
-                        setKeys(result);
+                        setKeys(result)
                     },
                     (error) => {
-                        setError(error);
+                        setError(error)
                     }
-                );
+                )
         }
     }
 
-    useEffect(() => { currentUser.getIdToken().then(setJwt) }, [currentUser]);
-    useEffect(() => { FetchKeys(jwt) }, [jwt]);
+    useEffect(() => { currentUser.getIdToken().then(setJwt) }, [currentUser])
+    useEffect(() => { FetchKeys(jwt) }, [jwt])
 
     const handleSubmit = (evt) => {
-        evt.preventDefault();
+        evt.preventDefault()
 
         fetch(host + "/keys/", {
             method: 'POST',
@@ -50,33 +50,17 @@ export default function Keys(props) {
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
-                    FetchKeys(jwt);
+                    FetchKeys(jwt)
                 },
                 (error) => {
-                    setError(error);
+                    setError(error)
                 }
             )
     }
 
     if (error) {
-        return <div><br />Error: {error.message ?? error.status}</div>;
+        return <div><br />Error: {error.message ?? error.status}</div>
     } else if (keys) {
-        const rows = keys.map((key, index, array) =>
-            <tr key={key.Id}>
-                <th className="align-middle">
-                    {key.Name}
-                </th>
-                <td className="align-middle">
-                    {key.CreatedAt}
-                </td>
-                <td className="align-middle">
-                    {key.RevokedAt}
-                </td>
-                <td className="align-middle">
-                </td>
-            </tr>
-        );
-
         return (
             <>
                 <h1 className="mt-4">My Keys</h1>
@@ -91,7 +75,23 @@ export default function Keys(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {rows}
+                            {
+                                keys.map((key) =>
+                                    <tr key={key.Id}>
+                                        <th className="align-middle">
+                                            {key.Name}
+                                        </th>
+                                        <td className="align-middle">
+                                            {new Date(key.CreatedAt).toLocaleString()}
+                                        </td>
+                                        <td className="align-middle">
+                                            {key.RevokedAt && new Date(key.RevokedAt).toLocaleString()}
+                                        </td>
+                                        <td className="align-middle">
+                                        </td>
+                                    </tr>
+                                )
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -109,8 +109,8 @@ export default function Keys(props) {
                     <button type="submit" className="btn btn-primary">Add</button>
                 </form>
             </>
-        );
+        )
     } else {
-        return <div>Loading...</div>;
+        return <div>Loading...</div>
     }
 }

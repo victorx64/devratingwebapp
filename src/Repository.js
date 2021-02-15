@@ -129,7 +129,7 @@ function ToDate(daysAgo) {
     return today
 }
 
-export default function Repository(props) {
+export default function Repository() {
     const [error, setError] = useState(null)
     const [works, setWorks] = useState(null)
     const { organization, repo } = useParams();

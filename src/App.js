@@ -11,7 +11,7 @@ import Authors from './Authors.js';
 import Ratings from './Ratings.js';
 import Works from './Works.js';
 import SignIn from './SignIn.js';
-import SignInLink from './SignInLink.js';
+import NavLinks from './NavLinks.js';
 import Repositories from './Repositories.js';
 import Repository from './Repository.js';
 import Keys from './Keys.js';
@@ -30,15 +30,9 @@ export default function App() {
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <SignInLink />
-              </li>
-            </ul>
-          </div>
+          <NavLinks />
         </nav>
-        <div className="container">
+        <div className="container pb-4">
           <Switch>
             <Route path="/signin" component={SignIn} />
             <PrivateRoute path="/keys" component={Keys} />
