@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { host } from './config.js';
-import { LinesMultiplier, GainedExperience, LimitedAdditions } from "./Formula.js";
+import { LinesMultiplier, GainedExperience, LimitedAdditions, DefaultRating } from "./Formula.js";
 
 export default function Works() {
     const [error, setError] = useState(null);
@@ -72,7 +72,11 @@ export default function Works() {
                         </tr>
                         <tr>
                             <th scope="row">Rating</th>
-                            <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating.toFixed(2)}</Link></td>
+                            {
+                                work.UsedRatingId
+                                    ? <td><Link to={/ratings/ + work.UsedRatingId}>{work.UsedRating.toFixed(2)}</Link></td>
+                                    : <td>{DefaultRating.toFixed(2)} (initial)</td>
+                            }
                         </tr>
                         <tr>
                             <th scope="row">New Rating</th>

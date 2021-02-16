@@ -143,8 +143,8 @@ export default function Repository() {
         after.setUTCSeconds(0)
         after.setUTCMilliseconds(0)
 
-        fetch(host + "/works/repositories/" + organization + "/" +
-            repo + "/" + after.toISOString())
+        fetch(host + "/works/?organization=" + organization + "&repository=" +
+            repo + "&after=" + after.toISOString())
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
