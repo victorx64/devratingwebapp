@@ -32,7 +32,8 @@ const colors = [
 ]
 
 function RatingsData(works) {
-    const worksPerDay = _.groupBy(works, w => (Math.floor((new Date() - new Date(w.CreatedAt)) / 86400000)))
+    const today = new Date()
+    const worksPerDay = _.groupBy(works, w => (Math.floor((today - new Date(w.CreatedAt)) / 86400000)))
 
     const result = Array(days + 1).fill({}).map(
         (item, index) => (
@@ -164,9 +165,7 @@ export default function Repository() {
                 <ResponsiveContainer aspect={2.0 / 1.0}>
                     <ComposedChart data={RatingsData(works)} margin={{ top: 20, bottom: 20 }}>
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis dataKey="Day"
-                            tickFormatter={d => ToDate(d).toLocaleDateString()}
-                            label={{ value: "Date", offset: -5, position: "insideBottom" }} />
+                        <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
                         <YAxis
                             yAxisId="left"
                             domain={[1000, 2000]}
@@ -181,11 +180,8 @@ export default function Repository() {
                 <ResponsiveContainer aspect={2.0 / 1.0}>
                     <BarChart data={ExperiencesData(works)} margin={{ top: 20, bottom: 20 }}>
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis dataKey="Date"
-                            tickFormatter={d => ToDate(d).toLocaleDateString()}
-                            label={{ value: "Date", offset: -5, position: "insideBottom" }} />
-                        <YAxis
-                            label={{ value: "XP", angle: -90, position: "insideLeft" }} />
+                        <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
+                        <YAxis label={{ value: "+XP", angle: -90, position: "insideLeft" }} />
                         <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
                         {ExperienceBars(works)}
                         <Legend />

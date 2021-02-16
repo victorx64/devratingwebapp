@@ -39,7 +39,7 @@ export default function Repositories() {
             <>
                 <h1 className="mt-4">Getting Started</h1>
                 <p>
-                    Create <Link to="/keys">API keys</Link> to connect to GitHub or BitBucket
+                    Create <Link to="/keys">API keys</Link> to connect GitHub or BitBucket
                 </p>
                 <h1 className="mt-4">My repositories</h1>
                 <div className="table-responsive">

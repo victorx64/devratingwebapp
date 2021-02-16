@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { AuthContext } from "./Auth.js"
 import { host } from './config.js'
 
-export default function Keys(props) {
+export default function Keys() {
     const [error, setError] = useState(null)
     const [keys, setKeys] = useState(null)
     const [name, setName] = useState(undefined)
@@ -63,7 +63,9 @@ export default function Keys(props) {
     } else if (keys) {
         return (
             <>
-                <h1 className="mt-4">My Keys</h1>
+                <h1 className="mt-4">Organization_ID</h1>
+                <code>{currentUser.uid}</code>
+                <h1 className="mt-4">API_Key</h1>
                 <div className="table-responsive">
                     <table className="table">
                         <thead>
@@ -76,20 +78,24 @@ export default function Keys(props) {
                         </thead>
                         <tbody>
                             {
-                                keys.map((key) =>
-                                    <tr key={key.Id}>
-                                        <th className="align-middle">
-                                            {key.Name}
-                                        </th>
-                                        <td className="align-middle">
-                                            {new Date(key.CreatedAt).toLocaleString()}
-                                        </td>
-                                        <td className="align-middle">
-                                            {key.RevokedAt && new Date(key.RevokedAt).toLocaleString()}
-                                        </td>
-                                        <td className="align-middle">
-                                        </td>
-                                    </tr>
+                                keys.map(
+                                    (key) =>
+                                        <tr key={key.Id}>
+                                            <th className="align-middle">
+                                                {key.Name}
+                                            </th>
+                                            <td className="align-middle">
+                                                {new Date(key.CreatedAt).toLocaleString()}
+                                            </td>
+                                            <td className="align-middle">
+                                                {key.RevokedAt && new Date(key.RevokedAt).toLocaleString()}
+                                            </td>
+                                            <td className="align-middle">
+                                                <i>
+                                                    Not implemented
+                                                </i>
+                                            </td>
+                                        </tr>
                                 )
                             }
                         </tbody>
@@ -106,8 +112,16 @@ export default function Keys(props) {
                             <input type="text" className="form-control" id="inputValue" value={value} onChange={e => setValue(e.target.value)} />
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary">Add</button>
+                    <button type="submit" className="btn btn-primary">Add a new API_Key</button>
                 </form>
+                <h1 className="mt-4">GitHub Actions</h1>
+                <p>
+
+                </p>
+                <h1 className="mt-4">BitBucket Pipeline</h1>
+                <p>
+
+                </p>
             </>
         )
     } else {
