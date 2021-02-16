@@ -30,7 +30,7 @@ const SignIn = () => {
         <>
             <h1 className="mt-4">Sign In</h1>
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-            <h1 className="mt-4">Sample repositories</h1>
+            {/* <h1 className="mt-4">Sample repositories</h1>
             <div className="table-responsive">
                 <table className="table">
                     <tbody>
@@ -43,7 +43,7 @@ const SignIn = () => {
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> */}
         </>
     );
 }

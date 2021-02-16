@@ -57,7 +57,7 @@ export default function Repositories() {
                         </tbody>
                     </table>
                 </div>
-                <h1 className="mt-4">Sample repositories</h1>
+                {/* <h1 className="mt-4">Sample repositories</h1>
                 <div className="table-responsive">
                     <table className="table">
                         <tbody>
@@ -70,7 +70,7 @@ export default function Repositories() {
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </div> */}
             </>
         )
     } else {
