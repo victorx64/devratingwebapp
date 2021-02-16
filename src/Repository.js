@@ -3,7 +3,7 @@ import './App.css';
 import React, { useState, useEffect } from "react"
 import _ from "lodash"
 import { host } from "./config.js"
-import { GainedExperience, DefaultRating } from "./Formula.js"
+import { GainedExperience, RatingDelta, DefaultRating } from "./Formula.js"
 import {
     CartesianGrid,
     XAxis,
@@ -215,6 +215,7 @@ export default function Repository() {
                                 <th scope="col">Author</th>
                                 <th scope="col">Pull request</th>
                                 <th scope="col">Finished at</th>
+                                <th scope="col" className="text-right">+Rating</th>
                                 <th scope="col" className="text-right">+XP</th>
                             </tr>
                         </thead>
@@ -232,6 +233,7 @@ export default function Repository() {
                                             <a href={work.Link}>{work.Link}</a>
                                         </td>
                                         <td>{new Date(work.CreatedAt).toLocaleDateString()}</td>
+                                        <td className="text-right">{RatingDelta(work).toFixed(2)}</td>
                                         <td className="text-right">{GainedExperience(work).toFixed(2)}</td>
                                     </tr>
                                 )
