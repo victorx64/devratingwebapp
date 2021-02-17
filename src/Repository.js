@@ -3,7 +3,7 @@ import './App.css';
 import React, { useState, useEffect } from "react"
 import _ from "lodash"
 import { host } from "./config.js"
-import { GainedExperience, DefaultRating } from "./Formula.js"
+import { GainedExperience, RatingDelta, DefaultRating } from "./Formula.js"
 import {
     CartesianGrid,
     XAxis,
@@ -32,7 +32,8 @@ const colors = [
 ]
 
 function RatingsData(works) {
-    const worksPerDay = _.groupBy(works, w => (Math.floor((new Date() - new Date(w.CreatedAt)) / 86400000)))
+    const today = new Date()
+    const worksPerDay = _.groupBy(works, w => (Math.floor((today - new Date(w.CreatedAt)) / 86400000)))
 
     const result = Array(days + 1).fill({}).map(
         (item, index) => (
@@ -129,7 +130,7 @@ function ToDate(daysAgo) {
     return today
 }
 
-export default function Repository(props) {
+export default function Repository() {
     const [error, setError] = useState(null)
     const [works, setWorks] = useState(null)
     const { organization, repo } = useParams();
@@ -142,8 +143,8 @@ export default function Repository(props) {
         after.setUTCSeconds(0)
         after.setUTCMilliseconds(0)
 
-        fetch(host + "/works/repositories/" + organization + "/" +
-            repo + "/" + after.toISOString())
+        fetch(host + "/works/?organization=" + organization + "&repository=" +
+            repo + "&after=" + after.toISOString())
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(
                 (result) => {
@@ -164,9 +165,7 @@ export default function Repository(props) {
                 <ResponsiveContainer aspect={2.0 / 1.0}>
                     <ComposedChart data={RatingsData(works)} margin={{ top: 20, bottom: 20 }}>
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis dataKey="Day"
-                            tickFormatter={d => ToDate(d).toLocaleDateString()}
-                            label={{ value: "Date", offset: -5, position: "insideBottom" }} />
+                        <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
                         <YAxis
                             yAxisId="left"
                             domain={[1000, 2000]}
@@ -181,11 +180,8 @@ export default function Repository(props) {
                 <ResponsiveContainer aspect={2.0 / 1.0}>
                     <BarChart data={ExperiencesData(works)} margin={{ top: 20, bottom: 20 }}>
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis dataKey="Date"
-                            tickFormatter={d => ToDate(d).toLocaleDateString()}
-                            label={{ value: "Date", offset: -5, position: "insideBottom" }} />
-                        <YAxis
-                            label={{ value: "XP", angle: -90, position: "insideLeft" }} />
+                        <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
+                        <YAxis label={{ value: "+XP", angle: -90, position: "insideLeft" }} />
                         <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
                         {ExperienceBars(works)}
                         <Legend />
@@ -219,6 +215,7 @@ export default function Repository(props) {
                                 <th scope="col">Author</th>
                                 <th scope="col">Pull request</th>
                                 <th scope="col">Finished at</th>
+                                <th scope="col" className="text-right">+Rating</th>
                                 <th scope="col" className="text-right">+XP</th>
                             </tr>
                         </thead>
@@ -236,6 +233,7 @@ export default function Repository(props) {
                                             <a href={work.Link}>{work.Link}</a>
                                         </td>
                                         <td>{new Date(work.CreatedAt).toLocaleDateString()}</td>
+                                        <td className="text-right">{RatingDelta(work).toFixed(2)}</td>
                                         <td className="text-right">{GainedExperience(work).toFixed(2)}</td>
                                     </tr>
                                 )

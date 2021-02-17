@@ -3,7 +3,7 @@ import React from 'react';
 export default function Policy() {
     return (
         <div className="container">
-            <h1 className="mt-5">Privacy Policy</h1>
+            <h1 className="mt-4">Privacy Policy</h1>
             <p>Effective date: December 14, 2019</p>
             <p>Dev Rating ("us", "we", or "our") operates the devrating.net website (the "Service").</p>
             <p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.</p>
@@ -89,8 +89,6 @@ export default function Policy() {
             <ul>
                 <li>By visiting this telegram chat: https://t.me/devratingchat</li>
             </ul>
-            <br />
-            <br />
         </div>
     );
 }

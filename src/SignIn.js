@@ -1,9 +1,9 @@
-import React, { useContext }  from "react";
+import React, { useContext } from "react";
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { AuthContext } from "./Auth.js";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter, Redirect, Link } from "react-router-dom";
 
 const SignIn = () => {
 
@@ -27,7 +27,24 @@ const SignIn = () => {
     };
 
     return (
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+        <>
+            <h1 className="mt-4">Sign In</h1>
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+            <h1 className="mt-4">Sample repository</h1>
+            <div className="table-responsive">
+                <table className="table">
+                    <tbody>
+                        <tr>
+                            <td className="align-middle">
+                                <Link to="/repositories/sgUj3bYc7wXTAXjF5DN0ON7lTTT2/bitcoin%2Fbitcoin">
+                                    bitcoin/bitcoin
+                                </Link>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </>
     );
 }
 
