@@ -63,9 +63,9 @@ export default function Keys() {
     } else if (keys) {
         return (
             <>
-                <h1 className="mt-4">Organization_ID</h1>
+                <h1 className="mt-4">My Organization_ID</h1>
                 <code>{currentUser.uid}</code>
-                <h1 className="mt-4">API_Key</h1>
+                <h1 className="mt-4">My API_Keys</h1>
                 <div className="table-responsive">
                     <table className="table">
                         <thead>
@@ -116,11 +116,31 @@ export default function Keys() {
                 </form>
                 <h1 className="mt-4">GitHub Actions</h1>
                 <p>
+                    Just throw this to <code>.github/workflows/devrating.yml</code> in your repo:
+                    <pre>{`
+name: Updating ranks in devrating.net
+on:
+  pull_request:
+    branches: [ main ]  # Put your dev branch
+    types: [ closed ]
+jobs:
+  devrating:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Required to be 0
 
+    - uses: victorx64/devrating-gh-action@v0
+      with:
+        devrating-organization: ${currentUser.uid}
+        devrating-api-key: # Your API_Key`}
+                    </pre>
+                    Then, <b>close</b> a pull request to initiate the action.
                 </p>
                 <h1 className="mt-4">BitBucket Pipeline</h1>
                 <p>
-
+                    TBD
                 </p>
             </>
         )

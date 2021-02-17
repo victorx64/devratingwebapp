@@ -57,20 +57,6 @@ export default function Repositories() {
                         </tbody>
                     </table>
                 </div>
-                {/* <h1 className="mt-4">Sample repositories</h1>
-                <div className="table-responsive">
-                    <table className="table">
-                        <tbody>
-                            <tr>
-                                <td className="align-middle">
-                                    <Link to="/repositories/sgUj3bYc7wXTAXjF5DN0ON7lTTT2/cautious-eureka">
-                                        cautious-eureka
-                                </Link>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> */}
             </>
         )
     } else {
