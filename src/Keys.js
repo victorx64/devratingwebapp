@@ -117,7 +117,8 @@ export default function Keys() {
                 <h1 className="mt-4">GitHub Actions</h1>
                 <p>
                     Just throw this to <code>.github/workflows/devrating.yml</code> in your repo:
-                    <pre>{`
+                </p>
+                <pre>{`
 name: Updating ranks in devrating.net
 on:
   pull_request:
@@ -135,7 +136,8 @@ jobs:
       with:
         devrating-organization: ${currentUser.uid}
         devrating-api-key: # Your API_Key`}
-                    </pre>
+                </pre>
+                <p>
                     Then, <b>close</b> a pull request to initiate the action.
                 </p>
                 <h1 className="mt-4">BitBucket Pipeline</h1>

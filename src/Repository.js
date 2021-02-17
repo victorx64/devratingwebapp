@@ -162,51 +162,53 @@ export default function Repository() {
         return (
             <React.Fragment>
                 <h1 className="mt-4">{decodeURIComponent(repo)} contributors</h1>
-                <ResponsiveContainer aspect={2.0 / 1.0}>
-                    <ComposedChart data={RatingsData(works)} margin={{ top: 20, bottom: 20 }}>
-                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
-                        <YAxis
-                            yAxisId="left"
-                            domain={[1000, 2000]}
-                            label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
-                        <YAxis yAxisId="right" domain={[0, 1000]} hide={true} orientation="right" />
-                        <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
-                        <Bar stackId="a" yAxisId="right" dataKey="Delta" name="Rating drop" fill="#999" />
-                        {RatingLines(works)}
-                        <Legend />
-                    </ComposedChart>
-                </ResponsiveContainer>
-                <ResponsiveContainer aspect={2.0 / 1.0}>
-                    <BarChart data={ExperiencesData(works)} margin={{ top: 20, bottom: 20 }}>
-                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
-                        <YAxis label={{ value: "+XP", angle: -90, position: "insideLeft" }} />
-                        <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
-                        {ExperienceBars(works)}
-                        <Legend />
-                    </BarChart>
-                </ResponsiveContainer>
-                <ResponsiveContainer aspect={2.0 / 1.0}>
-                    <ScatterChart margin={{ top: 20, bottom: 20, }}>
-                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis
-                            type="number"
-                            dataKey="Additions"
-                            name="New lines"
-                            domain={[0, 1000]}
-                            label={{ value: "New lines", offset: -5, position: "insideBottom" }} />
-                        <YAxis
-                            type="number"
-                            dataKey="UsedRating"
-                            name="Rating"
-                            domain={[1000, 2000]}
-                            label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
-                        <Tooltip formatter={value => value.toFixed(2)} />
-                        <Legend />
-                        {WorkScatters(works)}
-                    </ScatterChart>
-                </ResponsiveContainer>
+                <div className="overflow-auto">
+                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                        <ComposedChart data={RatingsData(works)} margin={{ top: 20, bottom: 20 }}>
+                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                            <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
+                            <YAxis
+                                yAxisId="left"
+                                domain={[1000, 2000]}
+                                label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
+                            <YAxis yAxisId="right" domain={[0, 1000]} hide={true} orientation="right" />
+                            <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
+                            <Bar stackId="a" yAxisId="right" dataKey="Delta" name="Rating drop" fill="#999" />
+                            {RatingLines(works)}
+                            <Legend />
+                        </ComposedChart>
+                    </ResponsiveContainer>
+                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                        <BarChart data={ExperiencesData(works)} margin={{ top: 20, bottom: 20 }}>
+                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                            <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
+                            <YAxis label={{ value: "+XP", angle: -90, position: "insideLeft" }} />
+                            <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
+                            {ExperienceBars(works)}
+                            <Legend />
+                        </BarChart>
+                    </ResponsiveContainer>
+                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                        <ScatterChart margin={{ top: 20, bottom: 20 }}>
+                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                            <XAxis
+                                type="number"
+                                dataKey="Additions"
+                                name="New lines"
+                                domain={[0, 1000]}
+                                label={{ value: "New lines", offset: -5, position: "insideBottom" }} />
+                            <YAxis
+                                type="number"
+                                dataKey="UsedRating"
+                                name="Rating"
+                                domain={[1000, 2000]}
+                                label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
+                            <Tooltip formatter={value => value.toFixed(2)} />
+                            <Legend />
+                            {WorkScatters(works)}
+                        </ScatterChart>
+                    </ResponsiveContainer>
+                </div>
                 <div className="table-responsive my-3">
                     <table className="table">
                         <thead>
