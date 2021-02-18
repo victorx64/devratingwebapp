@@ -30,7 +30,7 @@ const SignIn = () => {
         <>
             <h1 className="mt-4">Sign In</h1>
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-            <h1 className="mt-4">Sample repository</h1>
+            <h1 className="mt-4">Sample repositories</h1>
             <div className="table-responsive">
                 <table className="table">
                     <tbody>
@@ -38,6 +38,13 @@ const SignIn = () => {
                             <td className="align-middle">
                                 <Link to="/repositories/sgUj3bYc7wXTAXjF5DN0ON7lTTT2/bitcoin%2Fbitcoin">
                                     bitcoin/bitcoin
+                                </Link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="align-middle">
+                                <Link to="/repositories/sgUj3bYc7wXTAXjF5DN0ON7lTTT2/ethereum%2Fgo-ethereum">
+                                    ethereum/go-ethereum
                                 </Link>
                             </td>
                         </tr>
