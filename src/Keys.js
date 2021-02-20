@@ -118,8 +118,7 @@ export default function Keys() {
                 <p>
                     Just throw this to <code>.github/workflows/devrating.yml</code> in your repo:
                 </p>
-                <pre>{`
-name: Updating ranks in devrating.net
+                <pre>{`name: Updating ranks in devrating.net
 on:
   pull_request:
     branches: [ main ]  # Put your dev branch
@@ -131,7 +130,6 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0  # Required to be 0
-
     - uses: victorx64/devrating-gh-action@v0
       with:
         devrating-organization: ${currentUser.uid}
@@ -142,7 +140,20 @@ jobs:
                 </p>
                 <h1 className="mt-4">BitBucket Pipeline</h1>
                 <p>
-                    TBD
+                    Add the following snippet to the script section of your <code>bitbucket-pipelines.yml</code> file:
+                </p>
+                <pre>{`script:
+- pipe: docker://victorx64/devrating-bb-pipe:3.2.0
+  variables:
+    DEVRATING_ORGANIZATION: ${currentUser.uid}
+    DEVRATING_KEY: # Your API_Key
+    BITBUCKET_APP_PASSWORD: username:password # Your username and BitBucket App Password
+    BASE_BRANCH: main # Put your dev branch`}
+                </pre>
+                <p>
+                    Create BitBucket App Password in your <a href="https://bitbucket.org/account/settings/app-passwords/"
+                    >account settings</a>.
+                    Permit reading Pull requests.
                 </p>
             </>
         )
