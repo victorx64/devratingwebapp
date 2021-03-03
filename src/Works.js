@@ -67,7 +67,7 @@ export default function Works() {
                             <td>{LinesMultiplier(work.UsedRating).toFixed(2)}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Experience points</th>
+                            <th scope="row">Experience Points (XP)</th>
                             <td>{GainedExperience(work).toFixed(2)}</td>
                         </tr>
                         <tr>
@@ -107,7 +107,7 @@ export default function Works() {
                             <td>{work.SinceCommit}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Finished at</th>
+                            <th scope="row">Merged at</th>
                             <td>{new Date(work.CreatedAt).toLocaleString()}</td>
                         </tr>
                     </tbody>
