@@ -17,6 +17,8 @@ import {
     BarChart,
     ScatterChart,
     Scatter,
+    AreaChart,
+    Area,
 } from "recharts"
 
 const days = 90
@@ -100,6 +102,44 @@ function ExperiencesData(works) {
     return result.reverse()
 }
 
+function AccumulatedExperiencesData(works) {
+    const accum = {}
+
+    const result = ExperiencesData(works).map(
+        item => {
+            Object.entries(item)
+                .forEach(([author, xp]) => accum[author] = (accum[author] ?? 0) + xp)
+
+            const dayXp = {}
+
+            Object.assign(dayXp, accum)
+
+            dayXp.Day = item.Day
+
+            return dayXp
+        }
+    );
+
+    return result
+}
+
+function AccumulatedExperienceAreas(works) {
+    const authors = _.uniq(works.map((value) => (value.AuthorEmail)))
+
+    return authors.map(
+        (a, i) =>
+        (
+            <Area type="monotone"
+                key={a}
+                dataKey={a}
+                stackId="1"
+                name={a}
+                stroke={colors[i % colors.length]}
+                fill={colors[i % colors.length]} />
+        )
+    )
+}
+
 function ExperienceBars(works) {
     const authors = _.uniq(works.map((value) => (value.AuthorEmail)))
 
@@ -164,6 +204,27 @@ export default function Repository() {
                 <h1 className="mt-4">{decodeURIComponent(repo)} contributors</h1>
                 <div className="overflow-auto">
                     <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                        <BarChart data={ExperiencesData(works)} margin={{ top: 20, bottom: 20 }}>
+                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                            <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
+                            <YAxis label={{ value: "+XP", angle: -90, position: "insideLeft" }} />
+                            <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
+                            {ExperienceBars(works)}
+                            <Legend />
+                        </BarChart>
+                    </ResponsiveContainer>
+                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                        <AreaChart data={AccumulatedExperiencesData(works)}
+                            margin={{ top: 20, bottom: 20 }}>
+                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                            <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
+                            <YAxis label={{ value: "Accumulated XP", angle: -90, position: "insideLeft" }} />
+                            <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
+                            <Legend />
+                            {AccumulatedExperienceAreas(works)}
+                        </AreaChart>
+                    </ResponsiveContainer>
+                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
                         <ComposedChart data={RatingsData(works)} margin={{ top: 20, bottom: 20 }}>
                             <CartesianGrid vertical={false} strokeDasharray="3 3" />
                             <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
@@ -177,16 +238,6 @@ export default function Repository() {
                             {RatingLines(works)}
                             <Legend />
                         </ComposedChart>
-                    </ResponsiveContainer>
-                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
-                        <BarChart data={ExperiencesData(works)} margin={{ top: 20, bottom: 20 }}>
-                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                            <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
-                            <YAxis label={{ value: "+XP", angle: -90, position: "insideLeft" }} />
-                            <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
-                            {ExperienceBars(works)}
-                            <Legend />
-                        </BarChart>
                     </ResponsiveContainer>
                     <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
                         <ScatterChart margin={{ top: 20, bottom: 20 }}>
@@ -216,7 +267,7 @@ export default function Repository() {
                                 <th scope="col">Work</th>
                                 <th scope="col">Author</th>
                                 <th scope="col">Pull request</th>
-                                <th scope="col">Finished at</th>
+                                <th scope="col">Merged at</th>
                                 <th scope="col" className="text-right">+Rating</th>
                                 <th scope="col" className="text-right">+XP</th>
                             </tr>
