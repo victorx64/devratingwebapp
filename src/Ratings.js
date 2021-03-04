@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { host } from './config.js';
 import { DefaultRating, LinesMultiplier } from "./Formula.js";
-import { Equation, EquationOptions, defaultErrorHandler } from 'react-equation'
-import { defaultVariables, defaultFunctions } from 'equation-resolver'
 
 export default function Ratings() {
     const [error, setError] = useState(null);
@@ -77,23 +75,6 @@ export default function Ratings() {
                         </tr>
                     </tbody>
                 </table>
-                <EquationOptions
-                    variables={defaultVariables}
-                    functions={defaultFunctions}
-                    errorHandler={defaultErrorHandler}>
-                    <p>
-                        The multiplier based on the rating of a developer:<br />
-                        <Equation value='m = 1 / (1 - p)' /><br />
-                        where <var>m</var> – multiplier, <var>p</var> – the probability of winning of the developer against a developer with an average rating.
-                    </p>
-                    <p>
-                        Evaluation of <var>p</var>:<br />
-                        <Equation value='Qa = 10 ^ (a / 400)' /><br />
-                        <Equation value='Qb = 10 ^ (1500 / 400)' /><br />
-                        <Equation value='p = Qa / (Qa + Qb)' /><br />
-                        where <var>a</var> – rating of the developer.
-                    </p>
-                </EquationOptions>
             </>
         );
     } else {

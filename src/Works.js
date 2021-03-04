@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Equation, EquationOptions, defaultErrorHandler } from 'react-equation'
+import { defaultVariables, defaultFunctions } from 'equation-resolver'
 import { Link, useParams } from "react-router-dom";
 import { host } from './config.js';
-import { LinesMultiplier, GainedExperience, LimitedAdditions, DefaultRating } from "./Formula.js";
+import { LinesMultiplier, GainedExperience, DefaultRating } from "./Formula.js";
 
 export default function Works() {
     const [error, setError] = useState(null);
@@ -60,7 +62,7 @@ export default function Works() {
                         </tr>
                         <tr>
                             <th scope="row">New lines</th>
-                            <td>{LimitedAdditions(work)}</td>
+                            <td>{work.Additions}</td>
                         </tr>
                         <tr>
                             <th scope="row">Multiplier</th>
@@ -140,6 +142,25 @@ export default function Works() {
                 <p>
                     When the system meets a new author it sets <var>1500</var> rating points to him. This is an average rating of the system.
                 </p>
+                <h5>Multiplier</h5>
+                <EquationOptions
+                    variables={defaultVariables}
+                    functions={defaultFunctions}
+                    errorHandler={defaultErrorHandler}>
+                    <p>
+                        The multiplier based on the rating of the developer:<br />
+                        <Equation value='m = 1 / (1 - p)' /><br />
+                        where <var>m</var> – multiplier, <var>p</var> – the probability of winning of the developer against a developer with an average rating.
+                    </p>
+                    <p>
+                        Evaluation of <var>p</var>:<br />
+                        <Equation value='Qa = 10 ^ (a / 400)' /><br />
+                        <Equation value='Qb = 10 ^ (1500 / 400)' /><br />
+                        <Equation value='p = Qa / (Qa + Qb)' /><br />
+                        where <var>a</var> – rating of the developer.
+                    </p>
+                </EquationOptions>
+
             </>
         );
     }
