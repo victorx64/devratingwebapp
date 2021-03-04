@@ -154,12 +154,13 @@ function ExperienceBars(works) {
 function WorkScatters(works) {
     const authors = _.groupBy(works, (value) => (value.AuthorEmail))
     return Object.entries(authors).map(([a, w], i) => {
-        w.forEach(element => {
-            if (!element.UsedRating) {
-                element.UsedRating = DefaultRating
+        w.forEach(
+            element => {
+                if (!element.UsedRating) {
+                    element.UsedRating = DefaultRating
+                }
             }
-            element.Additions = Math.min(element.Additions, 1000)
-        })
+        )
         return (<Scatter key={a} name={a} data={w} fill={colors[i % colors.length]} />)
     })
 }
@@ -246,7 +247,6 @@ export default function Repository() {
                                 type="number"
                                 dataKey="Additions"
                                 name="New lines"
-                                domain={[0, 1000]}
                                 label={{ value: "New lines", offset: -5, position: "insideBottom" }} />
                             <YAxis
                                 type="number"
