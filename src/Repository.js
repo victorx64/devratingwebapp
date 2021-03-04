@@ -21,7 +21,10 @@ import {
     Area,
 } from "recharts"
 
-const days = 90
+const weeks = 10
+const days = weeks * 7
+const msPerDay = 1000 * 60 * 60 * 24
+const msPerWeek = 1000 * 60 * 60 * 24 * 7
 
 const colors = [
     "#1eb7ff",
@@ -30,14 +33,26 @@ const colors = [
     "#1bb934",
     "#f27212",
     "#ed1c24",
-    "#e83e8c"
+    "#e83e8c",
+    "#6c757d", // gray
+    "#343a40", // gray-dark
+    "#007bff", // blue
+    "#6610f2", // indigo
+    // "#6f42c1", // purple
+    // "#e83e8c", // pink
+    "#dc3545", // red
+    "#fd7e14", // orange
+    "#ffc107", // yellow
+    "#28a745", // green
+    // "#20c997", // teal
+    "#17a2b8", // cyan
 ]
 
 function RatingsData(works) {
     const today = new Date()
-    const worksPerDay = _.groupBy(works, w => (Math.floor((today - new Date(w.CreatedAt)) / 86400000)))
+    const worksPerDay = _.groupBy(works, w => (Math.floor((today - new Date(w.CreatedAt)) / msPerDay)))
 
-    const result = Array(days + 1).fill({}).map(
+    const result = Array(days).fill({}).map(
         (item, index) => (
             {
                 Day: index
@@ -47,19 +62,19 @@ function RatingsData(works) {
 
     Object.entries(worksPerDay).forEach(
         ([day, worksOfDay]) => {
-            result[day]['Delta'] = worksOfDay
-                .filter(work => work.NewRating)
-                .reduce((accum, current) => accum + current.NewRating - (current.UsedRating ?? DefaultRating), 0)
+            if (result[day]) {
+                result[day]['Delta'] = worksOfDay.filter(work => work.NewRating)
+                    .reduce((accum, current) => accum + current.NewRating - (current.UsedRating ?? DefaultRating), 0)
 
-            worksOfDay
-                .reverse()
-                .forEach(
-                    work => work.Ratings.forEach(
-                        r => {
-                            result[day][r.AuthorEmail] = r.Value
-                        }
+                worksOfDay.reverse()
+                    .forEach(
+                        work => work.Ratings.forEach(
+                            r => {
+                                result[day][r.AuthorEmail] = r.Value
+                            }
+                        )
                     )
-                )
+            }
         }
     )
 
@@ -77,10 +92,11 @@ function RatingLines(works) {
     )
 }
 
-function ExperiencesData(works) {
-    const worksPerDay = _.groupBy(works, w => (Math.floor((new Date() - new Date(w.CreatedAt)) / 86400000)))
+function ExperiencesData(works, period, count) {
+    const today = new Date()
+    const worksPerDay = _.groupBy(works, w => (Math.floor((today - new Date(w.CreatedAt)) / period)))
 
-    const result = Array(days + 1).fill({}).map(
+    const result = Array(count).fill({}).map(
         (item, index) => (
             {
                 Day: index
@@ -90,22 +106,23 @@ function ExperiencesData(works) {
 
     Object.entries(worksPerDay).forEach(
         ([day, worksOfDay]) => {
-            worksOfDay
-                .forEach(
+            if (result[day]) {
+                worksOfDay.forEach(
                     work => {
                         result[day][work.AuthorEmail] = (result[day][work.AuthorEmail] ?? 0) + GainedExperience(work)
                     }
                 )
+            }
         }
     )
 
     return result.reverse()
 }
 
-function AccumulatedExperiencesData(works) {
+function AccumulatedExperiencesData(experiencesData) {
     const accum = {}
 
-    const result = ExperiencesData(works).map(
+    const result = experiencesData.map(
         item => {
             Object.entries(item)
                 .forEach(([author, xp]) => accum[author] = (accum[author] ?? 0) + xp)
@@ -146,7 +163,7 @@ function ExperienceBars(works) {
     return authors.map(
         (a, i) =>
         (
-            <Bar stackId="b" key={a} dataKey={a} fill={colors[i % colors.length]} name={a} />
+            <Bar isAnimationActive={false} stackId="b" key={a} dataKey={a} fill={colors[i % colors.length]} name={a} />
         )
     )
 }
@@ -161,14 +178,32 @@ function WorkScatters(works) {
                 }
             }
         )
-        return (<Scatter key={a} name={a} data={w} fill={colors[i % colors.length]} />)
+        return (<Scatter isAnimationActive={false} key={a} name={a} data={w} fill={colors[i % colors.length]} />)
     })
 }
 
-function ToDate(daysAgo) {
+function DaysAgoToDateString(daysAgo) {
     const today = new Date()
     today.setUTCDate(today.getUTCDate() - daysAgo)
-    return today
+    return today.toLocaleDateString()
+}
+
+function WeeksAgoToDateString(weeksAgo) {
+    const today = new Date()
+    today.setUTCDate(today.getUTCDate() - weeksAgo * 7)
+    return today.toLocaleDateString()
+}
+
+function WeeksAgoToString(weeksAgo) {
+    const start = new Date()
+    start.setUTCDate(start.getUTCDate() - weeksAgo * 7 - 7)
+    const end = new Date()
+    end.setUTCDate(end.getUTCDate() - weeksAgo * 7)
+    return start.toLocaleDateString() + ' – ' + end.toLocaleDateString()
+}
+
+function ToFixedTwo(n) {
+    return n.toFixed(2)
 }
 
 export default function Repository() {
@@ -200,45 +235,61 @@ export default function Repository() {
     if (error) {
         return <div><br />Error: {error.message ?? error.status}</div>
     } else if (works) {
+        const experienceBars = ExperienceBars(works)
+        const experiencesPerWeekData = ExperiencesData(works, msPerWeek, weeks)
+        const experiencesPerDayData = ExperiencesData(works, msPerDay, days)
+        const ratingsData = RatingsData(works)
+        const accumulatedExperiencesData = AccumulatedExperiencesData(experiencesPerDayData)
+        const workScatters = WorkScatters(works)
+
         return (
             <React.Fragment>
                 <h1 className="mt-4">{decodeURIComponent(repo)} contributors</h1>
                 <div className="overflow-auto">
                     <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
-                        <BarChart data={ExperiencesData(works)} margin={{ top: 20, bottom: 20 }}>
+                        <ComposedChart data={ratingsData} margin={{ top: 20, bottom: 20 }}>
                             <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                            <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
-                            <YAxis label={{ value: "+XP", angle: -90, position: "insideLeft" }} />
-                            <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
-                            {ExperienceBars(works)}
-                            <Legend />
-                        </BarChart>
-                    </ResponsiveContainer>
-                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
-                        <AreaChart data={AccumulatedExperiencesData(works)}
-                            margin={{ top: 20, bottom: 20 }}>
-                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                            <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
-                            <YAxis label={{ value: "Accumulated XP", angle: -90, position: "insideLeft" }} />
-                            <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
-                            <Legend />
-                            {AccumulatedExperienceAreas(works)}
-                        </AreaChart>
-                    </ResponsiveContainer>
-                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
-                        <ComposedChart data={RatingsData(works)} margin={{ top: 20, bottom: 20 }}>
-                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                            <XAxis dataKey="Day" tickFormatter={d => ToDate(d).toLocaleDateString()} />
+                            <XAxis dataKey="Day" tickFormatter={DaysAgoToDateString} />
                             <YAxis
                                 yAxisId="left"
                                 domain={[1000, 2000]}
                                 label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
                             <YAxis yAxisId="right" domain={[0, 1000]} hide={true} orientation="right" />
-                            <Tooltip labelFormatter={d => ToDate(d).toLocaleDateString()} formatter={value => value.toFixed(2)} />
+                            <Tooltip labelFormatter={DaysAgoToDateString} formatter={ToFixedTwo} />
                             <Bar stackId="a" yAxisId="right" dataKey="Delta" name="Rating drop" fill="#999" />
                             {RatingLines(works)}
                             <Legend />
                         </ComposedChart>
+                    </ResponsiveContainer>
+                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                        <AreaChart data={accumulatedExperiencesData} margin={{ top: 20, bottom: 20 }}>
+                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                            <XAxis dataKey="Day" tickFormatter={DaysAgoToDateString} />
+                            <YAxis label={{ value: "Accumulated XP", angle: -90, position: "insideLeft" }} />
+                            <Tooltip labelFormatter={DaysAgoToDateString} formatter={ToFixedTwo} />
+                            <Legend />
+                            {AccumulatedExperienceAreas(works)}
+                        </AreaChart>
+                    </ResponsiveContainer>
+                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                        <BarChart data={experiencesPerWeekData} margin={{ top: 20, bottom: 20 }}>
+                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                            <XAxis dataKey="Day" tickFormatter={WeeksAgoToDateString} />
+                            <YAxis label={{ value: "+XP per week", angle: -90, position: "insideLeft" }} />
+                            <Tooltip labelFormatter={WeeksAgoToString} formatter={ToFixedTwo} />
+                            {experienceBars}
+                            <Legend />
+                        </BarChart>
+                    </ResponsiveContainer>
+                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                        <BarChart data={experiencesPerDayData} margin={{ top: 20, bottom: 20 }}>
+                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                            <XAxis dataKey="Day" tickFormatter={DaysAgoToDateString} />
+                            <YAxis label={{ value: "+XP per day", angle: -90, position: "insideLeft" }} />
+                            <Tooltip labelFormatter={DaysAgoToDateString} formatter={ToFixedTwo} />
+                            {experienceBars}
+                            <Legend />
+                        </BarChart>
                     </ResponsiveContainer>
                     <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
                         <ScatterChart margin={{ top: 20, bottom: 20 }}>
@@ -254,9 +305,9 @@ export default function Repository() {
                                 name="Rating"
                                 domain={[1000, 2000]}
                                 label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
-                            <Tooltip formatter={value => value.toFixed(2)} />
+                            <Tooltip formatter={ToFixedTwo} />
                             <Legend />
-                            {WorkScatters(works)}
+                            {workScatters}
                         </ScatterChart>
                     </ResponsiveContainer>
                 </div>
