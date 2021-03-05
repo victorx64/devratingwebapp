@@ -46,12 +46,11 @@ export default function App() {
         </div>
 
         <footer className="footer">
-          <div className="container">
             <div className="row justify-content-center">
-              <Link className="col-auto" to="/policy">Policy</Link >
               <a href='https://github.com/victorx64/devrating'>GitHub</a>
+              <Link className="col-auto" to="/policy">Policy</Link >
+              <a href="https://www.patreon.com/s_vic">Join me on Patreon!</a>
             </div>
-          </div>
         </footer>
       </HashRouter>
     </AuthProvider>
