@@ -5,8 +5,8 @@ import { AuthContext, FirebaseApp } from "./Auth.js";
 export default function NavLinks() {
   const { currentUser } = useContext(AuthContext);
   return (
-    !!currentUser
-      ? <>
+    !!currentUser ?
+      <>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
@@ -15,12 +15,12 @@ export default function NavLinks() {
             <li className="nav-item">
               <Link className="nav-link" to="/" onClick={() => FirebaseApp.auth().signOut()}>
                 Sign Out ({currentUser.displayName})
-                </Link>
+              </Link>
             </li>
           </ul>
         </div>
-      </>
-      : <>
+      </> :
+      <>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
