@@ -88,7 +88,7 @@ export default function Authors() {
     }, [id]);
 
     if (error) {
-        return <div><br />Error: {error.message ?? error.status}</div>;
+        return <div  className="mt-4">Error: {error.message ?? error.status}</div>;
     } else if (author) {
         return (
             <>
@@ -187,6 +187,6 @@ export default function Authors() {
             </>
         );
     } else {
-        return <div>Loading...</div>;
+        return <div className="mt-4">Loading...</div>;
     }
 }

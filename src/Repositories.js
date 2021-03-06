@@ -33,7 +33,7 @@ export default function Repositories() {
     useEffect(() => { FetchRepos(jwt) }, [jwt])
 
     if (error) {
-        return <div><br />Error: {error.message ?? error.status}</div>
+        return <div className="mt-4">Error: {error.message ?? error.status}</div>
     } else if (repositories) {
         return (
             <>
@@ -60,6 +60,6 @@ export default function Repositories() {
             </>
         )
     } else {
-        return <div>Loading...</div>
+        return <div className="mt-4">Loading...</div>
     }
 }
