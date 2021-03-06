@@ -22,7 +22,7 @@ export default function Ratings() {
     }, [id]);
 
     if (error) {
-        return <div><br />Error: {error.message ?? error.status}</div>;
+        return <div className="mt-4">Error: {error.message ?? error.status}</div>;
     } else if (rating) {
         return (
             <>
@@ -78,6 +78,6 @@ export default function Ratings() {
             </>
         );
     } else {
-        return <div>Loading...</div>;
+        return <div className="mt-4">Loading...</div>;
     }
 }

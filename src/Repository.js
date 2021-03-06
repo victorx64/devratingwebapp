@@ -147,6 +147,7 @@ function AccumulatedExperienceAreas(works) {
         (a, i) =>
         (
             <Area type="monotone"
+                isAnimationActive={false}
                 key={a}
                 dataKey={a}
                 stackId="1"
@@ -178,7 +179,12 @@ function WorkScatters(works) {
                 }
             }
         )
-        return (<Scatter isAnimationActive={false} key={a} name={a} data={w} fill={colors[i % colors.length]} />)
+        return (<Scatter isAnimationActive={true}
+            key={a}
+            name={a}
+            data={w}
+            fill={colors[i % colors.length]}
+        />)
     })
 }
 
@@ -233,7 +239,7 @@ export default function Repository() {
     }, [organization, repo])
 
     if (error) {
-        return <div><br />Error: {error.message ?? error.status}</div>
+        return <div className="mt-4">Error: {error.message ?? error.status}</div>
     } else if (works) {
         const experienceBars = ExperienceBars(works)
         const experiencesPerWeekData = ExperiencesData(works, msPerWeek, weeks)
@@ -244,74 +250,95 @@ export default function Repository() {
 
         return (
             <React.Fragment>
-                <h1 className="mt-4">{decodeURIComponent(repo)} contributors</h1>
-                <div className="overflow-auto">
-                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
-                        <ComposedChart data={ratingsData} margin={{ top: 20, bottom: 20 }}>
-                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                            <XAxis dataKey="Day" tickFormatter={DaysAgoToDateString} />
-                            <YAxis
-                                yAxisId="left"
-                                domain={[1000, 2000]}
-                                label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
-                            <YAxis yAxisId="right" domain={[0, 1000]} hide={true} orientation="right" />
-                            <Tooltip labelFormatter={DaysAgoToDateString} formatter={ToFixedTwo} />
-                            <Bar stackId="a" yAxisId="right" dataKey="Delta" name="Rating drop" fill="#999" />
-                            {RatingLines(works)}
-                            <Legend />
-                        </ComposedChart>
-                    </ResponsiveContainer>
-                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
-                        <AreaChart data={accumulatedExperiencesData} margin={{ top: 20, bottom: 20 }}>
-                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                            <XAxis dataKey="Day" tickFormatter={DaysAgoToDateString} />
-                            <YAxis label={{ value: "Accumulated XP", angle: -90, position: "insideLeft" }} />
-                            <Tooltip labelFormatter={DaysAgoToDateString} formatter={ToFixedTwo} />
-                            <Legend />
-                            {AccumulatedExperienceAreas(works)}
-                        </AreaChart>
-                    </ResponsiveContainer>
-                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
-                        <BarChart data={experiencesPerWeekData} margin={{ top: 20, bottom: 20 }}>
-                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                            <XAxis dataKey="Day" tickFormatter={WeeksAgoToDateString} />
-                            <YAxis label={{ value: "+XP per week", angle: -90, position: "insideLeft" }} />
-                            <Tooltip labelFormatter={WeeksAgoToString} formatter={ToFixedTwo} />
-                            {experienceBars}
-                            <Legend />
-                        </BarChart>
-                    </ResponsiveContainer>
-                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
-                        <BarChart data={experiencesPerDayData} margin={{ top: 20, bottom: 20 }}>
-                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                            <XAxis dataKey="Day" tickFormatter={DaysAgoToDateString} />
-                            <YAxis label={{ value: "+XP per day", angle: -90, position: "insideLeft" }} />
-                            <Tooltip labelFormatter={DaysAgoToDateString} formatter={ToFixedTwo} />
-                            {experienceBars}
-                            <Legend />
-                        </BarChart>
-                    </ResponsiveContainer>
-                    <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
-                        <ScatterChart margin={{ top: 20, bottom: 20 }}>
-                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                            <XAxis
-                                type="number"
-                                dataKey="Additions"
-                                name="New lines"
-                                label={{ value: "New lines", offset: -5, position: "insideBottom" }} />
-                            <YAxis
-                                type="number"
-                                dataKey="UsedRating"
-                                name="Rating"
-                                domain={[1000, 2000]}
-                                label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
-                            <Tooltip formatter={ToFixedTwo} />
-                            <Legend />
-                            {workScatters}
-                        </ScatterChart>
-                    </ResponsiveContainer>
-                </div>
-                <div className="table-responsive my-3">
+                <h1 className="mt-4">{decodeURIComponent(repo)}</h1>
+                <h2>Stability Rating</h2>
+                <p className="lead">
+                    The higher the code stability, 
+                    the higher the rating of a programmer.
+                </p>
+                <p>
+                    Each code change requires additional development time. 
+                    The diagram below shows the frequency of changing the 
+                    code of each programmer. Each deleted line increases the rating 
+                    of the programmer and decreases the rating of the author of the deleted line.
+                </p>
+                <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                    <ComposedChart data={ratingsData} margin={{ top: 20, bottom: 20 }}>
+                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                        <XAxis dataKey="Day" tickFormatter={DaysAgoToDateString} />
+                        <YAxis
+                            yAxisId="left"
+                            domain={[1000, 2000]}
+                            label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
+                        <YAxis yAxisId="right" domain={[0, 1000]} hide={true} orientation="right" />
+                        <Tooltip labelFormatter={DaysAgoToDateString} formatter={ToFixedTwo} />
+                        <Bar stackId="a" yAxisId="right" dataKey="Delta" name="Rating drop" fill="#999" />
+                        {RatingLines(works)}
+                        <Legend />
+                    </ComposedChart>
+                </ResponsiveContainer>
+                <h2>Pull requests size and stability distribution</h2>
+                <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                    <ScatterChart margin={{ top: 20, bottom: 20 }}>
+                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                        <XAxis
+                            type="number"
+                            dataKey="Additions"
+                            name="New lines"
+                            label={{ value: "New lines", offset: -5, position: "insideBottom" }} />
+                        <YAxis
+                            type="number"
+                            dataKey="UsedRating"
+                            name="Rating"
+                            domain={[1000, 2000]}
+                            label={{ value: "Rating", angle: -90, position: "insideLeft" }} />
+                        <Tooltip formatter={ToFixedTwo} />
+                        <Legend />
+                        {workScatters}
+                    </ScatterChart>
+                </ResponsiveContainer>
+                <h2>Pull requests impact</h2>
+                <p className="lead">
+                    Knowing the size and expected stability of each Pull request we evaluate
+                    the Experience Points (XP) of authors for the impact on the codebase.
+                </p>
+                <p>
+                    See the details of a PR to learn how the XP is calculated.
+                </p>
+                <h3>By days</h3>
+                <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                    <BarChart data={experiencesPerDayData} margin={{ top: 20, bottom: 20 }}>
+                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                        <XAxis dataKey="Day" tickFormatter={DaysAgoToDateString} />
+                        <YAxis label={{ value: "+XP per day", angle: -90, position: "insideLeft" }} />
+                        <Tooltip labelFormatter={DaysAgoToDateString} formatter={ToFixedTwo} />
+                        {experienceBars}
+                        <Legend />
+                    </BarChart>
+                </ResponsiveContainer>
+                <h3>By weeks</h3>
+                <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                    <BarChart data={experiencesPerWeekData} margin={{ top: 20, bottom: 20 }}>
+                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                        <XAxis dataKey="Day" tickFormatter={WeeksAgoToDateString} />
+                        <YAxis label={{ value: "+XP per week", angle: -90, position: "insideLeft" }} />
+                        <Tooltip labelFormatter={WeeksAgoToString} formatter={ToFixedTwo} />
+                        {experienceBars}
+                        <Legend />
+                    </BarChart>
+                </ResponsiveContainer>
+                <h3>Accumulated impact</h3>
+                <ResponsiveContainer minWidth={700} aspect={2.0 / 1.0}>
+                    <AreaChart data={accumulatedExperiencesData} margin={{ top: 20, bottom: 20 }}>
+                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                        <XAxis dataKey="Day" tickFormatter={DaysAgoToDateString} />
+                        <YAxis label={{ value: "Accumulated XP", angle: -90, position: "insideLeft" }} />
+                        <Tooltip labelFormatter={DaysAgoToDateString} formatter={ToFixedTwo} />
+                        <Legend />
+                        {AccumulatedExperienceAreas(works)}
+                    </AreaChart>
+                </ResponsiveContainer>
+                <div className="table my-3">
                     <table className="table">
                         <thead>
                             <tr>
@@ -348,6 +375,6 @@ export default function Repository() {
             </React.Fragment>
         )
     } else {
-        return <div>Loading recent works...</div>
+        return <div className="mt-4">Loading recent works...</div>
     }
 }

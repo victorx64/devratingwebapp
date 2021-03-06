@@ -32,7 +32,7 @@ export default function App() {
           </button>
           <NavLinks />
         </nav>
-        <div className="container pb-4">
+        <div className="container pb-4 overflow-auto">
           <Switch>
             <Route path="/signin" component={SignIn} />
             <PrivateRoute path="/keys" component={Keys} />
@@ -46,11 +46,13 @@ export default function App() {
         </div>
 
         <footer className="footer">
+          <div className="container">
             <div className="row justify-content-center">
-              <a href='https://github.com/victorx64/devrating'>GitHub</a>
+              <a className="col-auto" href='https://github.com/victorx64/devrating'>GitHub</a>
               <Link className="col-auto" to="/policy">Policy</Link >
-              <a href="https://www.patreon.com/s_vic">Join me on Patreon!</a>
+              <a className="col-auto" href="https://www.patreon.com/s_vic">Join me on Patreon!</a>
             </div>
+          </div>
         </footer>
       </HashRouter>
     </AuthProvider>

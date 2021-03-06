@@ -59,7 +59,7 @@ export default function Keys() {
     }
 
     if (error) {
-        return <div><br />Error: {error.message ?? error.status}</div>
+        return <div className="mt-4">Error: {error.message ?? error.status}</div>
     } else if (keys) {
         return (
             <>
@@ -158,6 +158,6 @@ jobs:
             </>
         )
     } else {
-        return <div>Loading...</div>
+        return <div className="mt-4">Loading...</div>
     }
 }

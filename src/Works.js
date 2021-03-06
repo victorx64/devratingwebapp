@@ -24,7 +24,7 @@ export default function Works() {
     }, [id]);
 
     if (error) {
-        return <div><br />Error: {error.message ?? error.status}</div>;
+        return <div className="mt-4">Error: {error.message ?? error.status}</div>;
     } else if (work) {
         const rows = work.Ratings.filter(rating => rating.CountedDeletions).map((rating) =>
             <tr key={rating.Id}>
@@ -165,6 +165,6 @@ export default function Works() {
         );
     }
     else {
-        return <div>Loading...</div>;
+        return <div className="mt-4">Loading...</div>;
     }
 }
